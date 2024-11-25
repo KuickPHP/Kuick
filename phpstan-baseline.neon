@@ -1,0 +1,10 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#invalid type Composer\\\\Script\\\\Event#"
+			count: 3
+			path: src/Composer/ComposerInstaller.php
+		-
+			message: "#Call to method#"
+			count: 1
+			path: src/Composer/ComposerInstaller.php

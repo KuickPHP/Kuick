@@ -1,0 +1,80 @@
+{
+    "name": "kuick/framework",
+    "type": "library",
+    "description": "Kuick is an extremely low footprint application framework, suitable for high throughput workloads",
+    "keywords": ["message broker", "framework"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mariusz Miłejko",
+            "email": "mariusz@milejko.pl"
+        }
+    ],
+    "require": {
+        "php": ">=8.2.0",
+        "ext-bcmath": "*",
+        "ext-date": "*",
+        "ext-fileinfo": "*",
+        "ext-hash": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-pcre": "*",
+        "ext-pdo": "*",
+        "ext-reflection": "*",
+        "ext-spl": "*",
+        "php-di/php-di": "^7.0",
+        "monolog/monolog": "^3.0",
+        "symfony/console": "^7.1",
+        "symfony/http-foundation": "^7.1"
+    },
+    "scripts": {
+        "fix:phpcbf": "phpcbf",
+        "fix:php-cs-fixer": "php-cs-fixer fix src && php-cs-fixer fix tests",
+        "fix:all": [
+            "@fix:phpcbf",
+            "@fix:php-cs-fixer"
+        ],
+        "test:security-checker": "security-checker security:check",
+        "test:phpstan": "XDEBUG_MODE=off phpstan --level=5 --no-progress --memory-limit=512M analyse src tests -c phpstan-baseline.neon",
+        "test:phpcs": "phpcs",
+        "test:phpmd": "phpmd ./src text phpmd.xml.dist",
+        "test:phpunit": "XDEBUG_MODE=coverage phpunit --coverage-html ./public/phpunit",
+        "test:all": [
+            "@test:phpcs",
+            "@test:phpstan",
+            "@test:phpmd",
+            "@test:phpunit"
+        ],
+        "generate:phpmd-baseline": "phpmd --generate-baseline ./src text phpmd.xml.dist",
+        "generate:phpmetrics": "phpmetrics --report-html=./public/phpmetrics ./src",
+        "post-install-cmd": [
+            "Kuick\\Composer\\ComposerInstaller::postInstall"
+        ],
+        "post-update-cmd": [
+            "Kuick\\Composer\\ComposerInstaller::postUpdate"
+        ]
+    },
+    "autoload": {
+        "psr-4": {
+            "Kuick\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\Kuick\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.0-dev"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0",
+        "phpmd/phpmd": "^2.0",
+        "squizlabs/php_codesniffer": "^3.0",
+        "phpstan/phpstan": "^1.0",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "phpmetrics/phpmetrics": "^2.0"
+    }
+}
