@@ -1,4 +1,4 @@
-# Kuick
+# Kuick PHP framework
 Kuick is an extremely low footprint PHP application framework, based on Symfony components, suitable for high workloads
 Designed for developers seeking speed, efficiency, and flexibility in web application development.
 

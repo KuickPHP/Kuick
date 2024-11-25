@@ -22,8 +22,6 @@ final class ConsoleKernel extends KernelAbstract
     {
         ini_set('max_execution_time', 0);
         try {
-            //localization setup
-            ($this->container->get(AppSetLocalization::class))();
             $application = $this->container->get(Application::class);
             $application->run();
         } catch (Throwable $error) {

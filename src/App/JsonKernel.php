@@ -35,8 +35,6 @@ final class JsonKernel extends KernelAbstract
     {
         try {
             $this->logger->info('Handling JSON request: ' . $request->getPathInfo());
-            //localization setup
-            ($this->container->get(AppSetLocalization::class))();
             //matching and launching UI action
             $response = ($this->container->get(ActionLauncher::class))(
                 $this->container->get(RouteMatcher::class)->findRoute($request),

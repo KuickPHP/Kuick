@@ -30,6 +30,7 @@ abstract class KernelAbstract
         set_error_handler(function (int $errno, string $message): void {
             throw new AppException($message, $errno);
         });
+        //building DI container
         $this->container = (new AppDIContainerBuilder())();
         $this->logger = $this->container->get(LoggerInterface::class);
         //localization setup
