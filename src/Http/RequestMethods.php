@@ -10,7 +10,13 @@
 
 namespace Kuick\Http;
 
-class GoneException extends ResponseException
+class RequestMethods
 {
-    protected $code = Response::HTTP_GONE;
+    public const GET = 'GET';
+    public const HEAD = 'HEAD';
+    public const POST = 'POST';
+    public const PUT = 'PUT';
+    public const PATCH = 'PATCH';
+    public const DELETE = 'DELETE';
+    public const OPTIONS = 'OPTIONS';
 }

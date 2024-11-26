@@ -47,7 +47,7 @@ RUN composer install
 ###################################################################
 FROM base AS dev-server
 
-# defined in .env .env.loca files
+# defined via .env .env.loca files
 #ENV KUICK_APP_ENV=dev
 
 COPY ./etc/apache2 /etc/apache2

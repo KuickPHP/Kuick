@@ -13,9 +13,11 @@ namespace Kuick\App;
 use Kuick\App\Router\ActionLauncher;
 use Kuick\App\Router\RouteMatcher;
 use Kuick\Http\JsonErrorResponse;
-use Kuick\Http\Request;
-use Kuick\Http\Response;
+use Kuick\Http\ResponseCodes;
+use Kuick\Http\ResponseEmmiter;
 use Monolog\Level;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LogLevel;
 use Throwable;
 
 /**
@@ -24,27 +26,28 @@ use Throwable;
 final class JsonKernel extends KernelAbstract
 {
     private const EXCEPTION_CODE_LOG_LEVEL_MAP = [
-        Response::HTTP_NOT_FOUND => Level::Notice,
-        Response::HTTP_UNAUTHORIZED => Level::Notice,
-        Response::HTTP_BAD_REQUEST => Level::Warning,
-        Response::HTTP_METHOD_NOT_ALLOWED => Level::Warning,
-        Response::HTTP_FORBIDDEN => Level::Warning,
+        ResponseCodes::NOT_FOUND => Level::Notice,
+        ResponseCodes::UNAUTHORIZED => Level::Notice,
+        ResponseCodes::BAD_REQUEST => Level::Warning,
+        ResponseCodes::METHOD_NOT_ALLOWED => Level::Warning,
+        ResponseCodes::FORBIDDEN => Level::Warning,
     ];
 
-    public function __invoke(Request $request): void
+    public function __invoke(ServerRequestInterface $request): void
     {
         try {
-            $this->logger->info('Handling JSON request: ' . $request->getPathInfo());
-            //matching and launching UI action
-            $response = ($this->container->get(ActionLauncher::class))(
+            $this->logger->info('Handling JSON request: ' . $request->getUri()->getPath());
+            //emmit response
+            (new ResponseEmmiter)(($this->container->get(ActionLauncher::class))(
                 $this->container->get(RouteMatcher::class)->findRoute($request),
                 $request
-            );
-            $response->send();
+            ));
         } catch (Throwable $error) {
-            (new JsonErrorResponse($error->getMessage(), $error->getCode()))->send();
+            //emmit error response
+            (new ResponseEmmiter)(new JsonErrorResponse($error->getMessage(), $error->getCode()));
+            $logLevel = self::EXCEPTION_CODE_LOG_LEVEL_MAP[$error->getCode()] ?? LogLevel::EMERGENCY;
             $this->logger->log(
-                self::EXCEPTION_CODE_LOG_LEVEL_MAP[$error->getCode()] ?? Response::HTTP_INTERNAL_SERVER_ERROR,
+                $logLevel,
                 $error->getMessage() . ' ' . $error->getFile() . ' (' . $error->getLine() . ') ' . $error->getTraceAsString()
             );
         }

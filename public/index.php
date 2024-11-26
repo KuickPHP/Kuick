@@ -9,9 +9,17 @@
  */
 
 use Kuick\App\JsonKernel;
-use Kuick\Http\Request;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Nyholm\Psr7Server\ServerRequestCreator;
 
 define('BASE_PATH', dirname(__DIR__));
 require BASE_PATH . '/vendor/autoload.php';
 
-(new JsonKernel())(Request::createFromGlobals());
+$psr17Factory = new Psr17Factory();
+
+(new JsonKernel())((new ServerRequestCreator(
+    $psr17Factory, // ServerRequestFactory
+    $psr17Factory, // UriFactory
+    $psr17Factory, // UploadedFileFactory
+    $psr17Factory  // StreamFactory
+))->fromGlobals());

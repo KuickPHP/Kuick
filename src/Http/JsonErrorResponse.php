@@ -19,13 +19,13 @@ class JsonErrorResponse extends JsonResponse
 
     public function __construct(
         string $message = self::DEFAULT_MESSAGE,
-        int $code = Response::HTTP_INTERNAL_SERVER_ERROR
+        int $code = ResponseCodes::INTERNAL_SERVER_ERROR
     ) {
-        $code = $code == 0 ? Response::HTTP_INTERNAL_SERVER_ERROR : $code;
+        $code = $code == 0 ? ResponseCodes::INTERNAL_SERVER_ERROR : $code;
         try {
-            parent::__construct([self::ERROR_KEY => $message], $code, [], false);
+            parent::__construct([self::ERROR_KEY => $message], $code);
         } catch (Throwable $error) {
-            parent::__construct([self::ERROR_KEY => $error->getMessage()], self::HTTP_INTERNAL_SERVER_ERROR, [], false);
+            parent::__construct([self::ERROR_KEY => $error->getMessage()], ResponseCodes::INTERNAL_SERVER_ERROR);
         }
     }
 }

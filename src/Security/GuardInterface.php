@@ -10,7 +10,7 @@
 
 namespace Kuick\Security;
 
-use Kuick\Http\Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Provides actions with optional security layer, like: header validation, request filterint etc.
@@ -18,5 +18,5 @@ use Kuick\Http\Request;
  */
 interface GuardInterface
 {
-    public function __invoke(Request $request): void;
+    public function __invoke(ServerRequestInterface $request): void;
 }

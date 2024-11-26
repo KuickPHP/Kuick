@@ -12,9 +12,9 @@ namespace Kuick\Ops\Security;
 
 use DI\Attribute\Inject;
 use Kuick\Http\ForbiddenException;
-use Kuick\Http\Request;
 use Kuick\Http\UnauthorizedException;
 use Kuick\Security\GuardInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class OpsGuard implements GuardInterface
 {
@@ -25,13 +25,13 @@ class OpsGuard implements GuardInterface
     {
     }
 
-    public function __invoke(Request $request): void
+    public function __invoke(ServerRequestInterface $request): void
     {
         if (!$this->opsToken) {
             return;
         }
-        $requestToken = $request->headers->get(self::AUTHORIZATION_HEADER);
-        if (null === $requestToken) {
+        $requestToken = $request->getHeaderLine(self::AUTHORIZATION_HEADER);
+        if (!$requestToken) {
             throw new UnauthorizedException('Token not found');
         }
         $expectedToken = sprintf(self::BEARER_TOKEN_TEMPLATE, $this->opsToken);

@@ -12,5 +12,5 @@ namespace Kuick\Http;
 
 class ForbiddenException extends ResponseException
 {
-    protected $code = Response::HTTP_FORBIDDEN;
+    protected $code = ResponseCodes::FORBIDDEN;
 }

@@ -12,8 +12,8 @@ namespace Kuick\Ops\UI;
 
 use DI\Container;
 use Kuick\Http\JsonResponse;
-use Kuick\Http\Request;
 use Kuick\UI\ActionInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class OpsAction implements ActionInterface
 {
@@ -21,16 +21,16 @@ class OpsAction implements ActionInterface
     {
     }
 
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(ServerRequestInterface $request): JsonResponse
     {
         return new JsonResponse([
             'request' => [
                 'method' => $request->getMethod(),
                 'uri' => $request->getUri(),
-                'headers' => $request->headers->all(),
-                'path' => $request->getPathInfo(),
-                'queryParams' => $request->query->all(),
-                'body' => $request->getContent(),
+                'headers' => $request->getHeaders(),
+                'path' => $request->getUri()->getPath(),
+                'queryParams' => $request->getUri()->getQuery(),
+                'body' => $request->getBody()->getContents(),
             ],
             'di-config' => $this->getConfigDefinitions(),
             'php-version' => phpversion(),

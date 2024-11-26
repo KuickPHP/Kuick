@@ -12,5 +12,5 @@ namespace Kuick\Http;
 
 class UnauthorizedException extends ResponseException
 {
-    protected $code = Response::HTTP_UNAUTHORIZED;
+    protected $code = ResponseCodes::UNAUTHORIZED;
 }

@@ -11,7 +11,6 @@
 namespace Kuick\App\Router;
 
 use Kuick\Http\InternalServerErrorException;
-use Kuick\Http\Request;
 
 /**
  *
@@ -49,7 +48,7 @@ class RouteValidator
             throw new InternalServerErrorException('Action: ' . $route['pattern'] . ' method is not a string');
         }
         //method name invalid
-        if (!in_array($route['method'], Request::ALL_METHODS)) {
+        if (!in_array($route['method'], ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'PURGE'])) {
             throw new InternalServerErrorException('Action: ' . $route['pattern'] . ' method should be one of GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS, PURGE');
         }
     }

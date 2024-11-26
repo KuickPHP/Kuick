@@ -10,12 +10,13 @@
 
 namespace Kuick\App\Router;
 
-use Kuick\Http\JsonResponse;
-use Kuick\Http\Request;
-use Kuick\Http\Response;
+use Kuick\Http\ResponseCodes;
 use Kuick\UI\ActionInterface;
 use Kuick\Security\GuardInterface;
+use Nyholm\Psr7\Response;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -27,11 +28,11 @@ class ActionLauncher
     {
     }
 
-    public function __invoke(array $route, Request $request): Response|JsonResponse
+    public function __invoke(array $route, ServerRequestInterface $request): ResponseInterface
     {
         if (empty($route)) {
             $this->logger->info('No action was executed to serve OPTIONS');
-            return (new Response())->setStatusCode(Response::HTTP_NO_CONTENT);
+            return new Response(ResponseCodes::NO_CONTENT);
         }
         if (isset($route['guards'])) {
             $this->logger->debug('Executing guards');
@@ -46,7 +47,7 @@ class ActionLauncher
         return $response;
     }
 
-    private function executeGuards(array $guards, Request $request): void
+    private function executeGuards(array $guards, ServerRequestInterface $request): void
     {
         foreach ($guards as $guardName) {
             $guard = $this->container->get($guardName);

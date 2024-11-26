@@ -12,5 +12,5 @@ namespace Kuick\Http;
 
 class ConflictException extends ResponseException
 {
-    protected $code = Response::HTTP_CONFLICT;
+    protected $code = ResponseCodes::CONFLICT;
 }

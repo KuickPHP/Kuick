@@ -12,7 +12,8 @@ namespace Kuick\App\Router;
 
 use Kuick\Http\MethodNotAllowedException;
 use Kuick\Http\NotFoundException;
-use Kuick\Http\Request;
+use Kuick\Http\RequestMethods;
+use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -37,9 +38,9 @@ class RouteMatcher
         return $this->routes;
     }
 
-    public function findRoute(Request $request): array
+    public function findRoute(ServerRequestInterface $request): array
     {
-        if (Request::METHOD_OPTIONS == $request->getMethod()) {
+        if (RequestMethods::OPTIONS == $request->getMethod()) {
             return [];
         }
         $requestMethod = $request->getMethod();
@@ -47,13 +48,13 @@ class RouteMatcher
         foreach ($this->routes as $route) {
             $this->logger->debug('Trying route: ' . $route['pattern']);
             //matching route
-            if (!preg_match('#^' . $route['pattern'] . '$#', $request->getPathInfo())) {
+            if (!preg_match('#^' . $route['pattern'] . '$#', $request->getUri()->getPath())) {
                 continue;
             }
             //method defaults to GET
-            $routeMethod = $route['method'] ?? Request::METHOD_GET;
+            $routeMethod = $route['method'] ?? RequestMethods::GET;
             //methods are matching or HEAD to GET route
-            if ($requestMethod == $routeMethod || ($requestMethod == Request::METHOD_HEAD && $routeMethod == Request::METHOD_GET)) {
+            if ($requestMethod == $routeMethod || ($requestMethod == RequestMethods::HEAD && $routeMethod == RequestMethods::GET)) {
                 $this->logger->debug('Found matching route: ' . $routeMethod . $route['pattern']);
                 return $route;
             }

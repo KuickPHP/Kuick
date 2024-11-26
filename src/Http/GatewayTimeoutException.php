@@ -12,5 +12,5 @@ namespace Kuick\Http;
 
 class BadGatewayException extends ResponseException
 {
-    protected $code = Response::HTTP_GATEWAY_TIMEOUT;
+    protected $code = ResponseCodes::GATEWAY_TIMEOUT;
 }

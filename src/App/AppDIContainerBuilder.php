@@ -117,7 +117,6 @@ class AppDIContainerBuilder
         $envVarFromSystemEnv = getenv(self::APP_ENV_KEY);
         //best performance - put KUICK_APP_ENV directly into system environment variables
         if ($envVarFromSystemEnv) {
-            print_r($envVarFromSystemEnv);
             return $envVarFromSystemEnv;
         }
         $envVariablesFromDotEnv = (new AppGetEnvironment())();

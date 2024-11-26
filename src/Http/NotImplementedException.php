@@ -12,5 +12,5 @@ namespace Kuick\Http;
 
 class NotImplementedException extends ResponseException
 {
-    protected $code = Response::HTTP_NOT_IMPLEMENTED;
+    protected $code = ResponseCodes::NOT_IMPLEMENTED;
 }

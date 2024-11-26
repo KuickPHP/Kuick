@@ -12,5 +12,5 @@ namespace Kuick\Http;
 
 class NotFoundException extends ResponseException
 {
-    protected $code = Response::HTTP_NOT_FOUND;
+    protected $code = ResponseCodes::NOT_FOUND;
 }

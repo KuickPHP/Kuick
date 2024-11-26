@@ -12,5 +12,5 @@ namespace Kuick\Http;
 
 class MethodNotAllowedException extends ResponseException
 {
-    protected $code = Response::HTTP_METHOD_NOT_ALLOWED;
+    protected $code = ResponseCodes::METHOD_NOT_ALLOWED;
 }

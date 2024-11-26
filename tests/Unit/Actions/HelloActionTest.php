@@ -3,7 +3,7 @@
 namespace Tests\Kuick\Example\UI;
 
 use Kuick\Example\UI\HelloAction;
-use Kuick\Http\Request;
+use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -13,20 +13,19 @@ class HelloActionTest extends TestCase
 {
     public function testIfKuickSaysHello(): void
     {
-        $request = new Request();
+        $request = new ServerRequest('GET', 'some-api-url');
         $response = (new HelloAction())($request);
-        $this->assertEquals('{"message":"Kuick says: hello my friend!","hint":"If you want a proper greeting use: http:\/\/:\/?name=Your-name"}', $response->getContent());
-        $this->assertEquals('application/json', $response->headers->get('Content-type'));
+        $this->assertEquals('{"message":"Kuick says: hello my friend!","hint":"If you want a proper greeting use: some-api-url?name=Your-name"}', $response->getBody()->getContents());
+        $this->assertEquals('application/json', $response->getHeaderLine('Content-type'));
         $this->assertEquals(200, $response->getStatusCode());
     }
 
     public function testIfKuickSaysHelloUsingName(): void
     {
-        $request = new Request();
-        $request->query->set('name', 'John');
+        $request = new ServerRequest('GET', 'some-api-url?name=John');
         $response = (new HelloAction())($request);
-        $this->assertEquals('{"message":"Kuick says: hello John!"}', $response->getContent());
-        $this->assertEquals('application/json', $response->headers->get('Content-type'));
+        $this->assertEquals('{"message":"Kuick says: hello John!"}', $response->getBody()->getContents());
+        $this->assertEquals('application/json', $response->getHeaderLine('Content-type'));
         $this->assertEquals(200, $response->getStatusCode());
     }
 }
