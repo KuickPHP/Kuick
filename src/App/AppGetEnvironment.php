@@ -33,7 +33,7 @@ class AppGetEnvironment
             if (false !== getenv($dotEnvVar)) {
                 continue;
             }
-            putenv($dotEnvVar, $dotEnvValue);
+            putenv($dotEnvVar . '=' . $dotEnvValue);
         }
         $envVars = [];
         //converting keys
