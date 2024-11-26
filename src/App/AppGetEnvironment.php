@@ -30,7 +30,7 @@ class AppGetEnvironment
         );
         //putting .env values
         foreach ($dotEnvVars as $dotEnvVar => $dotEnvValue) {
-            if (null !== getenv($dotEnvVar)) {
+            if (false !== getenv($dotEnvVar)) {
                 continue;
             }
             putenv($dotEnvVar, $dotEnvValue);
