@@ -19,6 +19,7 @@ use Symfony\Component\Filesystem\Filesystem;
 class ComposerInstaller
 {
     private const KUICK_PATH =  '/vendor/kuick/framework';
+    private const KUICK_COMPONENTS_PATTERN = '/vendor/kuick/*/';
     private const INDEX_FILE = '/public/index.php';
     private const CONSOLE_FILE = '/bin/console';
     private const SOURCE_ETC_DIR = '/etc/example';
@@ -61,6 +62,7 @@ class ComposerInstaller
     {
         $fs = new Filesystem();
         $kuickVendorPath = BASE_PATH . self::KUICK_PATH;
+        $kuickVendorComponentsPath = BASE_PATH . self::KUICK_COMPONENTS_PATTERN;
         $indexPHPFile = BASE_PATH . self::INDEX_FILE;
         $consoleFile = BASE_PATH . self::CONSOLE_FILE;
         //public/index.php and bin/console exists - nothing else to do
@@ -75,5 +77,8 @@ class ComposerInstaller
         $fs->copy($kuickVendorPath . self::CONSOLE_FILE, $consoleFile);
         $fs->chmod($consoleFile, 0755);
         $fs->mirror($kuickVendorPath . self::SOURCE_ETC_DIR, BASE_PATH . self::TARGET_ETC_DIR);
+        foreach (glob($kuickVendorComponentsPath . self::SOURCE_ETC_DIR) as $vendorEtcs) {
+            $fs->mirror($vendorEtcs, BASE_PATH . self::TARGET_ETC_DIR);
+        }
     }
 }
