@@ -11,7 +11,7 @@
 namespace Kuick\App\Services;
 
 use Kuick\App\KernelAbstract;
-use Kuick\App\Router\ActionInvokeArgumentReflector;
+use Kuick\App\Router\ClassInvokeArgumentReflector;
 use Kuick\App\Router\RouteMatcher;
 use Kuick\App\Router\RouteValidator;
 use Psr\Container\ContainerInterface;
@@ -34,10 +34,16 @@ class BuildActionMatcher extends ServiceBuildAbstract
                     $routes = array_merge($routes, include $routeFile);
                 }
                 //validating routes
-                //decorating routes with available controller methods
-                foreach ($routes as $key => $route) {
+                //decorating routes with available controller arguments
+                foreach ($routes as $routeKey => $route) {
                     (new RouteValidator())($route);
-                    $routes[$key]['invokeParams'] = (new ActionInvokeArgumentReflector())($route['controller']);
+                    $routes[$routeKey]['arguments'][$route['controller']] = (new ClassInvokeArgumentReflector())($route['controller']);
+                    if (!isset($route['guards'])) {
+                        continue;
+                    }
+                    foreach ($route['guards'] as $guard) {
+                        $routes[$routeKey]['arguments'][$guard] = (new ClassInvokeArgumentReflector())($guard);
+                    }
                 }
                 CacheWrapper::save($env, __CLASS__, $routes);
             }

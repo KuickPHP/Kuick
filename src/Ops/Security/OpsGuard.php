@@ -13,10 +13,9 @@ namespace Kuick\Ops\Security;
 use DI\Attribute\Inject;
 use Kuick\Http\ForbiddenException;
 use Kuick\Http\UnauthorizedException;
-use Kuick\Security\GuardInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class OpsGuard implements GuardInterface
+class OpsGuard
 {
     private const AUTHORIZATION_HEADER = 'Authorization';
     private const BEARER_TOKEN_TEMPLATE = 'Bearer %s';

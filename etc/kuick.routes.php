@@ -22,7 +22,7 @@ return [
         'controller' => PingController::class,
     ],
     [
-        'path' => '/api/ops',
+        'path' => '/api/(?<ops>[a-z]{3})',
         'controller' => OpsController::class,
         'guards' => [OpsGuard::class]
     ],

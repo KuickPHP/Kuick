@@ -10,8 +10,8 @@
 
 namespace Kuick\App\Router;
 
+use Kuick\App\AppException;
 use Kuick\Http\ResponseCodes;
-use Kuick\Security\GuardInterface;
 use Nyholm\Psr7\Response;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -35,29 +35,33 @@ class ActionLauncher
         }
         if (isset($route['guards'])) {
             $this->logger->debug('Executing guards');
-            $this->executeGuards($route['guards'], $request);
-        }
-        //calculate prams
-        $params = [];
-        foreach ($route['invokeParams'] as $invokeParamName => $invokeParamProperties) {
-            if ($invokeParamProperties['type'] == ServerRequestInterface::class) {
-                $params[$invokeParamName] = $request;
-                continue;
-            }
-            $params[$invokeParamName] = $route['params'][$invokeParamName] ?? $invokeParamProperties['default'];
+            $this->executeGuards($route, $request);
         }
         //run action
-        $response = call_user_func_array($this->container->get($route['controller']), $params);
+        $response = call_user_func_array($this->container->get($route['controller']), $this->getArguments($route['controller'], $route, $request));
         $this->logger->info('Action executed: ' . $route['controller']);
         return $response;
     }
 
-    private function executeGuards(array $guards, ServerRequestInterface $request): void
+    private function executeGuards(array $route, ServerRequestInterface $request): void
     {
-        foreach ($guards as $guardName) {
+        foreach ($route['guards'] as $guardName) {
             $this->logger->info('Executing guard: ' . $guardName);
-            $this->container->get($guardName)->__invoke($request);
+            call_user_func_array($this->container->get($guardName), $this->getArguments($guardName, $route, $request));
             $this->logger->info('Guard OK: ' . $guardName);
         }
+    }
+
+    private function getArguments(string $targetClass, array $route, ServerRequestInterface $request): array
+    {
+        $arguments = [];
+        foreach ($route['arguments'][$targetClass] as $argName => $argProperties) {
+            if ($argProperties['type'] == ServerRequestInterface::class) {
+                $arguments[$argName] = $request;
+                continue;
+            }
+            $arguments[$argName] = $route['params'][$argName] ?? $argProperties['default'];
+        }
+        return $arguments;
     }
 }

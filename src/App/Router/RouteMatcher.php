@@ -44,7 +44,9 @@ class RouteMatcher
             $this->logger->debug('Trying route: ' . $route['path']);
             //matching route
             $results = [];
-            $matchResult = preg_match('#^' . $route['path'] . '$#', $request->getUri()->getPath(), $results);
+            //trim right slash
+            $requestPath = $request->getUri()->getPath() == '/' ? '/' : rtrim($request->getUri()->getPath(), '/');
+            $matchResult = preg_match('#^' . $route['path'] . '$#', $requestPath, $results);
             if (!$matchResult) {
                 continue;
             }

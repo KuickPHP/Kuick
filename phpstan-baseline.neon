@@ -11,5 +11,5 @@ parameters:
 		-
 			message: "#Call to an undefined method ReflectionType#"
 			count: 1
-			path: src/App/Router/ActionInvokeArgumentReflector.php
+			path: src/App/Router/ClassInvokeArgumentReflector.php
 

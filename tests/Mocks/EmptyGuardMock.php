@@ -2,12 +2,9 @@
 
 namespace Tests\Kuick\Mocks;
 
-use Kuick\Security\GuardInterface;
-use Psr\Http\Message\ServerRequestInterface;
-
-class EmptyGuardMock implements GuardInterface
+class EmptyGuardMock
 {
-    public function __invoke(ServerRequestInterface $request): void
+    public function __invoke(string $message = ''): void
     {
     }
 }

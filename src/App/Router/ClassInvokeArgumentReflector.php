@@ -16,7 +16,7 @@ use ReflectionMethod;
 /**
  *
  */
-class ActionInvokeArgumentReflector
+class ClassInvokeArgumentReflector
 {
     private const METHOD_NAME = '__invoke';
 

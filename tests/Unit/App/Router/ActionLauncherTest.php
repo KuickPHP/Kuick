@@ -41,6 +41,7 @@ class ActionLauncherTest extends TestCase
         $al->__invoke([
             'method' => 'PUT',
             'guards' => [ForbiddenGuardMock::class],
+            'arguments' => [ForbiddenGuardMock::class => []],
         ], new ServerRequest('GET', '/'));
     }
 
@@ -55,9 +56,14 @@ class ActionLauncherTest extends TestCase
         $response = $al->__invoke([
             'method' => 'PUT',
             'path' => '/api/user/(?<userId>[0-9]{1,8})',
-            'invokeParams' => ['userId' => ['type' => 'int', 'default' => null]],
+            //provided by route matcher
             'params' => ['userId' => 1234],
             'controller' => ControllerMock::class,
+            //provided by reflection
+            'arguments' => [
+                ControllerMock::class => ['userId' => ['type' => 'int', 'default' => null]],
+                ForbiddenGuardMock::class => [],
+            ],
         ], new ServerRequest('PUT', '/api/user/1234'));
         assertEquals(200, $response->getStatusCode());
         assertEquals('{"userId":1234}', $response->getBody()->getContents());
@@ -75,8 +81,12 @@ class ActionLauncherTest extends TestCase
             'method' => 'GET',
             'path' => '/',
             'guards' => [EmptyGuardMock::class],
-            'invokeParams' => ['request' => ['type' => ServerRequestInterface::class, 'default' => null]],
             'controller' => RequestDependentControllerMock::class,
+            //provided by reflection
+            'arguments' => [
+                RequestDependentControllerMock::class => ['request' => ['type' => ServerRequestInterface::class, 'default' => null]],
+                EmptyGuardMock::class => ['message' => ['type' => 'string', 'default' => '', 'optional' => true]],
+            ],
         ], new ServerRequest('GET', '/?test=123&another=321'));
         assertEquals(200, $response->getStatusCode());
         assertEquals('{"queryParams":{"test":"123","another":"321"}}', $response->getBody()->getContents());
