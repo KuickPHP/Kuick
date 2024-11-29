@@ -8,3 +8,8 @@ parameters:
 			message: "#Call to method#"
 			count: 1
 			path: src/Composer/ComposerInstaller.php
+		-
+			message: "#Call to an undefined method ReflectionType#"
+			count: 1
+			path: src/App/Router/ActionInvokeArgumentReflector.php
+

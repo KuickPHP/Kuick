@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Kuick Framework (https://github.com/milejko/kuick-framework)
+ * Kuick Framework (https://github.com/milejko/kuick)
  *
- * @link       https://github.com/milejko/kuick-framework
+ * @link       https://github.com/milejko/kuick
  * @copyright  Copyright (c) 2010-2024 Mariusz Miłejko (mariusz@milejko.pl)
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
@@ -11,7 +11,6 @@
 namespace Kuick\App\Router;
 
 use Kuick\Http\ResponseCodes;
-use Kuick\UI\ActionInterface;
 use Kuick\Security\GuardInterface;
 use Nyholm\Psr7\Response;
 use Psr\Container\ContainerInterface;
@@ -38,24 +37,27 @@ class ActionLauncher
             $this->logger->debug('Executing guards');
             $this->executeGuards($route['guards'], $request);
         }
-        $action = $this->container->get($route['action']);
-        if (!($action instanceof ActionInterface)) {
-            throw new RouterException($route['action'] . ' is not an Action');
+        //calculate prams
+        $params = [];
+        foreach ($route['invokeParams'] as $invokeParamName => $invokeParamProperties) {
+            if ($invokeParamProperties['type'] == ServerRequestInterface::class) {
+                $params[$invokeParamName] = $request;
+                continue;
+            }
+            $params[$invokeParamName] = $route['params'][$invokeParamName] ?? $invokeParamProperties['default'];
         }
-        $response = $action->__invoke($request);
-        $this->logger->info('Action executed: ' . $route['action']);
+        //run action
+        $response = call_user_func_array($this->container->get($route['controller']), $params);
+        $this->logger->info('Action executed: ' . $route['controller']);
         return $response;
     }
 
     private function executeGuards(array $guards, ServerRequestInterface $request): void
     {
         foreach ($guards as $guardName) {
-            $guard = $this->container->get($guardName);
-            if (!($guard instanceof GuardInterface)) {
-                throw new RouterException($guardName . ' is not a Guard');
-            }
-            $this->logger->info('Guard executed: ' . $guardName);
-            $guard->__invoke($request);
+            $this->logger->info('Executing guard: ' . $guardName);
+            $this->container->get($guardName)->__invoke($request);
+            $this->logger->info('Guard OK: ' . $guardName);
         }
     }
 }

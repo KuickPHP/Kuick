@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Kuick Framework (https://github.com/milejko/kuick-framework)
+ * Kuick Framework (https://github.com/milejko/kuick)
  *
- * @link       https://github.com/milejko/kuick-framework
+ * @link       https://github.com/milejko/kuick
  * @copyright  Copyright (c) 2010-2024 Mariusz Miłejko (mariusz@milejko.pl)
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
@@ -22,7 +22,7 @@ class JsonResponse implements ResponseInterface
 
     public function __construct(array $body, int $code = ResponseCodes::OK, array $headers = [])
     {
-        $this->wrappedResponse = new Response($code, $headers + self::DEFAULT_HEADER, json_encode($body));
+        $this->wrappedResponse = new Response($code, array_merge($headers, self::DEFAULT_HEADER), json_encode($body));
     }
 
     public function getBody(): StreamInterface
@@ -67,37 +67,37 @@ class JsonResponse implements ResponseInterface
 
     public function withAddedHeader(string $name, $value): MessageInterface
     {
-        $this->wrappedResponse->withAddedHeader($name, $value);
+        $this->wrappedResponse = $this->wrappedResponse->withAddedHeader($name, $value);
         return $this;
     }
 
     public function withBody(StreamInterface $body): MessageInterface
     {
-        $this->wrappedResponse->withBody($body);
+        $this->wrappedResponse = $this->wrappedResponse->withBody($body);
         return $this;
     }
 
     public function withStatus(int $code, string $reasonPhrase = ''): ResponseInterface
     {
-        $this->wrappedResponse->withStatus($code, $reasonPhrase);
+        $this->wrappedResponse = $this->wrappedResponse->withStatus($code, $reasonPhrase);
         return $this;
     }
 
     public function withHeader(string $name, $value): MessageInterface
     {
-        $this->wrappedResponse->withHeader($name, $value);
+        $this->wrappedResponse = $this->wrappedResponse->withHeader($name, $value);
         return $this;
     }
 
     public function withProtocolVersion(string $version): MessageInterface
     {
-        $this->wrappedResponse->withProtocolVersion($version);
+        $this->wrappedResponse = $this->wrappedResponse->withProtocolVersion($version);
         return $this;
     }
 
     public function withoutHeader(string $name): MessageInterface
     {
-        $this->wrappedResponse->withoutHeader($name);
+        $this->wrappedResponse = $this->wrappedResponse->withoutHeader($name);
         return $this;
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Kuick Framework (https://github.com/milejko/kuick-framework)
+ * Kuick Framework (https://github.com/milejko/kuick)
  *
- * @link       https://github.com/milejko/kuick-framework
+ * @link       https://github.com/milejko/kuick
  * @copyright  Copyright (c) 2010-2024 Mariusz Miłejko (mariusz@milejko.pl)
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
@@ -23,7 +23,7 @@ class BuildConsoleApplication extends ServiceBuildAbstract
         $this->builder->addDefinitions([Application::class => function (ContainerInterface $container): Application {
             $commands = [];
             //app commands (normal priority)
-            foreach (glob(BASE_PATH . '/etc/routes/*.commands.php') as $commandFile) {
+            foreach (glob(BASE_PATH . '/etc/*.commands.php') as $commandFile) {
                 $commands = array_merge($commands, include $commandFile);
             }
             $application = new Application($container->get('kuick.app.name'));

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Kuick Framework (https://github.com/milejko/kuick-framework)
+ * Kuick Framework (https://github.com/milejko/kuick)
  *
- * @link       https://github.com/milejko/kuick-framework
+ * @link       https://github.com/milejko/kuick
  * @copyright  Copyright (c) 2010-2024 Mariusz Miłejko (mariusz@milejko.pl)
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
@@ -24,7 +24,7 @@ use Psr\Log\LogLevel;
  */
 class AppDIContainerBuilder
 {
-    private const CACHE_PATH = BASE_PATH . '/var/tmp';
+    public const CACHE_PATH = BASE_PATH . '/var/tmp';
     private const COMPILED_FILENAME = 'CompiledContainer.php';
     private const APP_ENV_KEY = 'KUICK_APP_ENV';
     private const APP_ENV_CONFIGURATION_KEY = 'kuick.app.env';

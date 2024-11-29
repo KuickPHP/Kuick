@@ -5,8 +5,8 @@
  * @see https://php-di.org/doc/php-definitions.html
  */
 return [
-    //no token for dev
-    'kuick.app.ops.guards.token' => '',
+    //let-me-in for dev
+    'kuick.app.ops.guards.token' => 'let-me-in',
 
     //debug for dev
     'kuick.app.monolog.level' => 'DEBUG',

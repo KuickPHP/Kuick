@@ -39,7 +39,7 @@
         "test:phpstan": "XDEBUG_MODE=off phpstan --level=5 --no-progress --memory-limit=512M analyse src tests -c phpstan-baseline.neon",
         "test:phpcs": "phpcs",
         "test:phpmd": "phpmd ./src text phpmd.xml.dist",
-        "test:phpunit": "XDEBUG_MODE=coverage phpunit --coverage-html ./public/phpunit",
+        "test:phpunit": "XDEBUG_MODE=coverage phpunit",
         "test:all": [
             "@test:phpcs",
             "@test:phpstan",
