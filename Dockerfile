@@ -24,7 +24,7 @@ ENV KUICK_APP_ENV=prod \
 
 COPY --link ./bin/console ./bin/console
 COPY --link ./etc/di ./etc/di
-COPY --link ./etc/routes ./etc/routes
+COPY --link ./etc/*.php ./etc/
 COPY --link ./etc/apache2 /etc/apache2
 COPY --link ./src ./src
 COPY --link ./public/index.php ./public/index.php
