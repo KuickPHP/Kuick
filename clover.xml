@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1732885782">
-  <project timestamp="1732885782">
+<coverage generated="1732886222">
+  <project timestamp="1732886222">
     <file name="/var/www/html/src/App/AppDIContainerBuilder.php">
       <class name="Kuick\App\AppDIContainerBuilder" namespace="global">
         <metrics complexity="13" methods="6" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="40" coveredstatements="0" elements="46" coveredelements="0"/>
@@ -456,14 +456,12 @@
     </file>
     <file name="/var/www/html/src/Http/JsonErrorResponse.php">
       <class name="Kuick\Http\JsonErrorResponse" namespace="global">
-        <metrics complexity="3" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="0" elements="5" coveredelements="0"/>
+        <metrics complexity="2" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="0" elements="3" coveredelements="0"/>
       </class>
-      <line num="20" type="method" name="__construct" visibility="public" complexity="3" crap="12" count="0"/>
+      <line num="20" type="method" name="__construct" visibility="public" complexity="2" crap="6" count="0"/>
       <line num="24" type="stmt" count="0"/>
-      <line num="26" type="stmt" count="0"/>
-      <line num="27" type="stmt" count="0"/>
-      <line num="28" type="stmt" count="0"/>
-      <metrics loc="32" ncloc="25" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="4" coveredstatements="0" elements="5" coveredelements="0"/>
+      <line num="25" type="stmt" count="0"/>
+      <metrics loc="28" ncloc="21" classes="1" methods="1" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="2" coveredstatements="0" elements="3" coveredelements="0"/>
     </file>
     <file name="/var/www/html/src/Http/JsonResponse.php">
       <class name="Kuick\Http\JsonResponse" namespace="global">
@@ -617,6 +615,6 @@
     <file name="/var/www/html/src/Security/GuardInterface.php">
       <metrics loc="23" ncloc="12" classes="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
     </file>
-    <metrics files="40" loc="1576" ncloc="1188" classes="23" methods="62" coveredmethods="37" conditionals="0" coveredconditionals="0" statements="317" coveredstatements="151" elements="379" coveredelements="188"/>
+    <metrics files="40" loc="1572" ncloc="1184" classes="23" methods="62" coveredmethods="37" conditionals="0" coveredconditionals="0" statements="315" coveredstatements="151" elements="377" coveredelements="188"/>
   </project>
 </coverage>
