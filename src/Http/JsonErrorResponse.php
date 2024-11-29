@@ -22,10 +22,6 @@ class JsonErrorResponse extends JsonResponse
         int $code = ResponseCodes::INTERNAL_SERVER_ERROR
     ) {
         $code = $code == 0 ? ResponseCodes::INTERNAL_SERVER_ERROR : $code;
-        try {
-            parent::__construct([self::ERROR_KEY => $message], $code);
-        } catch (Throwable $error) {
-            parent::__construct([self::ERROR_KEY => $error->getMessage()], ResponseCodes::INTERNAL_SERVER_ERROR);
-        }
+        parent::__construct([self::ERROR_KEY => $message], $code);
     }
 }
