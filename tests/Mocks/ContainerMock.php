@@ -7,7 +7,7 @@ use Psr\Container\ContainerInterface;
 class ContainerMock implements ContainerInterface
 {
     public function __construct(private array $items = [])
-    {   
+    {
     }
 
     public function get(string $key): mixed

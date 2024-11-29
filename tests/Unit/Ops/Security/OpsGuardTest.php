@@ -8,7 +8,7 @@ use Kuick\Ops\Security\OpsGuard;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
 
-use function PHPUnit\Framework\assertEmpty;
+use function PHPUnit\Framework\assertTrue;
 
 /**
  * @covers \Kuick\Ops\Security\OpsGuard
@@ -20,7 +20,8 @@ class OpsGuardTest extends TestCase
         $guard = new OpsGuard('let-me-in');
         $request = (new ServerRequest('GET', '/'))
             ->withAddedHeader('Authorization', 'Bearer let-me-in');
-        assertEmpty($guard($request));
+        $guard($request);
+        assertTrue(true);
     }
 
     public function testIfMissingTokenThrowsUnauthorized(): void

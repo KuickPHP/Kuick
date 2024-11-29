@@ -65,14 +65,18 @@ class RouteMatcherTest extends TestCase
         $rm = new RouteMatcher(new NullLogger);
         $rm->setRoutes(self::ROUTES);
         
-        assertEquals(self::ROUTES[0] + ['params' => []], 
-            $rm->findRoute(new ServerRequest('GET', '/')));
+        assertEquals(
+            self::ROUTES[0] + ['params' => []],
+            $rm->findRoute(new ServerRequest('GET', '/'))
+        );
 
-        assertEquals(self::ROUTES[1] + ['params' => ['userId' => 539]], 
+        assertEquals(
+            self::ROUTES[1] + ['params' => ['userId' => 539]],
             $rm->findRoute(new ServerRequest('PUT', '/api/user/539'))
         );
 
-        assertEquals(self::ROUTES[2] + ['params' => ['message' => 'Some-Message-492']], 
+        assertEquals(
+            self::ROUTES[2] + ['params' => ['message' => 'Some-Message-492']],
             $rm->findRoute(new ServerRequest('GET', '/ping/Some-Message-492'))
         );
     }

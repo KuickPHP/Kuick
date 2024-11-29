@@ -14,7 +14,7 @@ use Psr\Log\LoggerInterface;
  */
 class RouteMatcher
 {
-    public CONST MATCH_PATTERN = '#^%s$#';
+    public const MATCH_PATTERN = '#^%s$#';
     private array $routes = [];
 
     public function __construct(private LoggerInterface $logger)

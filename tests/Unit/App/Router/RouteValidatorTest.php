@@ -10,7 +10,7 @@ use Tests\Kuick\Mocks\ForbiddenGuardMock;
 use Tests\Kuick\Mocks\InvalidControllerMock;
 use Tests\Kuick\Mocks\InvalidGuardMock;
 
-use function PHPUnit\Framework\assertEmpty;
+use function PHPUnit\Framework\assertTrue;
 
 /**
  * @covers \Kuick\App\Router\RouteValidator
@@ -23,7 +23,8 @@ class RouteValidatorTest extends TestCase
             'path' => '/',
             'controller' => ControllerMock::class,
         ];
-        assertEmpty((new RouteValidator())($simpleRoute));
+        (new RouteValidator())($simpleRoute);
+        assertTrue(true);
     }
 
     public function testProperValidationOfAMoreSophisticatedRoute(): void
@@ -34,7 +35,8 @@ class RouteValidatorTest extends TestCase
             'controller' => ControllerMock::class,
             'guards' => [ForbiddenGuardMock::class]
         ];
-        assertEmpty((new RouteValidator())($simpleRoute));
+        (new RouteValidator())($simpleRoute);
+        assertTrue(true);
     }
 
     public function testIfMissingPathThrowsException(): void

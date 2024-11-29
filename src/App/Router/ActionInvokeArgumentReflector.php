@@ -29,7 +29,7 @@ class ActionInvokeArgumentReflector
         $availableParams = [];
         foreach ($invokeMethodReflection->getParameters() as $methodParam) {
             $availableParams[$methodParam->getName()] = [
-                'type' => $methodParam->getType()->getName(),
+                'type' => $methodParam->getType(),
                 'default' => $methodParam->isDefaultValueAvailable() ? $methodParam->getDefaultValue() : null,
             ];
         }

@@ -18,7 +18,7 @@ return [
         'controller' => PingController::class,
     ],
     [
-        'path' => '/hello/(?<name>[a-zA-Z]+)',
+        'path' => '/hello/(?<name>[a-zA-Z0-9-]+)',
         'controller' => PingController::class,
     ],
     [
