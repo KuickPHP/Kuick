@@ -22,15 +22,11 @@ test: version.txt
 
 build: version.txt
 	docker build --no-cache --target=dist --platform "linux/amd64,linux/arm64" --tag=$(IMAGE_NAME):$(shell cat version.txt) .
-	docker image ls | grep $(IMAGE_NAME)
-
-push: version.txt
-	docker push $(IMAGE_NAME):$(shell cat version.txt)
 
 #########################################
 # Local development environment targets #
 #########################################
-start: version.txt
+start:
 	docker build --target=dev-server --tag=$(IMAGE_NAME):$(shell cat version.txt)-dev .
 	docker run --rm --name kuick-dev -v ./:/var/www/html $(IMAGE_NAME):$(shell cat version.txt)-dev composer install
 	docker run --rm --name kuick-dev -v ./:/var/www/html -p 8080:80 $(IMAGE_NAME):$(shell cat version.txt)-dev

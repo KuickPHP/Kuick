@@ -11,6 +11,7 @@
 namespace Kuick\App\Router;
 
 use Kuick\Http\InternalServerErrorException;
+use Throwable;
 
 /**
  *
@@ -19,21 +20,27 @@ class RouteValidator
 {
     public function __invoke(array $route): void
     {
-        $this->validatePattern($route);
+        $this->validatePath($route);
         $this->validateMethod($route);
-        $this->validateAction($route);
+        $this->validateController($route);
         $this->validateGuards($route);
     }
 
-    private function validatePattern(array $route): void
+    private function validatePath(array $route): void
     {
-        //pattern missing
-        if (!isset($route['pattern'])) {
-            throw new InternalServerErrorException('One or more actions are missing pattern');
+        //path missing
+        if (!isset($route['path'])) {
+            throw new InternalServerErrorException('One or more actions are missing path');
         }
-        //pattern is not a string
-        if (!is_string($route['pattern'])) {
-            throw new InternalServerErrorException('One or more actions has invalid pattern');
+        //path is not a string
+        if (!is_string($route['path'])) {
+            throw new InternalServerErrorException('One or more actions has invalid path, should be a string');
+        }
+        try {
+            //test against empty string
+            preg_match(sprintf(RouteMatcher::MATCH_PATTERN, $route['path']), '');
+        } catch (Throwable $error) {
+            throw new InternalServerErrorException('Path invalid: ' . $route['path'] . ', ' . $error->getMessage());
         }
     }
 
@@ -45,27 +52,31 @@ class RouteValidator
         }
         //method defined but not a string
         if (!is_string($route['method'])) {
-            throw new InternalServerErrorException('Action: ' . $route['pattern'] . ' method is not a string');
+            throw new InternalServerErrorException('Method is not a string, path: ' . $route['path']);
         }
         //method name invalid
         if (!in_array($route['method'], ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'PURGE'])) {
-            throw new InternalServerErrorException('Action: ' . $route['pattern'] . ' method should be one of GET, POST, PUT, DELETE, PATCH, HEAD, OPTIONS, PURGE');
+            throw new InternalServerErrorException('Method invalid, path: ' . $route['path']);
         }
     }
 
-    private function validateAction(array $route): void
+    private function validateController(array $route): void
     {
         //action not defined
-        if (!isset($route['action'])) {
-            throw new InternalServerErrorException('Action: ' . $route['pattern'] . ' is missing action class name');
+        if (!isset($route['controller'])) {
+            throw new InternalServerErrorException('Missing controller class name, path: ' . $route['path']);
         }
         //method defined but not a string
-        if (!is_string($route['action'])) {
-            throw new InternalServerErrorException('Action: ' . $route['pattern'] . ' class name is not a string');
+        if (!is_string($route['controller'])) {
+            throw new InternalServerErrorException('Controller class name is not a string, path: ' . $route['path']);
         }
         //inexistent class
-        if (!class_exists($route['action'])) {
-            throw new InternalServerErrorException('Action "' . $route['action'] . '" does not exist');
+        if (!class_exists($route['controller'])) {
+            throw new InternalServerErrorException('Controller: ' . $route['controller'] . '" does not exist, path: ' . $route['path']);
+        }
+        //inexistent __invoke() method
+        if (!method_exists($route['controller'], '__invoke')) {
+            throw new InternalServerErrorException('Controller: ' . $route['controller'] . '" is missing __invoke() method, path: ' . $route['path']);
         }
     }
 
@@ -77,23 +88,22 @@ class RouteValidator
         }
         //guards should be an array
         if (!is_array($route['guards'])) {
-            throw new InternalServerErrorException('Action: ' . $route['pattern'] . ' guards malformed, not an array');
+            throw new InternalServerErrorException('Guards malformed, not an array, path: ' . $route['path']);
         }
         //validating each guard
         foreach ($route['guards'] as $guard) {
-            $this->validateGuard($route, $guard);
-        }
-    }
-
-    private function validateGuard(array $route, string $guard): void
-    {
-        //guard is not a string
-        if (!is_string($guard)) {
-            throw new InternalServerErrorException('Guard: ' . $route['pattern'] . ' guard class name is not a string');
-        }
-        //inexistent guard class
-        if (!class_exists($guard)) {
-            throw new InternalServerErrorException('Action: ' . $route['pattern'] . ' guard: "' . $guard . '" does not exist');
+            //guard is not a string
+            if (!is_string($guard)) {
+                throw new InternalServerErrorException('Guard class name is not a string, path: ' . $route['path']);
+            }
+            //inexistent class
+            if (!class_exists($guard)) {
+                throw new InternalServerErrorException('Guard: "' . $guard . '" does not exist, path: ' . $route['path']);
+            }
+            //inexistent __invoke() method
+            if (!method_exists($guard, '__invoke')) {
+                throw new InternalServerErrorException('Guard: "' . $guard . '" is missing __invoke() method, path: ' . $route['path']);
+            }
         }
     }
 }

@@ -9,4 +9,3 @@ composer.lock
 /var
 version.*
 .env.local
-.env

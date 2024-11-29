@@ -10,6 +10,7 @@
 
 namespace Kuick\App\Services;
 
+use Kuick\App\Router\ActionInvokeArgumentReflector;
 use Kuick\App\Router\RouteMatcher;
 use Kuick\App\Router\RouteValidator;
 use Psr\Container\ContainerInterface;
@@ -25,12 +26,14 @@ class BuildActionMatcher extends ServiceBuildAbstract
         $this->builder->addDefinitions([RouteMatcher::class => function (ContainerInterface $container): RouteMatcher {
             $routes = [];
             //app config (normal priority)
-            foreach (glob(BASE_PATH . '/etc/routes/*.actions.php') as $routeFile) {
+            foreach (glob(BASE_PATH . '/etc/*.routes.php') as $routeFile) {
                 $routes = array_merge($routes, include $routeFile);
             }
             //validating routes
-            foreach ($routes as $route) {
+            //decorating routes with available controller methods
+            foreach ($routes as $key => $route) {
                 (new RouteValidator())($route);
+                $routes[$key]['invokeParams'] = (new ActionInvokeArgumentReflector())($route['controller']);
             }
             $actionMatcher = (new RouteMatcher($container->get(LoggerInterface::class)))->setRoutes($routes);
             return $actionMatcher;

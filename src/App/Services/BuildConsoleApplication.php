@@ -23,7 +23,7 @@ class BuildConsoleApplication extends ServiceBuildAbstract
         $this->builder->addDefinitions([Application::class => function (ContainerInterface $container): Application {
             $commands = [];
             //app commands (normal priority)
-            foreach (glob(BASE_PATH . '/etc/routes/*.commands.php') as $commandFile) {
+            foreach (glob(BASE_PATH . '/etc/*.commands.php') as $commandFile) {
                 $commands = array_merge($commands, include $commandFile);
             }
             $application = new Application($container->get('kuick.app.name'));
