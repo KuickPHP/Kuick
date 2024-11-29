@@ -4,7 +4,7 @@ composer.lock
 /.php*
 /vendor/
 .DS_Store
-/public/phpunit*
+/public/build*
 /public/phpmetrics*
 /var
 version.*

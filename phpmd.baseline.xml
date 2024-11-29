@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
 <phpmd-baseline>
   <violation rule="PHPMD\Rule\Design\ExitExpression" file="src/App/ConsoleKernel.php"/>
-  <violation rule="PHPMD\Rule\Design\NumberOfChildren" file="src/Http/ResponseException.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/App/Services/BuildActionMatcher.php"/>
 </phpmd-baseline>

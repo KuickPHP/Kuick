@@ -25,6 +25,6 @@ class ActionInvokeArgumentReflectorTest extends TestCase
     public function testIfMockControllerInvokeContainsNameArgument(): void
     {
         $ai = new ActionInvokeArgumentReflector;
-        assertEquals(['userId' => ['type' => 'int', 'default' => null]], $ai->__invoke(ControllerMock::class));
+        assertEquals(['userId' => ['type' => 'int', 'default' => null, 'isOptional' => false]], $ai->__invoke(ControllerMock::class));
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Kuick Framework (https://github.com/milejko/kuick-framework)
+ * Kuick Framework (https://github.com/milejko/kuick)
  *
- * @link       https://github.com/milejko/kuick-framework
+ * @link       https://github.com/milejko/kuick
  * @copyright  Copyright (c) 2010-2024 Mariusz Miłejko (mariusz@milejko.pl)
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
@@ -12,7 +12,7 @@ namespace Kuick\App\Services;
 
 use DateTimeZone;
 use Kuick\App\AppException;
-use Monolog\Handler\BrowserConsoleHandler;
+use Kuick\App\KernelAbstract;
 use Monolog\Handler\FirePHPHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
