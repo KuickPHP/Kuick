@@ -9,8 +9,8 @@
  */
 
 return [
-    //no token for dev
-    'kuick.app.ops.guards.token' => '',
+    //let-me-in token for dev
+    'kuick.app.ops.guards.token' => 'let-me-in',
 
     //debug for dev
     'kuick.app.monolog.level' => 'DEBUG',

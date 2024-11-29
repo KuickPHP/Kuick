@@ -40,7 +40,7 @@ class ActionLauncher
         //calculate prams
         $params = [];
         foreach ($route['invokeParams'] as $invokeParamName => $invokeParamProperties) {
-            if ($invokeParamName == ServerRequestInterface::class) {
+            if ($invokeParamProperties['type'] == ServerRequestInterface::class) {
                 $params[$invokeParamName] = $request;
                 continue;
             }

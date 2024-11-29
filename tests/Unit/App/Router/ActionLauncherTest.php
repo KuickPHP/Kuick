@@ -55,7 +55,7 @@ class ActionLauncherTest extends TestCase
         $response = $al->__invoke([
                 'method' => 'PUT',
                 'path' => '/api/user/(?<userId>[0-9]{1,8})',
-                'invokeParams' => ['userId' => 'int'],
+                'invokeParams' => ['userId' => ['type' => 'int', 'default' => null]],
                 'params' => ['userId' => 1234],
                 'controller' => ControllerMock::class,
         ], new ServerRequest('PUT', '/api/user/1234'));
