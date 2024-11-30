@@ -73,7 +73,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v5
       with:
-        images: ${{ secrets.DOCKERHUB_USERNAME }}/framework
+        images: ${{ secrets.DOCKERHUB_USERNAME }}/kuick
         tags: |
           type=raw,value=${{ matrix.os-variant }}
           type=semver,pattern={{version}},suffix=-${{ matrix.os-variant }}

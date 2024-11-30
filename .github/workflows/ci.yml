@@ -30,7 +30,7 @@ jobs:
           PHP_VERSION=${{ matrix.version }}
           OS_VARIANT=${{ matrix.os-variant }}
     - name: Run tests
-      run: docker run php${{ matrix.version }}-${{ matrix.os-variant}}-checks sh -c "composer test:all"
+      run: docker run --rm php${{ matrix.version }}-${{ matrix.os-variant}}-checks sh -c "composer test:all"
     - name: Build dist image
       uses: docker/build-push-action@v5
       with:
