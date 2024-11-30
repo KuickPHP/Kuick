@@ -23,6 +23,7 @@ class JsonKernelTest extends TestCase
     public function test(): void
     {
         $container = new ContainerMock([
+            'kuick.app.name' => 'test',
             RouteMatcher::class => new RouteMatcher(new NullLogger),
         ]);
         $jk = new JsonKernel($container);
