@@ -22,10 +22,9 @@ abstract class KernelAbstract
     public const ENV_DEV = 'dev';
     public const ENV_PROD = 'prod';
 
-    protected ContainerInterface $container;
     protected LoggerInterface $logger;
 
-    public function __construct()
+    public function __construct(protected ?ContainerInterface $container = null)
     {
         set_error_handler(function (int $errno, string $message): void {
             throw new AppException($message, $errno);
