@@ -1,6 +1,6 @@
 {
     "require": {
-        "kuick/framework": "*"
+        "kuick/framework": "^1.0"
     },
     "scripts": {
         "post-install-cmd": [

@@ -22,7 +22,7 @@ class ComposerInstaller
     private const KUICK_COMPONENTS_PATTERN = '/vendor/kuick/*/';
     private const INDEX_FILE = '/public/index.php';
     private const CONSOLE_FILE = '/bin/console';
-    private const SOURCE_ETC_DIR = '/etc/example';
+    private const SOURCE_ETC_DIR = '/etc';
     private const TARGET_ETC_DIR = '/etc';
     private const TMP_DIR = '/var/cache';
 

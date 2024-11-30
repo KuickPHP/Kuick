@@ -11,6 +11,7 @@ on:
 jobs:
 
   Testing:
+    name: "PHP Checks"
     strategy:
       matrix:
         version: ['8.2', '8.3']
