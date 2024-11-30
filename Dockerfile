@@ -16,7 +16,7 @@ FROM base AS dist
 # KUICK_APP_ENV=prod should be defined here, or via environment variables
 # .env* files shouldn't be used in production
 ENV KUICK_APP_ENV=prod \
-    KUICK_APP_NAME=KuickMB \
+    KUICK_APP_NAME=Kuick \
     KUICK_APP_CHARSET=UTF-8 \
     KUICK_APP_LOCALE=en_US.utf-8 \
     KUICK_APP_TIMEZONE=UTC \
