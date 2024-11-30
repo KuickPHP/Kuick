@@ -37,14 +37,16 @@ COPY --link version.* ./public/
 ###################################################################
 # Test runner target                                              #
 ###################################################################
-FROM dist AS test-runner
+FROM base AS test-runner
 
 ENV XDEBUG_ENABLE=1 \
     XDEBUG_MODE=coverage \
     KUICK_APP_ENV=test
 
-COPY --link ./tests ./tests
-COPY --link ./php* .
+COPY ./src ./src
+COPY ./tests ./tests
+COPY ./composer.json ./composer.json
+COPY ./php* .    
 
 RUN set -eux; \
     composer install
