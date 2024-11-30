@@ -28,23 +28,28 @@ final class JsonKernel extends KernelAbstract
     private const EXCEPTION_CODE_LOG_LEVEL_MAP = [
         ResponseCodes::NOT_FOUND => Level::Notice,
         ResponseCodes::UNAUTHORIZED => Level::Notice,
-        ResponseCodes::BAD_REQUEST => Level::Warning,
-        ResponseCodes::METHOD_NOT_ALLOWED => Level::Warning,
-        ResponseCodes::FORBIDDEN => Level::Warning,
+        ResponseCodes::BAD_REQUEST => Level::Notice,
+        ResponseCodes::METHOD_NOT_ALLOWED => Level::Notice,
+        ResponseCodes::FORBIDDEN => Level::Notice,
+        ResponseCodes::CONFLICT => Level::Warning,
+        ResponseCodes::GATEWAY_TIMEOUT => Level::Warning,
+        ResponseCodes::NOT_IMPLEMENTED => Level::Warning,
+        ResponseCodes::BAD_GATEWAY => Level::Error,
+        ResponseCodes::INTERNAL_SERVER_ERROR => Level::Error,
     ];
 
     public function __invoke(ServerRequestInterface $request): void
     {
         try {
-            $this->logger->info('Handling JSON request: ' . $request->getUri()->getPath());
+            $this->logger->info('Handling JSON request: ' . $request->getMethod() . ' ' . $request->getUri()->getPath());
             //emmit response
-            (new ResponseEmmiter)(($this->container->get(ActionLauncher::class))(
+            (new ResponseEmmiter())(($this->container->get(ActionLauncher::class))(
                 $this->container->get(RouteMatcher::class)->findRoute($request),
                 $request
             ));
         } catch (Throwable $error) {
             //emmit error response
-            (new ResponseEmmiter)(new JsonErrorResponse($error->getMessage(), $error->getCode()));
+            (new ResponseEmmiter())(new JsonErrorResponse($error->getMessage(), $error->getCode()));
             $logLevel = self::EXCEPTION_CODE_LOG_LEVEL_MAP[$error->getCode()] ?? LogLevel::EMERGENCY;
             $this->logger->log(
                 $logLevel,

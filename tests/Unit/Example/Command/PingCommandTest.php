@@ -16,7 +16,7 @@ class PingActionTest extends TestCase
 {
     public function testIfKuickSaysHello(): void
     {
-        
+
         $hello = new PingCommand('ping');
         $output = new BufferedOutput();
         $hello->run(new ArgvInput([

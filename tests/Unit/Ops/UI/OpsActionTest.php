@@ -6,6 +6,7 @@ use DI\Container;
 use Kuick\Ops\UI\OpsController;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
+
 use function PHPUnit\Framework\assertEquals;
 
 /**

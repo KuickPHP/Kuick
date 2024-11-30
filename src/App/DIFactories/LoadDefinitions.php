@@ -8,12 +8,12 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App\Services;
+namespace Kuick\App\DIFactories;
 
 /**
  *
  */
-class BuildConfiguration extends ServiceBuildAbstract
+class LoadDefinitions extends FactoryAbstract
 {
     private const DEFINITION_LOCATIONS = [
         BASE_PATH . '/vendor/kuick/*/etc/di/*.di.php',

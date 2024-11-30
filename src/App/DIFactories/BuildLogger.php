@@ -8,11 +8,10 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App\Services;
+namespace Kuick\App\DIFactories;
 
 use DateTimeZone;
 use Kuick\App\AppException;
-use Kuick\App\KernelAbstract;
 use Monolog\Handler\FirePHPHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -23,7 +22,7 @@ use Psr\Log\LogLevel;
 /**
  *
  */
-class BuildLogger extends ServiceBuildAbstract
+class BuildLogger extends FactoryAbstract
 {
     public function __invoke(): void
     {

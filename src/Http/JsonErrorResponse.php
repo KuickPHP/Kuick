@@ -10,8 +10,6 @@
 
 namespace Kuick\Http;
 
-use Throwable;
-
 class JsonErrorResponse extends JsonResponse
 {
     private const ERROR_KEY = 'error';

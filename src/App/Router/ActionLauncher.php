@@ -10,7 +10,6 @@
 
 namespace Kuick\App\Router;
 
-use Kuick\App\AppException;
 use Kuick\Http\ResponseCodes;
 use Nyholm\Psr7\Response;
 use Psr\Container\ContainerInterface;

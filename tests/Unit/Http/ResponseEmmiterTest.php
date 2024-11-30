@@ -20,7 +20,7 @@ class ResponseEmmiterTest extends TestCase
         $re = new ResponseEmmiter();
         $response = new JsonResponse(['test']);
         ob_start();
-            $re($response);
+        $re($response);
         $content = ob_get_clean();
         assertEquals('["test"]', $content);
     }

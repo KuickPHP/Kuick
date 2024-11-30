@@ -1,9 +1,7 @@
 <?php
 
-use Kuick\Example\UI\HelloAction;
 use Kuick\Example\UI\PingController;
 use Kuick\Ops\Security\OpsGuard;
-use Kuick\Ops\UI\OpsAction;
 use Kuick\Ops\UI\OpsController;
 
 return [

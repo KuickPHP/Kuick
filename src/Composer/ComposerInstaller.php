@@ -24,7 +24,7 @@ class ComposerInstaller
     private const CONSOLE_FILE = '/bin/console';
     private const SOURCE_ETC_DIR = '/etc/example';
     private const TARGET_ETC_DIR = '/etc';
-    private const TMP_DIR = '/var/tmp';
+    private const TMP_DIR = '/var/cache';
 
     /** @disregard P1009 Undefined type */
     protected static function initAutoload(Event $event): void

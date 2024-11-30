@@ -22,14 +22,8 @@ ENV KUICK_APP_ENV=prod \
     KUICK_APP_TIMEZONE=UTC \
     KUICK_APP_MONOLOG_LEVEL=NOTICE
 
-COPY --link ./bin/console ./bin/console
-COPY --link ./etc/di ./etc/di
-COPY --link ./etc/*.php ./etc/
 COPY --link ./etc/apache2 /etc/apache2
-COPY --link ./src ./src
-COPY --link ./public/index.php ./public/index.php
-COPY --link ./composer.json .
-COPY --link ./version.* ./public/
+COPY --link composer.dist.json composer.json
 
 RUN set -eux; \
     composer install \ 
@@ -37,6 +31,8 @@ RUN set -eux; \
     --no-dev \
     --classmap-authoritative \
     --no-plugins
+
+COPY --link version.* ./public/
 
 ###################################################################
 # Test runner target                                              #
@@ -61,5 +57,5 @@ FROM base AS dev-server
 COPY ./etc/apache2 /etc/apache2
 
 ENV XDEBUG_ENABLE=1 \
-    XDEBUG_MODE=coverage \
+    XDEBUG_MODE=develop \
     OPCACHE_VALIDATE_TIMESTAMPS=1

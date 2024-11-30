@@ -8,11 +8,11 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App\Services;
+namespace Kuick\App\DIFactories;
 
 use DI\ContainerBuilder;
 
-abstract class ServiceBuildAbstract
+abstract class FactoryAbstract
 {
     public function __construct(protected ContainerBuilder $builder)
     {

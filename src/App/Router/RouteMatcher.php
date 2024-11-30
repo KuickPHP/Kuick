@@ -2,7 +2,6 @@
 
 namespace Kuick\App\Router;
 
-use Kuick\Example\UI\DefaultOptionsController;
 use Kuick\Http\MethodNotAllowedException;
 use Kuick\Http\NotFoundException;
 use Kuick\Http\RequestMethods;
@@ -41,21 +40,21 @@ class RouteMatcher
         $requestMethod = $request->getMethod();
         $methodNotAllowedForRoute = null;
         foreach ($this->routes as $route) {
-            $this->logger->debug('Trying route: ' . $route['path']);
-            //matching route
-            $results = [];
+            //method defaults to GET
+            $routeMethod = $route['method'] ?? RequestMethods::GET;
             //trim right slash
             $requestPath = $request->getUri()->getPath() == '/' ? '/' : rtrim($request->getUri()->getPath(), '/');
+            $this->logger->debug('Trying route: ' . $routeMethod . ' ' . $route['path']);
+            //matching route
+            $results = [];
             $matchResult = preg_match('#^' . $route['path'] . '$#', $requestPath, $results);
             if (!$matchResult) {
                 continue;
             }
             $route['params'] = $this->parseRouteParams($results);
-            //method defaults to GET
-            $routeMethod = $route['method'] ?? RequestMethods::GET;
             //methods are matching or HEAD to GET route
             if ($requestMethod == $routeMethod || ($requestMethod == RequestMethods::HEAD && $routeMethod == RequestMethods::GET)) {
-                $this->logger->debug('Found matching route: ' . $routeMethod . $route['path']);
+                $this->logger->debug('Matched route: ' . $routeMethod . ' '. $route['path']);
                 return $route;
             }
             //method mismatch

@@ -8,8 +8,9 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App\Services;
+namespace Kuick\App\DIFactories;
 
+use Kuick\App\AppDIContainerBuilder;
 use Kuick\App\KernelAbstract;
 use Kuick\App\Router\ClassInvokeArgumentReflector;
 use Kuick\App\Router\RouteMatcher;
@@ -20,15 +21,19 @@ use Psr\Log\LoggerInterface;
 /**
  *
  */
-class BuildActionMatcher extends ServiceBuildAbstract
+class BuildRouteMatcher extends FactoryAbstract
 {
     public function __invoke(): void
     {
         $this->builder->addDefinitions([RouteMatcher::class => function (ContainerInterface $container): RouteMatcher {
-            $env = getenv(KernelAbstract::APP_ENV);
-            $routes = CacheWrapper::load($env, __CLASS__);
-            if (null === $routes) {
-                $routes = [];
+            $isProd = KernelAbstract::ENV_PROD == $container->get('kuick.app.env');
+            $cacheFile = AppDIContainerBuilder::CACHE_PATH . DIRECTORY_SEPARATOR . urlencode(__CLASS__) . '.php';
+            $cachedRoutes = ArrayToFile::load($cacheFile);
+            $routes = [];
+            if ($isProd && null !== $cachedRoutes) {
+                $routes = $cachedRoutes;
+            }
+            if (empty($routes)) {
                 //app config (normal priority)
                 foreach (glob(BASE_PATH . '/etc/*.routes.php') as $routeFile) {
                     $routes = array_merge($routes, include $routeFile);
@@ -45,7 +50,7 @@ class BuildActionMatcher extends ServiceBuildAbstract
                         $routes[$routeKey]['arguments'][$guard] = (new ClassInvokeArgumentReflector())($guard);
                     }
                 }
-                CacheWrapper::save($env, __CLASS__, $routes);
+                ArrayToFile::save($cacheFile, $routes);
             }
             $routeMatcher = (new RouteMatcher($container->get(LoggerInterface::class)))->setRoutes($routes);
             return $routeMatcher;

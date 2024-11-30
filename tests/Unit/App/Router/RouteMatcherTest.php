@@ -36,24 +36,24 @@ class RouteMatcherTest extends TestCase
 
     public function testIfRoutesCanBeSetAndGet(): void
     {
-        $rm = new RouteMatcher(new NullLogger);
+        $rm = new RouteMatcher(new NullLogger());
         $rm->setRoutes(self::ROUTES);
         assertEquals(self::ROUTES, $rm->getRoutes());
     }
 
     public function testIfOptionsGetsDefaultOptionsController(): void
     {
-        $rm = new RouteMatcher(new NullLogger);
+        $rm = new RouteMatcher(new NullLogger());
         $rm->setRoutes(self::ROUTES);
-        
+
         assertEquals([], $rm->findRoute(new ServerRequest('OPTIONS', '/whatever')));
     }
 
     public function testIfOptionsReturnsEmptyRoute(): void
     {
-        $rm = new RouteMatcher(new NullLogger);
+        $rm = new RouteMatcher(new NullLogger());
         $rm->setRoutes(self::ROUTES);
-        
+
         $this->expectException(NotFoundException::class);
         $this->expectExceptionCode(404);
         $this->expectExceptionMessage('Not found');
@@ -62,9 +62,9 @@ class RouteMatcherTest extends TestCase
 
     public function testIfRouterMatchesDefinedRoutes(): void
     {
-        $rm = new RouteMatcher(new NullLogger);
+        $rm = new RouteMatcher(new NullLogger());
         $rm->setRoutes(self::ROUTES);
-        
+
         assertEquals(
             self::ROUTES[0] + ['params' => []],
             $rm->findRoute(new ServerRequest('GET', '/'))
@@ -83,9 +83,9 @@ class RouteMatcherTest extends TestCase
 
     public function testIfMethodMismatchGivesThrowsMethodNotAllowed(): void
     {
-        $rm = new RouteMatcher(new NullLogger);
+        $rm = new RouteMatcher(new NullLogger());
         $rm->setRoutes(self::ROUTES);
-        
+
         $this->expectException(MethodNotAllowedException::class);
         $this->expectExceptionCode(405);
         $this->expectExceptionMessage('POST method is not allowed for path: /');

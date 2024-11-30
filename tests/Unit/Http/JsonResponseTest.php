@@ -33,7 +33,7 @@ class JsonResponseTest extends TestCase
             ->withAddedHeader('X-Another', 'another')
             ->withProtocolVersion('1.1')
             ->withoutHeader('X-test')
-            ->withBody((new Psr17Factory)->createStream('{"Hello world"}'));
+            ->withBody((new Psr17Factory())->createStream('{"Hello world"}'));
 
         assertEquals('application/json', $response->getHeaderLine('Content-type'));
 

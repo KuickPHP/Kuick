@@ -17,14 +17,14 @@ class ClassInvokeArgumentReflectorTest extends TestCase
 {
     public function testIfMissingInvokeThrowsException(): void
     {
-        $ai = new ClassInvokeArgumentReflector;
+        $ai = new ClassInvokeArgumentReflector();
         $this->expectException(AppException::class);
         $ai->__invoke(InvalidGuardMock::class);
     }
 
     public function testIfMockControllerInvokeContainsNameArgument(): void
     {
-        $ai = new ClassInvokeArgumentReflector;
+        $ai = new ClassInvokeArgumentReflector();
         assertEquals(['userId' => ['type' => 'int', 'default' => null, 'isOptional' => false]], $ai->__invoke(ControllerMock::class));
     }
 }

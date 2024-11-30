@@ -23,7 +23,7 @@ class ActionLauncherTest extends TestCase
 {
     public function testIfEmptyRouteGivesImmediateNoContentResponse(): void
     {
-        $al = new ActionLauncher(new ContainerMock(), new NullLogger);
+        $al = new ActionLauncher(new ContainerMock(), new NullLogger());
         $response = $al->__invoke([], new ServerRequest('OPTIONS', '/whatever'));
         assertEquals(204, $response->getStatusCode());
         assertEquals('', $response->getBody()->getContents());
@@ -33,10 +33,10 @@ class ActionLauncherTest extends TestCase
     {
         //add controller to the container
         $container = new ContainerMock([
-            ControllerMock::class => new ControllerMock,
-            ForbiddenGuardMock::class => new ForbiddenGuardMock,
+            ControllerMock::class => new ControllerMock(),
+            ForbiddenGuardMock::class => new ForbiddenGuardMock(),
         ]);
-        $al = new ActionLauncher($container, new NullLogger);
+        $al = new ActionLauncher($container, new NullLogger());
         $this->expectException(ForbiddenException::class);
         $al->__invoke([
             'method' => 'PUT',
@@ -49,10 +49,10 @@ class ActionLauncherTest extends TestCase
     {
         //add controller and guard to the container
         $container = new ContainerMock([
-            ControllerMock::class => new ControllerMock,
-            ForbiddenGuardMock::class => new ForbiddenGuardMock,
+            ControllerMock::class => new ControllerMock(),
+            ForbiddenGuardMock::class => new ForbiddenGuardMock(),
         ]);
-        $al = new ActionLauncher($container, new NullLogger);
+        $al = new ActionLauncher($container, new NullLogger());
         $response = $al->__invoke([
             'method' => 'PUT',
             'path' => '/api/user/(?<userId>[0-9]{1,8})',
@@ -73,10 +73,10 @@ class ActionLauncherTest extends TestCase
     {
         //add controller and empty guard to the container
         $container = new ContainerMock([
-            RequestDependentControllerMock::class => new RequestDependentControllerMock,
-            EmptyGuardMock::class => new EmptyGuardMock,
+            RequestDependentControllerMock::class => new RequestDependentControllerMock(),
+            EmptyGuardMock::class => new EmptyGuardMock(),
         ]);
-        $al = new ActionLauncher($container, new NullLogger);
+        $al = new ActionLauncher($container, new NullLogger());
         $response = $al->__invoke([
             'method' => 'GET',
             'path' => '/',

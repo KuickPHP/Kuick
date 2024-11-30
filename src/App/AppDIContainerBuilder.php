@@ -11,10 +11,10 @@
 namespace Kuick\App;
 
 use DI\ContainerBuilder;
-use Kuick\App\Services\BuildActionMatcher;
-use Kuick\App\Services\BuildConfiguration;
-use Kuick\App\Services\BuildConsoleApplication;
-use Kuick\App\Services\BuildLogger;
+use Kuick\App\DIFactories\BuildConsoleApplication;
+use Kuick\App\DIFactories\BuildLogger;
+use Kuick\App\DIFactories\BuildRouteMatcher;
+use Kuick\App\DIFactories\LoadDefinitions;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -24,7 +24,7 @@ use Psr\Log\LogLevel;
  */
 class AppDIContainerBuilder
 {
-    public const CACHE_PATH = BASE_PATH . '/var/tmp';
+    public const CACHE_PATH = BASE_PATH . '/var/cache';
     private const COMPILED_FILENAME = 'CompiledContainer.php';
     private const APP_ENV_KEY = 'KUICK_APP_ENV';
     private const APP_ENV_CONFIGURATION_KEY = 'kuick.app.env';
@@ -69,17 +69,17 @@ class AppDIContainerBuilder
         $this->removeContainer();
         $builder = $this->configureBuilder();
 
-        //DI definitions (configuration)
-        (new BuildConfiguration($builder))($this->appEnv);
+        //loading DI definitions (configuration)
+        (new LoadDefinitions($builder))($this->appEnv);
 
-        //load environment variables
+        //adding environment configuration
         $builder->addDefinitions((new AppGetEnvironment())());
 
         //logger
         (new BuildLogger($builder))();
 
         //action matcher
-        (new BuildActionMatcher($builder))();
+        (new BuildRouteMatcher($builder))();
 
         //console application
         (new BuildConsoleApplication($builder))();
@@ -114,11 +114,12 @@ class AppDIContainerBuilder
 
     private function determineEnv(): string
     {
+        //best performance - KUICK_APP_ENV found directly in the system environment variables
         $envVarFromSystemEnv = getenv(self::APP_ENV_KEY);
-        //best performance - put KUICK_APP_ENV directly into system environment variables
         if ($envVarFromSystemEnv) {
             return $envVarFromSystemEnv;
         }
+        //checking out .env files
         $envVariablesFromDotEnv = (new AppGetEnvironment())();
         return $envVariablesFromDotEnv[self::APP_ENV_CONFIGURATION_KEY] ?? KernelAbstract::ENV_PROD;
     }

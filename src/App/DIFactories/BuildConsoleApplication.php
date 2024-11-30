@@ -8,7 +8,7 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App\Services;
+namespace Kuick\App\DIFactories;
 
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Application;
@@ -16,7 +16,7 @@ use Symfony\Component\Console\Application;
 /**
  *
  */
-class BuildConsoleApplication extends ServiceBuildAbstract
+class BuildConsoleApplication extends FactoryAbstract
 {
     public function __invoke(): void
     {

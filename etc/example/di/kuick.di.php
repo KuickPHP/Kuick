@@ -1,7 +1,5 @@
 <?php
 
-use Psr\Container\ContainerInterface;
-
 /**
  * PHP-DI definitions
  * @see https://php-di.org/doc/php-definitions.html
