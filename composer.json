@@ -13,7 +13,6 @@
     "require": {
         "php": ">=8.2.0",
         "ext-date": "*",
-        "ext-fileinfo": "*",
         "ext-hash": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
