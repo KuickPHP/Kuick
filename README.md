@@ -10,7 +10,6 @@ Designed for developers seeking speed, efficiency, and flexibility in web applic
 
 ## Usage (Docker)
 Ready to deploy images you can find here: https://hub.docker.com/r/milejko/kuick/tags
-
 1. Run using Docker
 ```
 docker run -p 8080:80 milejko/kuick
@@ -19,7 +18,7 @@ Now you can try it out by opening http://localhost:8080/
 2. Check the example route:
 Homepage:
 ```
-curl http://localhost:8080/hello/John
+curl http://localhost:8080/
 ```
 Hello/ping:
 ```
@@ -27,7 +26,7 @@ curl http://localhost:8080/hello/John
 ```
 OPS API:
 ```
-curl -H "Authorization: Bearer let-me-in" http://localhost:8080/api/ops
+curl -H "Authorization: Bearer secret-ops-token-please-change-me" http://localhost:8080/api/ops
 ```
 ## Usage (Standalone)
 1. Install PHP>8.2 + Composer
