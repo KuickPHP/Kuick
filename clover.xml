@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1732951850">
-  <project timestamp="1732951850">
+<coverage generated="1733031033">
+  <project timestamp="1733031033">
     <file name="/var/www/html/src/App/AppDIContainerBuilder.php">
       <class name="Kuick\App\AppDIContainerBuilder" namespace="global">
         <metrics complexity="13" methods="6" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="40" coveredstatements="0" elements="46" coveredelements="0"/>
