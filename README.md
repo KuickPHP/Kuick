@@ -10,12 +10,14 @@ Designed for developers seeking speed, efficiency, and flexibility in web applic
 
 ## Usage (Docker)
 Ready to deploy images you can find here: https://hub.docker.com/r/milejko/kuick/tags
+
 1. Run using Docker
 This example utilizes the smallest, Alpine distribution.
 ```
 docker run -p 8080:80 milejko/kuick:1.0-alpine
 ```
 Now you can try it out by opening http://localhost:8080/
+
 2. Check the example route:
 Homepage:
 ```
@@ -25,12 +27,13 @@ Hello/ping:
 ```
 curl http://localhost:8080/hello/John
 ```
-3. Container runtime configuration, enabling: 
-- dev mode
+
+3. Container runtime configuration:
+- dev mode enabled
 - custom app name
 - custom localization (charset, locale, timezone)
 - DEBUG log with microtime
-- custom OPS token
+- custom OPS API token
 ```
 docker run -p 8080:80 \
     -e KUICK_APP_ENV=dev \
