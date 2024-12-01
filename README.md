@@ -16,7 +16,7 @@ This example utilizes the smallest, Alpine distribution.
 ```
 docker run -p 8080:80 milejko/kuick:1.0-alpine
 ```
-Now you can try it out by opening http://localhost:8080/
+Now you can try it out by opening http://localhost:8080/<br>
 
 2. Check the example route:
 Homepage:
