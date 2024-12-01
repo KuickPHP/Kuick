@@ -28,7 +28,7 @@ class BuildLogger extends FactoryAbstract
     {
         $this->builder->addDefinitions([LoggerInterface::class => function (ContainerInterface $container): LoggerInterface {
             $logger = new Logger($container->get('kuick.app.name'));
-            $logger->useMicrosecondTimestamps((bool) $container->get('kuick.app.monolog.useMicroseconds'));
+            $logger->useMicrosecondTimestamps((bool) $container->get('kuick.app.monolog.usemicroseconds'));
             $logger->setTimezone(new DateTimeZone($container->get('kuick.app.timezone')));
             $handlers = $container->get('kuick.app.monolog.handlers');
             $defaultLevel = $container->get('kuick.app.monolog.level') ?? LogLevel::WARNING;

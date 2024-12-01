@@ -9,10 +9,10 @@
  */
 
 return [
-    //let-me-in token for dev
+    //simple token for dev
     'kuick.ops.guard.token' => 'let-me-in',
 
     //debug for dev
     'kuick.app.monolog.level' => 'DEBUG',
-    'kuick.app.monolog.useMicroseconds' => true,
+    'kuick.app.monolog.usemicroseconds' => true,
 ];

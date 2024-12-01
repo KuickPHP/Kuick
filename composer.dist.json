@@ -1,4 +1,6 @@
 {
+    "name": "Kuick app example",
+    "license": "MIT",
     "require": {
         "kuick/framework": "^1.0"
     },

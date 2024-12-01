@@ -14,7 +14,7 @@ return [
     'kuick.app.locale'    => 'en_US.utf-8',
     'kuick.app.timezone'  => 'UTC',
 
-    'kuick.app.monolog.useMicroseconds' => false,
+    'kuick.app.monolog.usemicroseconds' => false,
     'kuick.app.monolog.level' => 'WARNING',
     'kuick.app.monolog.handlers' => [
         [
@@ -23,5 +23,6 @@ return [
         ],
     ],
 
-    'kuick.ops.guard.token' => 'secret-ops-token-please-change-me',
+    //there is no valid token by default, you should provide one through environment variables
+    'kuick.ops.guard.token' => '',
 ];

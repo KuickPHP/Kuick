@@ -21,8 +21,8 @@ class AppGetEnvironment
         $dotEnvFilePath = BASE_PATH . '/.env';
         $dotEnvLocalFilePath = BASE_PATH . '/.env.local';
         //.env values
-        $dotEnvValues = file_exists($dotEnvFilePath) ? parse_ini_file($dotEnvFilePath, true) : [];
-        $dotEnvLocalValues = file_exists($dotEnvLocalFilePath) ? parse_ini_file($dotEnvLocalFilePath, true) : [];
+        $dotEnvValues = file_exists($dotEnvFilePath) ? parse_ini_file($dotEnvFilePath) : [];
+        $dotEnvLocalValues = file_exists($dotEnvLocalFilePath) ? parse_ini_file($dotEnvLocalFilePath) : [];
         //merging .env with .env.local
         $dotEnvVars = array_merge(
             $dotEnvValues ? $dotEnvValues : [],
