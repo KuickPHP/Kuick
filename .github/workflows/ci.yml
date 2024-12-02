@@ -31,12 +31,9 @@ jobs:
           PHP_VERSION=${{ matrix.version }}
           OS_VARIANT=${{ matrix.os-variant }}
     - name: Run tests
-      run: docker run --rm -v /tmp/build:/var/www/html/public/build php${{ matrix.version }}-${{ matrix.os-variant}}-checks sh -c "composer test:all"
-    - name: Upload artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: artifact-${{ matrix.version }}-${{ matrix.os-variant}}
-        path: /tmp/build/**/*
+      run: docker run --rm -v ./:/var/www/html/public/build php${{ matrix.version }}-${{ matrix.os-variant}}-checks sh -c "composer test:all"
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
     - name: Build dist image
       uses: docker/build-push-action@v5
       with:
