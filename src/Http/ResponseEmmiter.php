@@ -16,25 +16,19 @@ class ResponseEmmiter
 {
     public function __invoke(ResponseInterface $response): void
     {
-        //create a status line if no headers are present, and code is not 200
-        if (empty($response->getHeaders()) && $response->getStatusCode() != ResponseCodes::OK) {
-            $statusLine = sprintf('HTTP/%s %s', $response->getProtocolVersion(), $response->getStatusCode());
-            if (!headers_sent()) {
-                header($statusLine);
-            }
-        }
+        //set response code
+        http_response_code($response->getStatusCode());
         //send headers
-        foreach (array_keys($response->getHeaders()) as $headerName) {
-            if (headers_sent()) {
-                break;
-            }
-            //format header
-            $responseHeader = sprintf('%s: %s', $headerName, $response->getHeaderLine($headerName));
-            //send header
-            $response->getStatusCode() == ResponseCodes::OK ?
-                header($responseHeader, false) :
-                header($responseHeader, false, $response->getStatusCode());
-        }
+        $this->sendHeaders($response);
         echo $response->getBody();
+    }
+    
+    private function sendHeaders(ResponseInterface $response): void
+    {
+        foreach ($response->getHeaders() as $name => $values) {
+            foreach ($values as $value) {
+                header(sprintf('%s: %s', $name, $value), false);
+            }
+        }
     }
 }

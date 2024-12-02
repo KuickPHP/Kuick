@@ -11,23 +11,30 @@
 namespace Kuick\App;
 
 use Symfony\Component\Console\Application;
-use Throwable;
 
 /**
  * Console Application Kernel
  */
 final class ConsoleKernel extends KernelAbstract
 {
+    private Application $application;
+
+    public function __construct()
+    {
+        parent::__construct();
+        //create a new application
+        $this->application = new Application($this->container->get('kuick.app.name'));
+        //adding commands
+        foreach (glob($this->getProjectDir() . '/etc/*.commands.php') as $commandFile) {
+            foreach (include $commandFile as $commandClass) {
+                $this->application->add($this->container->get($commandClass));
+            }
+        }
+        ini_set('max_execution_time', 0);
+    }
+
     public function __invoke(): void
     {
-        ini_set('max_execution_time', 0);
-        try {
-            $application = $this->container->get(Application::class);
-            $application->run();
-        } catch (Throwable $error) {
-            $this->logger->error($error->getMessage());
-            echo $error->getMessage() . PHP_EOL;
-            exit(1);
-        }
+        $this->application->run();
     }
 }

@@ -15,11 +15,11 @@ namespace Kuick\App;
  */
 class AppGetEnvironment
 {
-    public function __invoke(): array
+    public function __invoke(string $projectDir): array
     {
         //.env file path definitions
-        $dotEnvFilePath = BASE_PATH . '/.env';
-        $dotEnvLocalFilePath = BASE_PATH . '/.env.local';
+        $dotEnvFilePath = $projectDir . '/.env';
+        $dotEnvLocalFilePath = $projectDir . '/.env.local';
         //.env values
         $dotEnvValues = file_exists($dotEnvFilePath) ? parse_ini_file($dotEnvFilePath) : [];
         $dotEnvLocalValues = file_exists($dotEnvLocalFilePath) ? parse_ini_file($dotEnvLocalFilePath) : [];

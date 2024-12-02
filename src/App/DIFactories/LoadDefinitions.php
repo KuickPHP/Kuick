@@ -16,21 +16,21 @@ namespace Kuick\App\DIFactories;
 class LoadDefinitions extends FactoryAbstract
 {
     private const DEFINITION_LOCATIONS = [
-        BASE_PATH . '/vendor/kuick/*/etc/di/*.di.php',
-        BASE_PATH . '/etc/di/*.di.php',
+        '/vendor/kuick/*/etc/di/*.di.php',
+        '/etc/di/*.di.php',
     ];
-    private const ENV_SPECIFIC_DEFINITION_LOCATIONS_TEMPLATE = BASE_PATH . '/etc/di/*.di@%s.php';
+    private const ENV_SPECIFIC_DEFINITION_LOCATIONS_TEMPLATE = '/etc/di/*.di@%s.php';
 
-    public function __invoke(string $env): void
+    public function __invoke(string $projectDir, string $env): void
     {
         //adding global definition files
         foreach (self::DEFINITION_LOCATIONS as $definitionsLocation) {
-            foreach (glob($definitionsLocation) as $definitionFile) {
+            foreach (glob($projectDir . $definitionsLocation) as $definitionFile) {
                 $this->builder->addDefinitions($definitionFile);
             }
         }
         //adding env specific definition files
-        foreach (glob(sprintf(self::ENV_SPECIFIC_DEFINITION_LOCATIONS_TEMPLATE, $env)) as $definitionFile) {
+        foreach (glob(sprintf($projectDir . self::ENV_SPECIFIC_DEFINITION_LOCATIONS_TEMPLATE, $env)) as $definitionFile) {
             $this->builder->addDefinitions($definitionFile);
         }
     }

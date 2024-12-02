@@ -18,6 +18,7 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class ComposerInstaller
 {
+    private static string $projectDir;
     private const KUICK_PATH =  '/vendor/kuick/framework';
     private const KUICK_COMPONENTS_PATTERN = '/vendor/kuick/*/';
     private const INDEX_FILE = '/public/index.php';
@@ -30,7 +31,7 @@ class ComposerInstaller
     protected static function initAutoload(Event $event): void
     {
         $vendorDir = $event->getComposer()->getConfig()->get('vendor-dir');
-        define('BASE_PATH', realpath(dirname($vendorDir)));
+        self::$projectDir = dirname($vendorDir);
         self::createTmpDir();
         require $vendorDir . '/autoload.php';
     }
@@ -51,7 +52,7 @@ class ComposerInstaller
     protected static function createTmpDir(): void
     {
         $fs = new Filesystem();
-        $tmpPath = BASE_PATH . self::TMP_DIR;
+        $tmpPath = self::$projectDir . self::TMP_DIR;
         if (!$fs->exists($tmpPath)) {
             $fs->mkdir($tmpPath);
         }
@@ -61,10 +62,10 @@ class ComposerInstaller
     protected static function copyDistributionFiles(): void
     {
         $fs = new Filesystem();
-        $kuickVendorPath = BASE_PATH . self::KUICK_PATH;
-        $kuickVendorComponentsPath = BASE_PATH . self::KUICK_COMPONENTS_PATTERN;
-        $indexPHPFile = BASE_PATH . self::INDEX_FILE;
-        $consoleFile = BASE_PATH . self::CONSOLE_FILE;
+        $kuickVendorPath = self::$projectDir  . self::KUICK_PATH;
+        $kuickVendorComponentsPath = self::$projectDir  . self::KUICK_COMPONENTS_PATTERN;
+        $indexPHPFile = self::$projectDir  . self::INDEX_FILE;
+        $consoleFile = self::$projectDir  . self::CONSOLE_FILE;
         //public/index.php and bin/console exists - nothing else to do
         if ($fs->exists($indexPHPFile) && file_exists($consoleFile)) {
             return;
@@ -76,9 +77,9 @@ class ComposerInstaller
         $fs->copy($kuickVendorPath . self::INDEX_FILE, $indexPHPFile);
         $fs->copy($kuickVendorPath . self::CONSOLE_FILE, $consoleFile);
         $fs->chmod($consoleFile, 0755);
-        $fs->mirror($kuickVendorPath . self::SOURCE_ETC_DIR, BASE_PATH . self::TARGET_ETC_DIR);
+        $fs->mirror($kuickVendorPath . self::SOURCE_ETC_DIR, self::$projectDir  . self::TARGET_ETC_DIR);
         foreach (glob($kuickVendorComponentsPath . self::SOURCE_ETC_DIR) as $vendorEtcs) {
-            $fs->mirror($vendorEtcs, BASE_PATH . self::TARGET_ETC_DIR);
+            $fs->mirror($vendorEtcs, self::$projectDir  . self::TARGET_ETC_DIR);
         }
     }
 }

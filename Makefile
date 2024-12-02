@@ -1,7 +1,7 @@
 ######################
 # Default parameters #
 ######################
-IMAGE_NAME := kuick/kuick
+IMAGE_NAME := kuickphp/kuick
 FORCE_BUILD := 0
 
 .DEFAULT_GOAL := test
@@ -17,7 +17,7 @@ test: version.txt
 	# generate CI_TAG to avoid concurrent run collisions
 	$(eval CI_TAG := $(IMAGE_NAME):$(shell date +%s%N))
 	docker build --target=test-runner --tag $(CI_TAG) .
-	docker run --rm -v ./public:/var/www/html/public $(CI_TAG) composer test:all
+	docker run --rm -v ./public/build:/var/www/html/public/build $(CI_TAG) composer test:all
 	docker image rm $(CI_TAG)
 
 build: version.txt
