@@ -17,15 +17,22 @@ use Symfony\Component\Console\Application;
  */
 final class ConsoleKernel extends KernelAbstract
 {
+    private const APP_NAME_KEY = 'kuick.app.name';
+    private const COMMAND_PATH_PATTERN = '/etc/*.commands.php';
+
     private Application $application;
 
     public function __construct()
     {
         parent::__construct();
         //create a new application
-        $this->application = new Application($this->container->get('kuick.app.name'));
+        $this->application = new Application(
+            $this->container->has(self::APP_NAME_KEY) ?
+            $this->container->get(self::APP_NAME_KEY) :
+            __CLASS__
+        );
         //adding commands
-        foreach (glob($this->getProjectDir() . '/etc/*.commands.php') as $commandFile) {
+        foreach (glob($this->getProjectDir() . self::COMMAND_PATH_PATTERN) as $commandFile) {
             foreach (include $commandFile as $commandClass) {
                 $this->application->add($this->container->get($commandClass));
             }
