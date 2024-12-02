@@ -35,7 +35,7 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: artifacts
+        name: artifact-${{ matrix.version }}-${{ matrix.os-variant}}
         path: /tmp/build/**/*
     - name: Build dist image
       uses: docker/build-push-action@v5
