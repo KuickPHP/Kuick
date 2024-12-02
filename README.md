@@ -1,8 +1,7 @@
 # Kuick PHP framework
 [![Latest Version](https://img.shields.io/github/release/milejko/kuick.svg?cacheSeconds=14400)](https://github.com/milejko/kuick/releases)
-[![Total Downloads](https://img.shields.io/packagist/dt/kuick/framework.svg?cacheSeconds=14400)](https://packagist.org/packages/kuick/framework)
 [![PHP](https://img.shields.io/badge/PHP-8.2%20|%208.3-blue?logo=php&cacheSeconds=3600)](https://www.php.net/releases/8.2/en.php)
-[![PHP 8.3](https://img.shields.io/badge/PHP-8.3-green?logo=php&cacheSeconds=3600)](https://www.php.net/releases/8.3/en.php)
+[![Total Downloads](https://img.shields.io/packagist/dt/kuick/framework.svg?cacheSeconds=14400)](https://packagist.org/packages/kuick/framework)
 [![GitHub Actions CI](https://github.com/milejko/kuick/actions/workflows/ci.yml/badge.svg)](https://github.com/milejko/kuick/actions/workflows/ci.yml)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?cacheSeconds=14400)](LICENSE)
 
