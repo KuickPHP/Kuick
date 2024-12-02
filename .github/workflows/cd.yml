@@ -27,13 +27,7 @@ jobs:
         tags: php${{ matrix.version }}-checks
         build-args: PHP_VERSION=${{ matrix.version }}
     - name: Run tests
-      run: docker run --rm -v ./:/var/www/html/public/build php${{ matrix.version }}-checks sh -c "composer test:all"
-    - name: Generate coverage badge
-      uses: timkrase/phpunit-coverage-badge@v1.2.1
-      with:
-        coverage_badge_path: 'badge-coverage.svg'
-        push_badge: true
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
+      run: docker run --rm php${{ matrix.version }}-checks sh -c "composer test:all"
 
   Deployment:
     needs: Testing
