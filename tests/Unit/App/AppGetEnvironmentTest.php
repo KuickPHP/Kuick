@@ -12,10 +12,10 @@ use function PHPUnit\Framework\assertEquals;
  */
 class AppGetEnvironmentTest extends TestCase
 {
-    public function testIfConsoleConfiguresEnvironmentCorrectly(): void
+    public function testIfEnvironmentIsProperlyInherited(): void
     {
         putenv('TESTING=testing');
-        $environmentVariables = (new AppGetEnvironment())(dirname(__DIR__) . '/../Mocks');
+        $environmentVariables = (new AppGetEnvironment())(dirname(__DIR__) . '/../Mocks/FakeRoot');
         assertEquals('testing', $environmentVariables['testing']);
         assertEquals('local value', $environmentVariables['example']);
     }
