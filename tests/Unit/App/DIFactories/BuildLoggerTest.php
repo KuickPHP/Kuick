@@ -16,6 +16,7 @@ use function PHPUnit\Framework\assertTrue;
 class BuildLoggerTest extends TestCase
 {
     private const LOG_FILE = '/../../Mocks/FakeRoot/var/testing.log';
+
     protected function tearDown(): void
     {
         $logfile = dirname(__DIR__) . self::LOG_FILE;
