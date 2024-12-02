@@ -3,10 +3,8 @@
 namespace Tests\Kuick\App;
 
 use Kuick\App\AppDIContainerBuilder;
-use Kuick\App\JsonKernel;
 use PHPUnit\Framework\TestCase;
 
-use function PHPUnit\Framework\assertEmpty;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertFalse;
 
