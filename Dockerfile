@@ -45,6 +45,7 @@ ENV XDEBUG_ENABLE=1 \
     XDEBUG_MODE=coverage \
     KUICK_APP_ENV=test
 
+COPY ./etc/di ./etc/di
 COPY ./src ./src
 COPY ./tests ./tests
 COPY ./composer.json ./composer.json

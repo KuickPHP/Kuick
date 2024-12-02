@@ -26,11 +26,7 @@ final class ConsoleKernel extends KernelAbstract
     {
         parent::__construct();
         //create a new application
-        $this->application = new Application(
-            $this->container->has(self::APP_NAME_KEY) ?
-            $this->container->get(self::APP_NAME_KEY) :
-            __CLASS__
-        );
+        $this->application = new Application($this->container->get(self::APP_NAME_KEY));
         //adding commands
         foreach (glob($this->getProjectDir() . self::COMMAND_PATH_PATTERN) as $commandFile) {
             foreach (include $commandFile as $commandClass) {

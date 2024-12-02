@@ -8,3 +8,5 @@ composer.lock
 /var
 version.*
 /.env.local
+/tests/Mocks/DI/var*
+

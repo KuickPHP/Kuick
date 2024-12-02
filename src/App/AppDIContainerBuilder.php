@@ -11,7 +11,6 @@
 namespace Kuick\App;
 
 use DI\ContainerBuilder;
-use Kuick\App\DIFactories\BuildConsoleApplication;
 use Kuick\App\DIFactories\BuildLogger;
 use Kuick\App\DIFactories\BuildRouteMatcher;
 use Kuick\App\DIFactories\LoadDefinitions;
@@ -32,18 +31,18 @@ class AppDIContainerBuilder
 
     private string $appEnv;
 
-    public function __invoke(KernelAbstract $kernel): ContainerInterface
+    public function __invoke(string $projectDir): ContainerInterface
     {
         //determining kuick.app.env (ie. dev, prod)
-        $this->appEnv = $this->determineEnv($kernel->getProjectDir());
+        $this->appEnv = $this->determineEnv($projectDir);
 
         //remove previous compilation if KUICK_APP_ENV!=dev
         if ($this->appEnv == KernelAbstract::ENV_DEV) {
-            $this->removeContainer($kernel->getProjectDir());
+            $this->removeContainer($projectDir);
         }
 
         //build or load from cache
-        $container = $this->configureBuilder($kernel->getProjectDir())->build();
+        $container = $this->configureBuilder($projectDir)->build();
 
         //validating if container is built
         if ($container->has(self::READY_DEFINITION)) {
@@ -54,7 +53,7 @@ class AppDIContainerBuilder
         }
 
         //rebuilding if validation failed
-        $container = $this->rebuildContainer($kernel);
+        $container = $this->rebuildContainer($projectDir);
         $logger = $container->get(LoggerInterface::class);
         $logger->log(
             $this->appEnv == KernelAbstract::ENV_DEV ? LogLevel::WARNING : LogLevel::INFO,
@@ -64,18 +63,18 @@ class AppDIContainerBuilder
         return $container;
     }
 
-    private function rebuildContainer(KernelAbstract $kernel): ContainerInterface
+    private function rebuildContainer(string $projectDir): ContainerInterface
     {
-        $this->removeContainer($kernel->getProjectDir());
-        $builder = $this->configureBuilder($kernel->getProjectDir());
+        $this->removeContainer($projectDir);
+        $builder = $this->configureBuilder($projectDir);
 
-        $builder->addDefinitions([KernelAbstract::class => $kernel]);
+        $builder->addDefinitions(['app.project.dir' => $projectDir]);
 
         //loading DI definitions (configuration)
-        (new LoadDefinitions($builder))($kernel->getProjectDir(), $this->appEnv);
+        (new LoadDefinitions($builder))($projectDir, $this->appEnv);
 
         //adding environment configuration
-        $builder->addDefinitions((new AppGetEnvironment())($kernel->getProjectDir()));
+        $builder->addDefinitions((new AppGetEnvironment())($projectDir));
 
         //logger
         (new BuildLogger($builder))();
@@ -92,23 +91,12 @@ class AppDIContainerBuilder
             ->useAutowiring(true)
             ->useAttributes(true)
             ->enableCompilation($projectDir . self::CACHE_PATH . DIRECTORY_SEPARATOR . $this->appEnv);
-        if ($this->isApcuEnabled()) {
-            $builder->enableDefinitionCache(__DIR__);
-        }
         return $builder;
     }
 
     private function removeContainer(string $projectDir): void
     {
-        /** @disregard P1009 Undefined type */
-        $this->isApcuEnabled() && apcu_clear_cache();
         array_map('unlink', glob($projectDir . self::CACHE_PATH . DIRECTORY_SEPARATOR . $this->appEnv . DIRECTORY_SEPARATOR . self::COMPILED_FILENAME));
-    }
-
-    private function isApcuEnabled(): bool
-    {
-        /** @disregard P1009 Undefined type */
-        return function_exists('apcu_enabled') && apcu_enabled();
     }
 
     private function determineEnv(string $projectDir): string
