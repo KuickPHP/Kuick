@@ -36,7 +36,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: test-artifacts
-        path: public/build/**
+        path: **
     - name: Build dist image
       uses: docker/build-push-action@v5
       with:
