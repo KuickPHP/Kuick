@@ -1,8 +1,10 @@
 # Kuick PHP framework
-[![Latest Version](https://img.shields.io/github/release/milejko/kuick.svg)](https://github.com/milejko/kuick/releases)
-[![Total Downloads](https://img.shields.io/packagist/dt/kuick/framework.svg)](https://packagist.org/packages/kuick/framework)
+[![Latest Version](https://img.shields.io/github/release/milejko/kuick.svg?cacheSeconds=14400)](https://github.com/milejko/kuick/releases)
+[![Total Downloads](https://img.shields.io/packagist/dt/kuick/framework.svg?cacheSeconds=14400)](https://packagist.org/packages/kuick/framework)
+[![PHP 8.2](https://img.shields.io/badge/PHP-8.2-blue?logo=php&cacheSeconds=3600)](https://www.php.net/releases/8.2/en.php)
+[![PHP 8.3](https://img.shields.io/badge/PHP-8.3-green?logo=php&cacheSeconds=3600)](https://www.php.net/releases/8.3/en.php)
 [![GitHub Actions CI](https://github.com/milejko/kuick/actions/workflows/ci.yml/badge.svg)](https://github.com/milejko/kuick/actions/workflows/ci.yml)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg&cacheSeconds=14400)](LICENSE)
 
 Kuick is an extremely low footprint PHP application framework, based on Symfony components, suitable for high workloads
 Designed for developers seeking speed, efficiency, and flexibility in web application development.
