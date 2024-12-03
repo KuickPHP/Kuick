@@ -17,7 +17,7 @@ class ArrayToFile
     public static function load(string $fileName): ?array
     {
         try {
-            return include($fileName);
+            return json_decode(file_get_contents($fileName), true);
         } catch (Throwable $error) {
             unset($error); //do nothing
         }
@@ -26,6 +26,6 @@ class ArrayToFile
 
     public static function save(string $fileName, array $object): void
     {
-        file_put_contents($fileName, "<?php\n" . var_export($object, true) . ';');
+        file_put_contents($fileName, json_encode($object));
     }
 }

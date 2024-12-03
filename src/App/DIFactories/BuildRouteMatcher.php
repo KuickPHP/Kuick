@@ -28,12 +28,9 @@ class BuildRouteMatcher extends FactoryAbstract
         $this->builder->addDefinitions([RouteMatcher::class => function (ContainerInterface $container): RouteMatcher {
             $isProd = KernelAbstract::ENV_PROD == $container->get('kuick.app.env');
             $projectDir = $container->get('app.project.dir');
-            $cacheFile = $projectDir . AppDIContainerBuilder::CACHE_PATH . DIRECTORY_SEPARATOR . urlencode(__CLASS__) . '.php';
+            $cacheFile = $projectDir . AppDIContainerBuilder::CACHE_PATH . DIRECTORY_SEPARATOR . 'kuick.app.routes.cache.json';
             $cachedRoutes = ArrayToFile::load($cacheFile);
-            $routes = [];
-            if ($isProd && null !== $cachedRoutes) {
-                $routes = $cachedRoutes;
-            }
+            $routes = $isProd && null !== $cachedRoutes ? $cachedRoutes : [];
             if (empty($routes)) {
                 //app config (normal priority)
                 foreach (glob($projectDir . '/etc/*.routes.php') as $routeFile) {
@@ -53,8 +50,7 @@ class BuildRouteMatcher extends FactoryAbstract
                 }
                 ArrayToFile::save($cacheFile, $routes);
             }
-            $routeMatcher = (new RouteMatcher($container->get(LoggerInterface::class)))->setRoutes($routes);
-            return $routeMatcher;
+            return (new RouteMatcher($container->get(LoggerInterface::class)))->setRoutes($routes);
         }]);
     }
 }
