@@ -6,7 +6,6 @@ use DI\ContainerBuilder;
 use Kuick\App\DIFactories\BuildRouteMatcher;
 use Kuick\App\Router\RouteMatcher;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Attributes\Depends;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -71,7 +70,6 @@ class BuildRouteMatcherTest extends TestCase
         ], $rm->getRoutes());
     }
 
-    #[Depends('testIfRoutesAreProperlyBuilt')]
     public function testIfCachedContainerWorks(): void
     {
         //first build - create cache

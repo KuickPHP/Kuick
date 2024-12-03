@@ -28,7 +28,7 @@ class CacheValueSerializer
             return $unserializedArray[0];
         }
         //value expired
-        if ($unserializedArray[1] + $unserializedArray[2] <= time()) {
+        if ((int) $unserializedArray[1] + (int) $unserializedArray[2] <= time()) {
             return null;
         }
         return $unserializedArray[0];

@@ -68,7 +68,7 @@ class FileCache implements CacheInterface
     {
         $result = true;
         foreach ($values as $key => $value) {
-            $result = $result && $this->set($key, $value);
+            $result = $result && $this->set($key, $value, $ttl);
         }
         return $result;
     }
