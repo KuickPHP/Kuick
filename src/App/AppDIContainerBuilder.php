@@ -23,7 +23,9 @@ use Psr\Log\LogLevel;
  */
 class AppDIContainerBuilder
 {
+    public const PROJECT_DIR_CONFIGURATION_KEY = 'app.project.dir';
     public const CACHE_PATH =  '/var/cache';
+
     private const COMPILED_FILENAME = 'CompiledContainer.php';
     private const APP_ENV_KEY = 'KUICK_APP_ENV';
     private const APP_ENV_CONFIGURATION_KEY = 'kuick.app.env';
@@ -59,7 +61,7 @@ class AppDIContainerBuilder
             $this->appEnv == KernelAbstract::ENV_DEV ? LogLevel::WARNING : LogLevel::INFO,
             'Application is running in ' . $this->appEnv . ' mode'
         );
-        $logger->notice('DI container rebuilt');
+        $logger->notice('DI container rebuilt, cache written');
         return $container;
     }
 
@@ -68,7 +70,7 @@ class AppDIContainerBuilder
         $this->removeContainer($projectDir);
         $builder = $this->configureBuilder($projectDir);
 
-        $builder->addDefinitions(['app.project.dir' => $projectDir]);
+        $builder->addDefinitions([self::PROJECT_DIR_CONFIGURATION_KEY => $projectDir]);
 
         //loading DI definitions (configuration)
         (new LoadDefinitions($builder))($projectDir, $this->appEnv);

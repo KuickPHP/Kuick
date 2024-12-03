@@ -6,21 +6,25 @@ use DI\ContainerBuilder;
 use Kuick\App\DIFactories\BuildLogger;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 use function PHPUnit\Framework\assertFileExists;
 use function PHPUnit\Framework\assertTrue;
 
 /**
  * @covers \Kuick\App\DIFactories\BuildLogger
+ * @covers \Kuick\App\DIFactories\FactoryAbstract
  */
 class BuildLoggerTest extends TestCase
 {
     private const LOG_FILE = '/../../Mocks/FakeRoot/var/testing.log';
 
-    protected function tearDown(): void
+    public static function setUpBeforeClass(): void
     {
-        $logfile = dirname(__DIR__) . self::LOG_FILE;
-        file_exists($logfile) && unlink($logfile);
+        $fs = new Filesystem();
+        $fakerootVar = dirname(__DIR__) . '/../../Mocks/FakeRoot/var';
+        $fs->remove($fakerootVar);
+        $fs->mkdir($fakerootVar);
     }
 
     public function testIfMinimalConfigProducesALogger(): void

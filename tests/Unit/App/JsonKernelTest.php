@@ -27,4 +27,17 @@ class JsonKernelTest extends TestCase
         $data = ob_get_clean();
         assertEquals('{"error":"Not found"}', $data);
     }
+
+    /**
+     * Needs to be run in separate process, cause DI builder won't work other way
+     * @runInSeparateProcess
+     */
+    public function testIfContainerReturnsBuiltContainer(): void
+    {
+        ob_start();
+        $jk = new JsonKernel();
+        ob_end_flush();
+        $container = $jk->getContainer();
+        assertEquals('dev', $container->get('kuick.app.env'));
+    }
 }

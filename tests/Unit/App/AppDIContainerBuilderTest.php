@@ -4,6 +4,7 @@ namespace Tests\Kuick\App;
 
 use Kuick\App\AppDIContainerBuilder;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
 
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertFalse;
@@ -13,6 +14,14 @@ use function PHPUnit\Framework\assertFalse;
  */
 class AppDIContainerBuilderTest extends TestCase
 {
+    public static function setUpBeforeClass(): void
+    {
+        $fs = new Filesystem();
+        $fakerootVar = dirname(__DIR__) . '/../../Mocks/FakeRoot/var/cache';
+        $fs->remove($fakerootVar);
+        $fs->mkdir($fakerootVar);
+    }
+
     /**
      * Needs to be run in separate process, cause emmiter sends headers
      * @runInSeparateProcess

@@ -6,45 +6,31 @@ use DI\ContainerBuilder;
 use Kuick\App\DIFactories\BuildRouteMatcher;
 use Kuick\App\Router\RouteMatcher;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Depends;
+use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\Filesystem\Filesystem;
 
 use function PHPUnit\Framework\assertCount;
 use function PHPUnit\Framework\assertEquals;
-use function PHPUnit\Framework\assertFileExists;
-use function PHPUnit\Framework\assertTrue;
 
 /**
  * @covers \Kuick\App\DIFactories\BuildRouteMatcher
  */
 class BuildRouteMatcherTest extends TestCase
 {
-    protected function setUp(): void
+    public static function setUpBeforeClass(): void
     {
+        $fs = new Filesystem();
         $fakerootVar = dirname(__DIR__) . '/../../Mocks/FakeRoot/var/cache';
-        $sfs = new Filesystem();
-        $sfs->remove($fakerootVar);
-        $sfs->mkdir($fakerootVar);
-    }
-
-    protected function tearDown(): void
-    {
-        $fakerootVar = dirname(__DIR__) . '/../../Mocks/FakeRoot/var';
-        $sfs = new Filesystem();
-        $sfs->remove($fakerootVar);
+        $fs->remove($fakerootVar);
+        $fs->mkdir($fakerootVar);
     }
 
     public function testIfRoutesAreProperlyBuilt(): void
     {
-        $cb = new ContainerBuilder();
-        $cb->addDefinitions([
-            'kuick.app.env' => 'prod',
-            'app.project.dir' => dirname(__DIR__) . '/../../Mocks/FakeRoot',
-            LoggerInterface::class => new NullLogger(),
-        ]);
-        (new BuildRouteMatcher($cb))();
-        $container = $cb->build();
+        $container = $this->getContainer();
         $rm = $container->get(RouteMatcher::class);
         assertEquals([
             [
@@ -85,8 +71,18 @@ class BuildRouteMatcherTest extends TestCase
         ], $rm->getRoutes());
     }
 
+    #[Depends('testIfRoutesAreProperlyBuilt')]
     public function testIfCachedContainerWorks(): void
     {
+        //first build - create cache
+        $container = $this->getContainer();
+        $rm = $container->get(RouteMatcher::class);
+        assertCount(2, $rm->getRoutes());
+    }
+
+    private function getContainer(): ContainerInterface
+    {
+        //cached from
         $cb = new ContainerBuilder();
         $cb->addDefinitions([
             'kuick.app.env' => 'prod',
@@ -94,8 +90,6 @@ class BuildRouteMatcherTest extends TestCase
             LoggerInterface::class => new NullLogger(),
         ]);
         (new BuildRouteMatcher($cb))();
-        $container = $cb->build();
-        $rm = $container->get(RouteMatcher::class);
-        assertCount(2, $rm->getRoutes());
+        return $cb->build();
     }
 }

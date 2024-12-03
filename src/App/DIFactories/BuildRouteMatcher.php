@@ -15,6 +15,7 @@ use Kuick\App\KernelAbstract;
 use Kuick\App\Router\ClassInvokeArgumentReflector;
 use Kuick\App\Router\RouteMatcher;
 use Kuick\App\Router\RouteValidator;
+use Kuick\SimpleCache\FileCache;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
@@ -23,15 +24,21 @@ use Psr\Log\LoggerInterface;
  */
 class BuildRouteMatcher extends FactoryAbstract
 {
+    public const CACHE_KEY = 'kuick-app-routematcher-routes';
+
     public function __invoke(): void
     {
         $this->builder->addDefinitions([RouteMatcher::class => function (ContainerInterface $container): RouteMatcher {
-            $isProd = KernelAbstract::ENV_PROD == $container->get('kuick.app.env');
-            $projectDir = $container->get('app.project.dir');
-            $cacheFile = $projectDir . AppDIContainerBuilder::CACHE_PATH . DIRECTORY_SEPARATOR . 'kuick.app.routes.cache.json';
-            $cachedRoutes = ArrayToFile::load($cacheFile);
-            $routes = $isProd && null !== $cachedRoutes ? $cachedRoutes : [];
+            $logger = $container->get(LoggerInterface::class);
+            $projectDir = $container->get(AppDIContainerBuilder::PROJECT_DIR_CONFIGURATION_KEY);
+            $cache = new FileCache($projectDir . AppDIContainerBuilder::CACHE_PATH);
+            $cachedRoutes = $cache->get(BuildRouteMatcher::CACHE_KEY);
+            $routes = [];
+            if (KernelAbstract::ENV_PROD == $container->get('kuick.app.env') && null !== $cachedRoutes) {
+                $routes = $cachedRoutes;    
+            }
             if (empty($routes)) {
+                //@TODO: extract route parsing to the external class
                 //app config (normal priority)
                 foreach (glob($projectDir . '/etc/*.routes.php') as $routeFile) {
                     $routes = array_merge($routes, include $routeFile);
@@ -48,7 +55,8 @@ class BuildRouteMatcher extends FactoryAbstract
                         $routes[$routeKey]['arguments'][$guard] = (new ClassInvokeArgumentReflector())($guard);
                     }
                 }
-                ArrayToFile::save($cacheFile, $routes);
+                $cache->set(BuildRouteMatcher::CACHE_KEY, $routes);
+                $logger->notice('Routes analyzed, cache written');
             }
             return (new RouteMatcher($container->get(LoggerInterface::class)))->setRoutes($routes);
         }]);
