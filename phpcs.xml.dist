@@ -8,7 +8,7 @@
     <arg name="extensions" value="php"/>
     <arg name="warning-severity" value="0"/>
 
-    <rule ref="PSR2"/>
+    <rule ref="PSR12"/>
     <rule ref="Squiz.WhiteSpace.FunctionSpacing">
         <properties>
             <property name="spacing" value="1" />

@@ -54,7 +54,7 @@ class RouteMatcher
             $route['params'] = $this->parseRouteParams($results);
             //methods are matching or HEAD to GET route
             if ($requestMethod == $routeMethod || ($requestMethod == RequestMethods::HEAD && $routeMethod == RequestMethods::GET)) {
-                $this->logger->debug('Matched route: ' . $routeMethod . ' '. $route['path']);
+                $this->logger->debug('Matched route: ' . $routeMethod . ' ' . $route['path']);
                 return $route;
             }
             //method mismatch
