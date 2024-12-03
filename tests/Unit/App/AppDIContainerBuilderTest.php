@@ -19,7 +19,7 @@ class AppDIContainerBuilderTest extends TestCase
      */
     public function testIfContainerIsRebuiltForDev(): void
     {
-        $adcb = (new AppDIContainerBuilder);
+        $adcb = (new AppDIContainerBuilder());
         $container = $adcb(dirname(__DIR__) . '/../Mocks/FakeRoot');
         assertEquals('Testing', $container->has('kuick.app.name'));
         assertEquals('Europe/Warsaw', $container->has('kuick.app.timezone'));
@@ -35,9 +35,9 @@ class AppDIContainerBuilderTest extends TestCase
     {
         putenv('KUICK_APP_ENV=prod');
         //real build
-        (new AppDIContainerBuilder);
+        (new AppDIContainerBuilder());
         //container from cache
-        $adcb = (new AppDIContainerBuilder);
+        $adcb = (new AppDIContainerBuilder());
         $container = $adcb(dirname(__DIR__) . '/../Mocks/FakeRoot');
         assertEquals('Testing', $container->has('kuick.app.name'));
         assertEquals('Europe/Warsaw', $container->has('kuick.app.timezone'));

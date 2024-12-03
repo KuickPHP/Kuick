@@ -22,7 +22,7 @@ class ResponseEmmiter
         $this->sendHeaders($response);
         echo $response->getBody();
     }
-    
+
     private function sendHeaders(ResponseInterface $response): void
     {
         foreach ($response->getHeaders() as $name => $values) {

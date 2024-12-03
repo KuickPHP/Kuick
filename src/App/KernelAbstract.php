@@ -31,7 +31,7 @@ abstract class KernelAbstract
             throw new AppException($message, $errno);
         });
         //building DI container
-        $this->container = (new AppDIContainerBuilder)($this->getProjectDir());
+        $this->container = (new AppDIContainerBuilder())($this->getProjectDir());
         $this->logger = $this->container->get(LoggerInterface::class);
         //localization setup
         ($this->container->get(AppSetLocalization::class))();
