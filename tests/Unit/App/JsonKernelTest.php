@@ -38,6 +38,6 @@ class JsonKernelTest extends TestCase
         $jk = new JsonKernel();
         ob_end_flush();
         $container = $jk->getContainer();
-        assertEquals('dev', $container->get('kuick.app.env'));
+        assertEquals('Kuick App', $container->get('kuick.app.name'));
     }
 }
