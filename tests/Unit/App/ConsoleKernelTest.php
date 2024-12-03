@@ -3,12 +3,8 @@
 namespace Tests\Kuick\App;
 
 use Kuick\App\ConsoleKernel;
-use Kuick\App\JsonKernel;
-use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 
-use function PHPUnit\Framework\assertEmpty;
 use function PHPUnit\Framework\assertEquals;
 
 /**
