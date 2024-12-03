@@ -35,7 +35,7 @@ class BuildRouteMatcher extends FactoryAbstract
             $cachedRoutes = $cache->get(BuildRouteMatcher::CACHE_KEY);
             $routes = [];
             if (KernelAbstract::ENV_PROD == $container->get('kuick.app.env') && null !== $cachedRoutes) {
-                $routes = $cachedRoutes;    
+                $routes = $cachedRoutes;
             }
             if (empty($routes)) {
                 //@TODO: extract route parsing to the external class

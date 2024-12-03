@@ -83,7 +83,7 @@ class FileCacheTest extends TestCase
         $fc = new FileCache(self::$cacheDir);
         $fc->set('first', 'first value');
         $fc->setMultiple([
-            'foo' => 'baz', 
+            'foo' => 'baz',
             'baz' => 'bar',
         ]);
         assertTrue($fc->has('foo'));

@@ -44,5 +44,4 @@ class CacheValueSerializerTest extends TestCase
         sleep(1);
         assertNull($cvs->unserialize($serializedValue));
     }
-
 }
