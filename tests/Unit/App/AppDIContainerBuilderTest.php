@@ -15,15 +15,14 @@ use function PHPUnit\Framework\assertTrue;
  */
 class AppDIContainerBuilderTest extends TestCase
 {
-    public static string $projectDir;
+    private string $projectDir;
 
-    public static function setUpBeforeClass(): void
+    protected function setUp(): void
     {
-        self::$projectDir = realpath(dirname(__DIR__) . '/../Mocks/MockProjectDir');
-        $cacheDir = self::$projectDir . '/var/cache';
+        $this->projectDir = realpath(dirname(__DIR__) . '/../Mocks/MockProjectDir');
+        $cacheDir = $this->projectDir . '/var/cache';
         $fs = new Filesystem();
         $fs->remove($cacheDir);
-        $fs->mkdir($cacheDir);
     }
 
     /**
@@ -33,7 +32,7 @@ class AppDIContainerBuilderTest extends TestCase
     public function testIfContainerIsRebuiltForDev(): void
     {
         $adcb = (new AppDIContainerBuilder());
-        $container = $adcb(self::$projectDir);
+        $container = $adcb($this->projectDir);
         assertEquals('Testing', $container->has('kuick.app.name'));
         assertEquals('Europe/Warsaw', $container->has('kuick.app.timezone'));
         assertTrue($container->get('kuick.app.monolog.usemicroseconds'));
@@ -48,11 +47,10 @@ class AppDIContainerBuilderTest extends TestCase
     {
         putenv('KUICK_APP_ENV=prod');
         //uncached build
-        $uncachedContainer = (new AppDIContainerBuilder())(self::$projectDir);
+        $uncachedContainer = (new AppDIContainerBuilder())($this->projectDir);
         assertEquals('Testing', $uncachedContainer->has('kuick.app.name'));
         //container loaded from cache
-        $cachedContainer = (new AppDIContainerBuilder())(self::$projectDir);
-        $cachedContainer = (new AppDIContainerBuilder())(self::$projectDir);
+        $cachedContainer = (new AppDIContainerBuilder())($this->projectDir);
         assertEquals('Testing', $cachedContainer->has('kuick.app.name'));
         assertEquals('Europe/Warsaw', $cachedContainer->has('kuick.app.timezone'));
         assertFalse($cachedContainer->get('kuick.app.monolog.usemicroseconds'));

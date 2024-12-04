@@ -42,8 +42,7 @@ COPY --link version.* ./public/
 FROM base AS test-runner
 
 ENV XDEBUG_ENABLE=1 \
-    XDEBUG_MODE=coverage \
-    KUICK_APP_ENV=test
+    XDEBUG_MODE=coverage
 
 COPY ./etc/di ./etc/di
 COPY ./src ./src
