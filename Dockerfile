@@ -4,27 +4,26 @@ ARG PHP_VERSION=8.3 \
     SERVER_VARIANT=apache \
     OS_VARIANT=jammy
 
-###################################################################
-# Base PHP target                                                 #
-###################################################################
+###################
+# Base PHP target #
+###################
 FROM milejko/php:${PHP_VERSION}-${SERVER_VARIANT}-${OS_VARIANT} AS base
 
-###################################################################
-# Distribution target (ie. for production environments)           #
-###################################################################
+#########################################################
+# Distribution target (ie. for production environments) #
+#########################################################
 FROM base AS dist
 
 # Important performance hint:
 # KUICK_APP_ENV=prod should be defined here, or via environment variables
 # .env* files shouldn't be used in production
 ENV KUICK_APP_ENV=prod \
-    KUICK_APP_NAME=Kuick \
-    KUICK_APP_CHARSET=UTF-8 \
-    KUICK_APP_LOCALE=en_US.utf-8 \
-    KUICK_APP_TIMEZONE=UTC \
-    KUICK_APP_MONOLOG_LEVEL=NOTICE
+    KUICK_APP_NAME=Kuick@Docker
 
-COPY --link ./etc/apache2 /etc/apache2
+COPY --link /etc/apache2 /etc/apache2
+COPY --link bin ./bin
+COPY --link etc ./etc
+COPY --link public ./public
 COPY --link composer.dist.json composer.json
 
 RUN set -eux; \
@@ -32,13 +31,14 @@ RUN set -eux; \
     --prefer-dist \
     --no-dev \
     --classmap-authoritative \
+    --no-scripts \
     --no-plugins
 
 COPY --link version.* ./public/
 
-###################################################################
-# Test runner target                                              #
-###################################################################
+######################
+# Test runner target #
+######################
 FROM base AS test-runner
 
 ENV XDEBUG_ENABLE=1 \
@@ -53,9 +53,9 @@ COPY ./php* .
 RUN set -eux; \
     composer install
 
-###################################################################
-# Dev server target                                               #
-###################################################################
+#####################
+# Dev server target #
+#####################
 FROM base AS dev-server
 
 COPY ./etc/apache2 /etc/apache2

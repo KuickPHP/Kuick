@@ -11,6 +11,7 @@
 
 use Kuick\App\ConsoleKernel;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+$projectDir = dirname(__DIR__);
+require $projectDir . '/vendor/autoload.php';
 
-(new ConsoleKernel())();
+(new ConsoleKernel($projectDir))();

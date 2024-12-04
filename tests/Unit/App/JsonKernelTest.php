@@ -20,7 +20,7 @@ class JsonKernelTest extends TestCase
      */
     public function testIfNotFoundRouteEmmitsNotFoundResponse(): void
     {
-        $jk = new JsonKernel();
+        $jk = new JsonKernel(dirname(__DIR__) . '/../Mocks/MockProjectDir');
         $request = new ServerRequest('GET', 'something');
         ob_start();
         $jk($request);
@@ -35,9 +35,9 @@ class JsonKernelTest extends TestCase
     public function testIfContainerReturnsBuiltContainer(): void
     {
         ob_start();
-        $jk = new JsonKernel();
+        $jk = new JsonKernel(dirname(__DIR__) . '/../Mocks/MockProjectDir');
         ob_end_flush();
         $container = $jk->getContainer();
-        assertEquals('Kuick App', $container->get('kuick.app.name'));
+        assertEquals('Testing App', $container->get('kuick.app.name'));
     }
 }

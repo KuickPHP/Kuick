@@ -19,7 +19,7 @@ class ConsoleKernelTest extends TestCase
      */
     public function testIfConsoleConfiguresEnvironmentCorrectly(): void
     {
-        new ConsoleKernel();
+        new ConsoleKernel(dirname(__DIR__) . '/../Mocks/MockProjectDir');
         assertEquals(0, ini_get('max_execution_time'));
     }
 }

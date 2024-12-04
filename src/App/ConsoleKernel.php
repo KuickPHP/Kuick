@@ -22,13 +22,13 @@ final class ConsoleKernel extends KernelAbstract
 
     private Application $application;
 
-    public function __construct()
+    public function __construct(string $projectDir)
     {
-        parent::__construct();
+        parent::__construct($projectDir);
         //create a new application
         $this->application = new Application($this->container->get(self::APP_NAME_KEY));
         //adding commands
-        foreach (glob($this->getProjectDir() . self::COMMAND_PATH_PATTERN) as $commandFile) {
+        foreach (glob($projectDir . self::COMMAND_PATH_PATTERN) as $commandFile) {
             foreach (include $commandFile as $commandClass) {
                 $this->application->add($this->container->get($commandClass));
             }

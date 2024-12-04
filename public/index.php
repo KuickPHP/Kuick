@@ -12,11 +12,12 @@ use Kuick\App\JsonKernel;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7Server\ServerRequestCreator;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+$projectDir = dirname(__DIR__);
+require $projectDir . '/vendor/autoload.php';
 
 $psr17Factory = new Psr17Factory();
 
-(new JsonKernel())((new ServerRequestCreator(
+(new JsonKernel($projectDir))((new ServerRequestCreator(
     $psr17Factory, // ServerRequestFactory
     $psr17Factory, // UriFactory
     $psr17Factory, // UploadedFileFactory

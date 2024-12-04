@@ -25,13 +25,13 @@ abstract class KernelAbstract
     protected ContainerInterface $container;
     protected LoggerInterface $logger;
 
-    public function __construct()
+    public function __construct(string $projectDir)
     {
         set_error_handler(function (int $errno, string $message): void {
             throw new AppException($message, $errno);
         });
         //building DI container
-        $this->container = (new AppDIContainerBuilder())($this->getProjectDir());
+        $this->container = (new AppDIContainerBuilder())($projectDir);
         $this->logger = $this->container->get(LoggerInterface::class);
         //localization setup
         ($this->container->get(AppSetLocalization::class))();
@@ -41,10 +41,5 @@ abstract class KernelAbstract
     public function getContainer(): ContainerInterface
     {
         return $this->container;
-    }
-
-    public function getProjectDir(): string
-    {
-        return dirname(__DIR__) . '/..';
     }
 }
