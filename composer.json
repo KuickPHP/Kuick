@@ -43,13 +43,7 @@
             "@test:phpunit"
         ],
         "generate:phpmd-baseline": "phpmd --generate-baseline ./src text phpmd.xml.dist",
-        "generate:phpmetrics": "phpmetrics --report-html=./public/build/phpmetrics ./src",
-        "post-install-cmd": [
-            "Kuick\\Composer\\ComposerInstaller::postInstall"
-        ],
-        "post-update-cmd": [
-            "Kuick\\Composer\\ComposerInstaller::postUpdate"
-        ]
+        "generate:phpmetrics": "phpmetrics --report-html=./public/build/phpmetrics ./src"
     },
     "autoload": {
         "psr-4": {

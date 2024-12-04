@@ -13,7 +13,7 @@ namespace Kuick\App;
 use DI\ContainerBuilder;
 use Kuick\App\DIFactories\BuildLogger;
 use Kuick\App\DIFactories\BuildRouteMatcher;
-use Kuick\App\DIFactories\LoadDefinitions;
+use Kuick\App\DIFactories\AddDefinitions;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -73,7 +73,7 @@ class AppDIContainerBuilder
         $builder->addDefinitions([self::PROJECT_DIR_CONFIGURATION_KEY => $projectDir]);
 
         //loading DI definitions (configuration)
-        (new LoadDefinitions($builder))($projectDir, $this->appEnv);
+        (new AddDefinitions($builder))($projectDir, $this->appEnv);
 
         //adding environment configuration
         $builder->addDefinitions((new AppGetEnvironment())($projectDir));

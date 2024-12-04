@@ -8,18 +8,22 @@ use Symfony\Component\Filesystem\Filesystem;
 
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertFalse;
+use function PHPUnit\Framework\assertTrue;
 
 /**
  * @covers \Kuick\App\AppDIContainerBuilder
  */
 class AppDIContainerBuilderTest extends TestCase
 {
+    public static string $projectDir;
+
     public static function setUpBeforeClass(): void
     {
+        self::$projectDir = realpath(dirname(__DIR__) . '/../Mocks/MockProjectDir');
+        $cacheDir = self::$projectDir . '/var/cache';
         $fs = new Filesystem();
-        $fakerootVar = dirname(__DIR__) . '/../../Mocks/FakeRoot/var/cache';
-        $fs->remove($fakerootVar);
-        $fs->mkdir($fakerootVar);
+        $fs->remove($cacheDir);
+        $fs->mkdir($cacheDir);
     }
 
     /**
@@ -29,10 +33,10 @@ class AppDIContainerBuilderTest extends TestCase
     public function testIfContainerIsRebuiltForDev(): void
     {
         $adcb = (new AppDIContainerBuilder());
-        $container = $adcb(dirname(__DIR__) . '/../Mocks/FakeRoot');
+        $container = $adcb(self::$projectDir);
         assertEquals('Testing', $container->has('kuick.app.name'));
         assertEquals('Europe/Warsaw', $container->has('kuick.app.timezone'));
-        assertFalse($container->get('kuick.app.monolog.usemicroseconds'));
+        assertTrue($container->get('kuick.app.monolog.usemicroseconds'));
         assertEquals('INFO', $container->get('kuick.app.monolog.level'));
     }
 
@@ -43,14 +47,15 @@ class AppDIContainerBuilderTest extends TestCase
     public function testIfProdContainerUtilizesProdConfigs(): void
     {
         putenv('KUICK_APP_ENV=prod');
-        //real build
-        (new AppDIContainerBuilder());
-        //container from cache
-        $adcb = (new AppDIContainerBuilder());
-        $container = $adcb(dirname(__DIR__) . '/../Mocks/FakeRoot');
-        assertEquals('Testing', $container->has('kuick.app.name'));
-        assertEquals('Europe/Warsaw', $container->has('kuick.app.timezone'));
-        assertFalse($container->get('kuick.app.monolog.usemicroseconds'));
-        assertEquals('INFO', $container->get('kuick.app.monolog.level'));
+        //uncached build
+        $uncachedContainer = (new AppDIContainerBuilder())(self::$projectDir);
+        assertEquals('Testing', $uncachedContainer->has('kuick.app.name'));
+        //container loaded from cache
+        $cachedContainer = (new AppDIContainerBuilder())(self::$projectDir);
+        $cachedContainer = (new AppDIContainerBuilder())(self::$projectDir);
+        assertEquals('Testing', $cachedContainer->has('kuick.app.name'));
+        assertEquals('Europe/Warsaw', $cachedContainer->has('kuick.app.timezone'));
+        assertFalse($cachedContainer->get('kuick.app.monolog.usemicroseconds'));
+        assertEquals('INFO', $cachedContainer->get('kuick.app.monolog.level'));
     }
 }

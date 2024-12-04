@@ -15,7 +15,7 @@ class AppGetEnvironmentTest extends TestCase
     public function testIfEnvironmentIsProperlyInherited(): void
     {
         putenv('TESTING=testing');
-        $environmentVariables = (new AppGetEnvironment())(dirname(__DIR__) . '/../Mocks/FakeRoot');
+        $environmentVariables = (new AppGetEnvironment())(dirname(__DIR__) . '/../Mocks/MockProjectDir');
         assertEquals('testing', $environmentVariables['testing']);
         assertEquals('local value', $environmentVariables['example']);
     }

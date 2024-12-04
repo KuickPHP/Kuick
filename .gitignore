@@ -8,5 +8,5 @@ composer.lock
 /var
 version.*
 /.env.local
-/tests/Mocks/FakeRoot/var*
+/tests/Mocks/MockProjectDir/var*
 

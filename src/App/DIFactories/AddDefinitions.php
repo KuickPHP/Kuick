@@ -13,7 +13,7 @@ namespace Kuick\App\DIFactories;
 /**
  *
  */
-class LoadDefinitions extends FactoryAbstract
+class AddDefinitions extends FactoryAbstract
 {
     private const DEFINITION_LOCATIONS = [
         '/vendor/kuick/*/etc/di/*.di.php',

@@ -17,14 +17,15 @@ use function PHPUnit\Framework\assertTrue;
  */
 class BuildLoggerTest extends TestCase
 {
-    private const LOG_FILE = '/../../Mocks/FakeRoot/var/testing.log';
+    public static string $projectDir;
 
     public static function setUpBeforeClass(): void
     {
         $fs = new Filesystem();
-        $fakerootVar = dirname(__DIR__) . '/../../Mocks/FakeRoot/var';
-        $fs->remove($fakerootVar);
-        $fs->mkdir($fakerootVar);
+        self::$projectDir = dirname(__DIR__) . '/../../Mocks/MockProjectDir';
+        $logDir = self::$projectDir . '/var/log';
+        $fs->remove($logDir);
+        $fs->mkdir($logDir);
     }
 
     public function testIfMinimalConfigProducesALogger(): void
@@ -51,7 +52,7 @@ class BuildLoggerTest extends TestCase
     public function testIfAddedStreamHandlerWritesTheLog(): void
     {
         $cb = new ContainerBuilder();
-        $logfile = dirname(__DIR__) . self::LOG_FILE;
+        $logfile = self::$projectDir . '/var/log/testing.log';
         $cb->addDefinitions([
             'kuick.app.name' => 'test',
             'kuick.app.timezone' => 'Europe/Paris',

@@ -16,15 +16,18 @@ use function PHPUnit\Framework\assertEquals;
 
 /**
  * @covers \Kuick\App\DIFactories\BuildRouteMatcher
+ * @covers \Kuick\App\DIFactories\FactoryAbstract
  */
 class BuildRouteMatcherTest extends TestCase
 {
+    public static string $projectDir;
+
     public static function setUpBeforeClass(): void
     {
         $fs = new Filesystem();
-        $fakerootVar = dirname(__DIR__) . '/../../Mocks/FakeRoot/var/cache';
-        $fs->remove($fakerootVar);
-        $fs->mkdir($fakerootVar);
+        self::$projectDir = dirname(__DIR__) . '/../../Mocks/MockProjectDir';
+        $cacheFiles = self::$projectDir . '/var/cache/kuick-app-routematcher-routes';
+        $fs->remove($cacheFiles);
     }
 
     public function testIfRoutesAreProperlyBuilt(): void
@@ -84,7 +87,7 @@ class BuildRouteMatcherTest extends TestCase
         $cb = new ContainerBuilder();
         $cb->addDefinitions([
             'kuick.app.env' => 'prod',
-            'app.project.dir' => dirname(__DIR__) . '/../../Mocks/FakeRoot',
+            'app.project.dir' => self::$projectDir,
             LoggerInterface::class => new NullLogger(),
         ]);
         (new BuildRouteMatcher($cb))();
