@@ -25,6 +25,9 @@ COPY --link bin ./bin
 COPY --link etc ./etc
 COPY --link public ./public
 COPY --link composer.dist.json composer.json
+COPY --link version.* ./public/
+
+RUN mkdir -m 777 var
 
 RUN set -eux; \
     composer install \ 
@@ -33,8 +36,6 @@ RUN set -eux; \
     --classmap-authoritative \
     --no-scripts \
     --no-plugins
-
-COPY --link version.* ./public/
 
 ######################
 # Test runner target #
