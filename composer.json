@@ -2,7 +2,7 @@
     "name": "kuick/framework",
     "type": "library",
     "description": "Kuick is an extremely low footprint application framework, suitable for high throughput workloads",
-    "keywords": ["message broker", "framework"],
+    "keywords": ["framework", "json server", "psr"],
     "license": "MIT",
     "authors": [
         {
@@ -21,6 +21,7 @@
         "monolog/monolog": "^3.0",
         "symfony/console": "^7.1",
         "psr/simple-cache":"^3.0",
+        "nyholm/dsn": "^2.0",
         "nyholm/psr7": "^1.8",
         "nyholm/psr7-server": "^1.1"
     },

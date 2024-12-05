@@ -8,7 +8,7 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\SimpleCache;
+namespace Kuick\Cache;
 
 use Exception;
 use Psr\SimpleCache\CacheException as PsrCacheException;

@@ -8,17 +8,18 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\SimpleCache;
+namespace Kuick\Cache;
 
 use DateInterval;
 use FilesystemIterator;
 use GlobIterator;
+use Kuick\Cache\Utils\CacheValueSerializer;
 use Psr\SimpleCache\CacheInterface;
 
 class FileCache implements CacheInterface
 {
-    private const MIN_KEY_LENGTH = 2;
-    private const MAX_KEY_LENGTH = 160;
+    private const MIN_KEY_LENGTH = 1;
+    private const MAX_KEY_LENGTH = 255;
 
     public function __construct(private string $filesystemCacheDir)
     {
@@ -57,7 +58,8 @@ class FileCache implements CacheInterface
     public function set(string $key, mixed $value, null|int|DateInterval $ttl = null): bool
     {
         $cacheFilePath = $this->calculateFilePath($key);
-        return file_put_contents($cacheFilePath, (new CacheValueSerializer())->serialize($value, $ttl)) > 0;
+        file_put_contents($cacheFilePath, (new CacheValueSerializer())->serialize($value, $ttl));
+        return true;
     }
 
     /**

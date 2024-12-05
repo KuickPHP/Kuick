@@ -15,7 +15,7 @@ use Kuick\App\KernelAbstract;
 use Kuick\App\Router\ClassInvokeArgumentReflector;
 use Kuick\App\Router\RouteMatcher;
 use Kuick\App\Router\RouteValidator;
-use Kuick\SimpleCache\FileCache;
+use Kuick\Cache\FileCache;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 

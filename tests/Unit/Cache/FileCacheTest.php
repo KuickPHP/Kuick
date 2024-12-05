@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Kuick\SimpleCache;
+namespace Tests\Kuick\Cache;
 
-use Kuick\SimpleCache\CacheException;
-use Kuick\SimpleCache\FileCache;
-use Kuick\SimpleCache\InvalidArgumentException;
+use Kuick\Cache\CacheException;
+use Kuick\Cache\FileCache;
+use Kuick\Cache\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -14,7 +14,7 @@ use function PHPUnit\Framework\assertNull;
 use function PHPUnit\Framework\assertTrue;
 
 /**
- * @covers \Kuick\SimpleCache\FileCache
+ * @covers \Kuick\Cache\FileCache
  */
 class FileCacheTest extends TestCase
 {
@@ -107,13 +107,13 @@ class FileCacheTest extends TestCase
         $fc = new FileCache(self::$cacheDir);
         //key to short
         $this->expectException(InvalidArgumentException::class);
-        $fc->set('s', 'bar');
+        $fc->set('', 'bar');
     }
 
     public function testIfKeyTooLongThrowsException(): void
     {
         $fc = new FileCache(self::$cacheDir);
         $this->expectException(InvalidArgumentException::class);
-        $fc->set('255+character-key-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', 'bar');
+        $fc->set('255+character-key-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx', 'bar');
     }
 }

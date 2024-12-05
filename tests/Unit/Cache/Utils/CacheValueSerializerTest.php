@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Kuick\SimpleCache;
+namespace Tests\Kuick\Cache\Utils;
 
 use DateInterval;
-use Kuick\SimpleCache\CacheValueSerializer;
+use Kuick\Cache\Utils\CacheValueSerializer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -11,7 +11,7 @@ use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNull;
 
 /**
- * @covers \Kuick\SimpleCache\CacheValueSerializer
+ * @covers \Kuick\Cache\Utils\CacheValueSerializer
  */
 class CacheValueSerializerTest extends TestCase
 {
