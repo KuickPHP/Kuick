@@ -67,5 +67,11 @@
         "phpstan/phpstan": "^1.0",
         "friendsofphp/php-cs-fixer": "^3.0",
         "phpmetrics/phpmetrics": "^2.0"
+    },
+    "config": {
+        "preferred-install": {
+            "symfony/polyfill-*": "source",
+            "*": "dist"
+        }
     }
 }
