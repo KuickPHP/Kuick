@@ -33,7 +33,7 @@ jobs:
     needs: Testing
     strategy:
       matrix:
-        os-variant: ['jammy', 'bookworm', 'alpine']
+        os-variant: ['jammy', 'noble', 'bookworm', 'alpine']
       fail-fast: false
     runs-on: ubuntu-latest
     steps:
@@ -45,8 +45,6 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         push: false
-        file: ./Dockerfile
-        context: ./
         target: dist
         tags: testing
         build-args: OS_VARIANT=${{ matrix.os-variant }}
@@ -82,8 +80,6 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         push: true
-        file: ./Dockerfile
-        context: ./
         platforms: linux/amd64,linux/arm64/v8,linux/arm/v7
         target: dist
         tags: ${{ steps.meta.outputs.tags }},
