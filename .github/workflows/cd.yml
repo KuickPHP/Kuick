@@ -15,7 +15,7 @@ jobs:
       matrix:
         version: ['8.2', '8.3']
       fail-fast: true
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -35,7 +35,7 @@ jobs:
       matrix:
         os-variant: ['jammy', 'noble', 'bookworm', 'alpine']
       fail-fast: false
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-noble
     steps:
     - 
       name: Checkout code

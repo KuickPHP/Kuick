@@ -2,7 +2,7 @@
 
 ARG PHP_VERSION=8.3 \
     SERVER_VARIANT=apache \
-    OS_VARIANT=jammy
+    OS_VARIANT=noble
 
 ###################
 # Base PHP target #
