@@ -19,7 +19,7 @@ jobs:
         # https://bugs.launchpad.net/ubuntu/+source/curl/+bug/2073448
         os-variant: ['jammy', 'noble', 'bookworm', 'alpine']
       fail-fast: true
-    runs-on: ubuntu-24.04
+    runs-on: macos-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
