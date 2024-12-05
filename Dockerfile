@@ -31,7 +31,8 @@ RUN mkdir -m 777 var
 
 RUN set -eux; \
     composer install \ 
-    --prefer-source \
+    --prefer-dist \
+    --ignore-platform-reqs \
     --no-dev \
     --classmap-authoritative \
     --no-scripts \
