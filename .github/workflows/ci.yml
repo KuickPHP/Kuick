@@ -15,9 +15,11 @@ jobs:
     strategy:
       matrix:
         version: ['8.2', '8.3']
+        # Noble is not available because of a curl arm64 bug:
+        # https://bugs.launchpad.net/ubuntu/+source/curl/+bug/2073448
         os-variant: ['jammy', 'noble', 'bookworm', 'alpine']
       fail-fast: true
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-noble
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -46,6 +48,6 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         push: false
-        platforms: linux/amd64
+        platforms: linux/amd64,linux/arm64,linux/arm/v7
         target: dist
         build-args: OS_VARIANT=${{ matrix.os-variant }}
