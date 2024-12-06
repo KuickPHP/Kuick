@@ -15,14 +15,11 @@ use function PHPUnit\Framework\assertTrue;
  */
 class AppDIContainerBuilderTest extends TestCase
 {
-    private string $projectDir;
+    private static string $projectDir;
 
-    protected function setUp(): void
+    public static function setUpBeforeClass(): void
     {
-        $this->projectDir = realpath(dirname(__DIR__) . '/../Mocks/MockProjectDir');
-        $cacheDir = $this->projectDir . '/var/cache';
-        $fs = new Filesystem();
-        $fs->remove($cacheDir);
+        self::$projectDir = realpath(dirname(__DIR__) . '/../Mocks/MockProjectDir');
     }
 
     /**
@@ -31,10 +28,12 @@ class AppDIContainerBuilderTest extends TestCase
      */
     public function testIfContainerIsRebuiltForDev(): void
     {
+        #kuick.app.env = dev (from .env)
         $adcb = (new AppDIContainerBuilder());
-        $container = $adcb($this->projectDir);
-        assertEquals('Testing', $container->has('kuick.app.name'));
-        assertEquals('Europe/Warsaw', $container->has('kuick.app.timezone'));
+        $container = $adcb(self::$projectDir);
+        assertEquals('Testing App', $container->get('kuick.app.name'));
+        assertEquals('Europe/Warsaw', $container->get('kuick.app.timezone'));
+        assertEquals('local value', $container->get('example'));
         assertTrue($container->get('kuick.app.monolog.usemicroseconds'));
         assertEquals('INFO', $container->get('kuick.app.monolog.level'));
     }
@@ -47,12 +46,27 @@ class AppDIContainerBuilderTest extends TestCase
     {
         putenv('KUICK_APP_ENV=prod');
         //uncached build
-        $uncachedContainer = (new AppDIContainerBuilder())($this->projectDir);
-        assertEquals('Testing', $uncachedContainer->has('kuick.app.name'));
-        //container loaded from cache
-        $cachedContainer = (new AppDIContainerBuilder())($this->projectDir);
+        $fs = new Filesystem();
+        $fs->remove(self::$projectDir . '/var/cache/prod');
+        $uncachedContainer = (new AppDIContainerBuilder())(self::$projectDir);
+        assertEquals('Testing App', $uncachedContainer->get('kuick.app.name'));
+        assertEquals('Europe/Paris', $uncachedContainer->get('kuick.app.timezone'));
+        assertEquals('local value', $uncachedContainer->get('example'));
+        assertFalse($uncachedContainer->get('kuick.app.monolog.usemicroseconds'));
+        assertEquals('INFO', $uncachedContainer->get('kuick.app.monolog.level'));
+    }
+
+    /**
+     * Needs to be run in separate process, cause emmiter sends headers
+     * @runInSeparateProcess
+     */
+    public function testIfContainerIsBuiltOnlyOnce(): void
+    {
+        putenv('KUICK_APP_ENV=prod');
+        //cached container
+        $cachedContainer = (new AppDIContainerBuilder())(self::$projectDir);
         assertEquals('Testing', $cachedContainer->has('kuick.app.name'));
-        assertEquals('Europe/Warsaw', $cachedContainer->has('kuick.app.timezone'));
+        assertEquals('Europe/Paris', $cachedContainer->has('kuick.app.timezone'));
         assertFalse($cachedContainer->get('kuick.app.monolog.usemicroseconds'));
         assertEquals('INFO', $cachedContainer->get('kuick.app.monolog.level'));
     }

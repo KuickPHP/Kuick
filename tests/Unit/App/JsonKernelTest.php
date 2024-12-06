@@ -2,6 +2,8 @@
 
 namespace Tests\Kuick\App;
 
+use DivisionByZeroError;
+use Kuick\App\AppException;
 use Kuick\App\JsonKernel;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
@@ -36,7 +38,7 @@ class JsonKernelTest extends TestCase
     {
         ob_start();
         $jk = new JsonKernel(dirname(__DIR__) . '/../Mocks/MockProjectDir');
-        ob_end_flush();
+        ob_end_clean();
         $container = $jk->getContainer();
         assertEquals('Testing App', $container->get('kuick.app.name'));
     }

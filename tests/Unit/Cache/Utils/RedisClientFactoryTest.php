@@ -26,4 +26,10 @@ class RedisClientFactoryTest extends TestCase
         $this->expectException(RedisException::class);
         (new RedisClientFactory())('redis://some.inexistent.host:7000?persistent=false&database=1');
     }
+
+    public function testIfAuthorizationTakesPlace(): void
+    {
+        $this->expectException(RedisException::class);
+        (new RedisClientFactory())('redis://127.0.0.1:6379?user=user&pass=pass');
+    }
 }

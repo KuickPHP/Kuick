@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - '**'
-  # workflow can be called directly
+  # workflow is reused by cd.yml
   workflow_call:
 
 jobs:
