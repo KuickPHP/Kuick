@@ -44,7 +44,7 @@ class RedisMock implements RedisInterface
 
     public function exists(string $key): bool
     {
-        if (!array_key_exists($key, $this->ttls) || 
+        if (!array_key_exists($key, $this->ttls) ||
             !array_key_exists($key, $this->storage) ||
             !array_key_exists($key, $this->createTimes)) {
             return false;
