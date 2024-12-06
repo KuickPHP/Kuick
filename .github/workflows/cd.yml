@@ -27,14 +27,6 @@ jobs:
       name: Checkout code
       uses: actions/checkout@v4
     - 
-      name: Build testing Docker Image
-      uses: docker/build-push-action@v5
-      with:
-        push: false
-        target: dist
-        tags: testing
-        build-args: OS_VARIANT=${{ matrix.os-variant }}
-    - 
       name: Set up QEMU (multiplatform)
       uses: docker/setup-qemu-action@v3
     - 
