@@ -11,23 +11,7 @@ on:
 
 jobs:
   Testing:
-    strategy:
-      matrix:
-        version: ['8.2', '8.3']
-      fail-fast: true
-    runs-on: macos-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    - name: Build docker image
-      uses: docker/build-push-action@v5
-      with:
-        push: false
-        target: test-runner
-        tags: php${{ matrix.version }}-checks
-        build-args: PHP_VERSION=${{ matrix.version }}
-    - name: Run tests
-      run: docker run --rm php${{ matrix.version }}-checks sh -c "composer test:all"
+    uses: milejko/kuick/.github/workflows/ci.yml@main
 
   Deployment:
     needs: Testing
