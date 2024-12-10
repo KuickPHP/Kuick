@@ -38,7 +38,7 @@ class RouteMatcher
             return [];
         }
         $requestMethod = $request->getMethod();
-        $methodNotAllowedForRoute = null;
+        $routeWithMismatchedMethod = null;
         foreach ($this->routes as $route) {
             //method defaults to GET
             $routeMethod = $route['method'] ?? RequestMethods::GET;
@@ -59,10 +59,10 @@ class RouteMatcher
             }
             //method mismatch
             $this->logger->debug('Method mismatch, but action matching path: ' . $route['path']);
-            $methodNotAllowedForRoute = $route;
+            $routeWithMismatchedMethod = $route;
         }
-        if (null !== $methodNotAllowedForRoute) {
-            throw new MethodNotAllowedException($requestMethod . ' method is not allowed for path: ' . $methodNotAllowedForRoute['path']);
+        if (null !== $routeWithMismatchedMethod) {
+            throw new MethodNotAllowedException($requestMethod . ' method is not allowed for path: ' . $routeWithMismatchedMethod['path']);
         }
         throw new NotFoundException('Not found');
     }

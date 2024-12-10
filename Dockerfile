@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.6
 
-ARG PHP_VERSION=8.3 \
+ARG PHP_VERSION=8.4 \
     SERVER_VARIANT=apache \
     OS_VARIANT=noble
 
