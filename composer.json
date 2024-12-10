@@ -43,8 +43,7 @@
             "@test:phpmd",
             "@test:phpunit"
         ],
-        "generate:phpmd-baseline": "phpmd --generate-baseline ./src text phpmd.xml.dist",
-        "generate:phpmetrics": "phpmetrics --report-html=./public/build/phpmetrics ./src"
+        "generate:phpmd-baseline": "phpmd --generate-baseline ./src text phpmd.xml.dist"
     },
     "autoload": {
         "psr-4": {
@@ -66,7 +65,6 @@
         "phpmd/phpmd": "^2.0",
         "squizlabs/php_codesniffer": "^3.0",
         "phpstan/phpstan": "^1.0",
-        "friendsofphp/php-cs-fixer": "^3.0",
-        "phpmetrics/phpmetrics": "^2.0"
+        "friendsofphp/php-cs-fixer": "^3.0"
     }
 }
