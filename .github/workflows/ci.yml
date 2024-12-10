@@ -14,14 +14,12 @@ jobs:
     name: "PHP Checks"
     strategy:
       matrix:
-        version: ['8.2', '8.3', '8.4']
-        # Noble is not available because of a curl arm64 bug:
-        # https://bugs.launchpad.net/ubuntu/+source/curl/+bug/2073448
+        php-version: ['8.2', '8.3', '8.4']
         os-variant: ['bookworm', 'noble', 'jammy', 'alpine']
         # temporarily disabled 8.4@alpine (lack of such image)
         exclude:
-          - os-variant: alpine
-            version: '8.4'
+          - php-version: '8.4'
+            os-variant: 'alpine'
       fail-fast: true
     runs-on: ubuntu-latest
     steps:
@@ -32,12 +30,12 @@ jobs:
       with:
         push: false
         target: test-runner
-        tags: php${{ matrix.version }}-${{ matrix.os-variant}}-checks
+        tags: php${{ matrix.php-version }}-${{ matrix.os-variant}}-checks
         build-args: |
-          PHP_VERSION=${{ matrix.version }}
+          PHP_VERSION=${{ matrix.php-version }}
           OS_VARIANT=${{ matrix.os-variant }}
     - name: Run tests
-      run: docker run --rm -v ./:/var/www/html/public/build php${{ matrix.version }}-${{ matrix.os-variant}}-checks sh -c "composer test:all"
+      run: docker run --rm -v ./:/var/www/html/public/build php${{ matrix.php-version }}-${{ matrix.os-variant}}-checks sh -c "composer test:all"
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
@@ -54,4 +52,6 @@ jobs:
         push: false
         platforms: linux/amd64,linux/arm64,linux/arm/v7
         target: dist
-        build-args: OS_VARIANT=${{ matrix.os-variant }}
+        build-args: |
+          PHP_VERSION=${{ matrix.php-version}}
+          OS_VARIANT=${{ matrix.os-variant }}
