@@ -15,7 +15,9 @@ jobs:
     strategy:
       matrix:
         php-version: ['8.2', '8.3', '8.4']
-        os-variant: ['bookworm', 'noble', 'jammy', 'alpine']
+        # Ubuntu Noble is not available for now, because of a curl arm64 bug:
+        # https://bugs.launchpad.net/ubuntu/+source/curl/+bug/2073448
+        os-variant: ['bookworm', 'jammy', 'alpine']
         # temporarily disabled 8.4@alpine (lack of such image)
         exclude:
           - php-version: '8.4'

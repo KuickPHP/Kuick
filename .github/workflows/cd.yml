@@ -16,7 +16,9 @@ jobs:
     needs: Testing
     strategy:
       matrix:
-        os-variant: ['jammy', 'noble', 'bookworm', 'alpine']
+        # Ubuntu Noble is not available for now, because of a curl arm64 bug:
+        # https://bugs.launchpad.net/ubuntu/+source/curl/+bug/2073448
+        os-variant: ['jammy', 'bookworm', 'alpine']
       fail-fast: false
     runs-on: ubuntu-latest
     steps:
