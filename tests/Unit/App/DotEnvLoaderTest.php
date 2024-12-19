@@ -20,7 +20,7 @@ class DotEnvLoaderTest extends TestCase
         putenv('KUICK_APP_ENV');
         putenv('OVERRIDE_LOCAL');
         putenv('OVERRIDE_DEV');
-        putenv('OVERRIDE_DEV_LOCAL');        
+        putenv('OVERRIDE_DEV_LOCAL');
         new DotEnvLoader(dirname(__DIR__) . '/../Mocks/MockProjectDir');
         assertEquals('no-override', getenv('TESTING'));
         assertEquals('local value', getenv('ONLY_LOCAL'));
@@ -53,5 +53,4 @@ class DotEnvLoaderTest extends TestCase
         new DotEnvLoader(dirname(__DIR__) . '/../Mocks');
         assertEquals('.env.dev.local', getenv('OVERRIDE_DEV_LOCAL'));
     }
-
 }

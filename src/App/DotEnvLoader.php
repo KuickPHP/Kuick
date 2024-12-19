@@ -60,7 +60,7 @@ class DotEnvLoader
                 parse_ini_file($dotEnvFileList[self::ENV_FILE_PREFIX . $appEnv . self::LOCAL_SUFFIX])
             );
         }
-        
+
         $this->pushToEnvironment($dotEnvValues);
     }
 
