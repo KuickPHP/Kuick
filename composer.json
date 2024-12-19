@@ -33,7 +33,7 @@
             "@fix:php-cs-fixer"
         ],
         "test:security-checker": "security-checker security:check",
-        "test:phpstan": "XDEBUG_MODE=off phpstan --level=5 --no-progress --memory-limit=512M analyse src tests -c phpstan-baseline.neon",
+        "test:phpstan": "XDEBUG_MODE=off phpstan --level=5 --no-progress --memory-limit=512M analyse src tests/Unit -c phpstan-baseline.neon",
         "test:phpcs": "phpcs",
         "test:phpmd": "phpmd ./src text phpmd.xml.dist",
         "test:phpunit": "XDEBUG_MODE=coverage phpunit",

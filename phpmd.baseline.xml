@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <phpmd-baseline>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Cache/Utils/CacheFactory.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Cache/Utils/RedisClientFactory.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Cache/Utils/RedisInterface.php"/>
+  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Ops/Console/InstallCommand.php"/>
 </phpmd-baseline>

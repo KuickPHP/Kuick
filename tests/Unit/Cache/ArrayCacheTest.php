@@ -18,7 +18,7 @@ class ArrayCacheTest extends TestCase
 {
     public function testIfCacheCanBeSetAndGet(): void
     {
-        $rc = new ArrayCache(new RedisMock());
+        $rc = new ArrayCache();
         assertNull($rc->get('inexistent-key'));
         assertFalse($rc->has('inexistent-key'));
         assertTrue($rc->set('/my/key', 'test-value'));
@@ -28,7 +28,7 @@ class ArrayCacheTest extends TestCase
 
     public function testIfCacheCanBeOverwritten(): void
     {
-        $rc = new ArrayCache(new RedisMock());
+        $rc = new ArrayCache();
         assertTrue($rc->set('foo', 'bar'));
         assertEquals('bar', $rc->get('foo'));
         assertTrue($rc->set('foo', 'baz'));
@@ -37,7 +37,7 @@ class ArrayCacheTest extends TestCase
 
     public function testIfCacheCanBeDeleted(): void
     {
-        $rc = new ArrayCache(new RedisMock());
+        $rc = new ArrayCache();
         assertTrue($rc->set('foo', 'bar'));
         assertEquals('bar', $rc->get('foo'));
         assertTrue($rc->delete('foo'));
@@ -46,7 +46,7 @@ class ArrayCacheTest extends TestCase
 
     public function testIfExpiredCacheReturnsNull(): void
     {
-        $rc = new ArrayCache(new RedisMock());
+        $rc = new ArrayCache();
         $rc->set('foo', 'bar', 1);
         assertEquals('bar', $rc->get('foo'));
         sleep(1);
@@ -55,7 +55,7 @@ class ArrayCacheTest extends TestCase
 
     public function testMultipleSetsAndGetsDeletes(): void
     {
-        $rc = new ArrayCache(new RedisMock());
+        $rc = new ArrayCache();
         $sourceArray = [
             'first' => 'first value',
             'second' => 'second value',
@@ -69,7 +69,7 @@ class ArrayCacheTest extends TestCase
 
     public function testClear(): void
     {
-        $rc = new ArrayCache(new RedisMock());
+        $rc = new ArrayCache();
         $rc->set('first', 'first value');
         $rc->setMultiple([
             'foo' => 'baz',

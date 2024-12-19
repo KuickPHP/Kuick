@@ -29,7 +29,8 @@ class ArrayCache implements CacheInterface
     public function set(string $key, mixed $value, null|int|DateInterval $ttl = null): bool
     {
         $ttlSeconds = ($ttl instanceof DateInterval) ? $ttl->s : $ttl;
-        return $this->store[$key] = (new CacheValueSerializer())->serialize($value, $ttlSeconds);
+        $this->store[$key] = (new CacheValueSerializer())->serialize($value, $ttlSeconds);
+        return true;
     }
 
     public function setMultiple(iterable $values, null|int|DateInterval $ttl = null): bool
