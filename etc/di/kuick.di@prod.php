@@ -8,4 +8,6 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-return [];
+return [
+    //some prod definitions
+];

@@ -45,9 +45,9 @@ class ActionLauncher
     private function executeGuards(array $route, ServerRequestInterface $request): void
     {
         foreach ($route['guards'] as $guardName) {
-            $this->logger->info('Executing guard: ' . $guardName);
+            $this->logger->debug('Executing guard: ' . $guardName);
             call_user_func_array($this->container->get($guardName), $this->getArguments($guardName, $route, $request));
-            $this->logger->info('Guard OK: ' . $guardName);
+            $this->logger->debug('Guard OK: ' . $guardName);
         }
     }
 

@@ -10,6 +10,7 @@
 
 namespace Kuick\App;
 
+use Kuick\Ops\Console\InstallCommand;
 use Symfony\Component\Console\Application;
 
 /**
@@ -27,6 +28,7 @@ final class ConsoleKernel extends KernelAbstract
         parent::__construct($projectDir);
         //create a new application
         $this->application = new Application($this->container->get(self::APP_NAME_KEY));
+        $this->application->add($this->container->get(InstallCommand::class));
         //adding commands
         foreach (glob($projectDir . self::COMMAND_PATH_PATTERN) as $commandFile) {
             foreach (include $commandFile as $commandClass) {

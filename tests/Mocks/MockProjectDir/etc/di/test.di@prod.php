@@ -1,6 +1,9 @@
 <?php
 
 //overrides test.di.php
+
+use function DI\env;
+
 return [
-    'kuick.app.timezone'  => 'Europe/Paris',
+    'kuick.app.timezone'  => env('KUICK_APP_TIMEZONE', 'Europe/Paris'),
 ];

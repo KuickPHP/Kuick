@@ -75,6 +75,7 @@ class BuildRouteMatcherTest extends TestCase
 
     public function testIfCachedContainerWorks(): void
     {
+        putenv('KUICK_APP_ENV=prod');
         //first build - create cache
         $container = $this->getContainer();
         $rm = $container->get(RouteMatcher::class);
@@ -87,7 +88,7 @@ class BuildRouteMatcherTest extends TestCase
         $cb = new ContainerBuilder();
         $cb->addDefinitions([
             'kuick.app.env' => 'prod',
-            'app.project.dir' => self::$projectDir,
+            'kuick.app.project.dir' => self::$projectDir,
             LoggerInterface::class => new NullLogger(),
         ]);
         (new BuildRouteMatcher($cb))();

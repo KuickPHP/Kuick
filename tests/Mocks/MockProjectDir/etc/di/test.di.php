@@ -1,17 +1,20 @@
 <?php
 
-return [
-    'kuick.app.name'      => 'Testing App',
-    'kuick.app.charset'   => 'UTF-8',
-    'kuick.app.locale'    => 'en_US.utf-8',
-    'kuick.app.timezone'  => 'UTC',
+use function DI\env;
 
-    'kuick.app.monolog.usemicroseconds' => false,
-    'kuick.app.monolog.level' => 'WARNING',
+return [
+    'kuick.app.name'      => env('KUICK_APP_NAME', 'Testing App'),
+    'kuick.app.charset'   => env('KUICK_APP_CHARSET', 'UTF-8'),
+    'kuick.app.locale'    => env('KUICK_APP_LOCALE', 'en_US.utf-8'),
+    'kuick.app.timezone'  => env('KUICK_APP_TIMEZONE', 'UTC'),
+
+    'kuick.app.monolog.usemicroseconds' => env('KUICK_APP_MONOLOG_USEMICROSECONDS', false),
+    'kuick.app.monolog.level' => env('KUICK_APP_MONOLOG_LEVEL', 'WARNING'),
     'kuick.app.monolog.handlers' => [
         [
             'type' => 'stream',
-            'path' => 'php://stdout',
         ],
     ],
+
+    'example' => env('ONLY_LOCAL', ''),
 ];

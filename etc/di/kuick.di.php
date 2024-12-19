@@ -8,21 +8,22 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-return [
-    'kuick.app.name'      => 'Kuick App',
-    'kuick.app.charset'   => 'UTF-8',
-    'kuick.app.locale'    => 'en_US.utf-8',
-    'kuick.app.timezone'  => 'UTC',
+use function DI\env;
 
-    'kuick.app.monolog.usemicroseconds' => false,
-    'kuick.app.monolog.level' => 'WARNING',
+return [
+    'kuick.app.name'      => env('KUICK_APP_NAME', 'Kuick App'),
+    'kuick.app.charset'   => env('KUICK_APP_CHARSET', 'UTF-8'),
+    'kuick.app.locale'    => env('KUICK_APP_LOCALE', 'en_US.utf-8'),
+    'kuick.app.timezone'  => env('KUICK_APP_TIMEZONE', 'UTC'),
+
+    'kuick.app.monolog.usemicroseconds' => env('KUICK_APP_MONOLOG_USEMICROSECONDS', false),
+    'kuick.app.monolog.level' => env('KUICK_APP_MONOLOG_LEVEL', 'NOTICE'),
     'kuick.app.monolog.handlers' => [
         [
-            'type' => 'stream',
-            'path' => 'php://stdout',
+            'type' => 'fingersCrossed',
         ],
     ],
 
     //there is no valid token by default, you should provide one through environment variables
-    'kuick.ops.guard.token' => '',
+    'kuick.ops.guard.token' => env('KUICK_OPS_GUARD_TOKEN', ''),
 ];

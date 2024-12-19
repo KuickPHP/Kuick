@@ -12,6 +12,7 @@ namespace Kuick\App\DIFactories;
 
 use DateTimeZone;
 use Kuick\App\AppException;
+use Monolog\Handler\FingersCrossedHandler;
 use Monolog\Handler\FirePHPHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -36,14 +37,18 @@ class BuildLogger extends FactoryAbstract
             foreach ($handlers as $handler) {
                 $type = $handler['type'] ?? throw new AppException('Logger handler type not defined');
                 $level = $handler['level'] ?? $defaultLevel;
-                //@TODO: handle more types
+                //@TODO: extract handler factory to the different class and add missing types
                 switch ($type) {
+                    case 'fingersCrossed':
+                        //@TODO: add more nested handler options
+                        $nestedHandler = new StreamHandler($handler['nestedPath'] ?? 'php://stdout', $handler['nestedLevel'] ?? 'debug');
+                        $logger->pushHandler(new FingersCrossedHandler($nestedHandler, $level));
+                        break;
                     case 'firePHP':
                         $logger->pushHandler((new FirePHPHandler($level)));
                         break;
                     case 'stream':
-                        $logger->pushHandler((new StreamHandler($handler['path'] ??
-                        throw new AppException('Logger handler type not defined'), $level)));
+                        $logger->pushHandler((new StreamHandler($handler['path'] ?? 'php://stdout', $level)));
                         break;
                     default:
                         throw new AppException('Unknown Monolog handler: ' . $type);

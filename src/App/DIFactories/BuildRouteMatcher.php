@@ -34,7 +34,8 @@ class BuildRouteMatcher extends FactoryAbstract
             $cache = new FileCache($projectDir . AppDIContainerBuilder::CACHE_PATH);
             $cachedRoutes = $cache->get(BuildRouteMatcher::CACHE_KEY);
             $routes = [];
-            if (KernelAbstract::ENV_PROD == $container->get('kuick.app.env') && null !== $cachedRoutes) {
+            if (KernelAbstract::ENV_PROD == getenv(KernelAbstract::APP_ENV) && null !== $cachedRoutes) {
+                $logger->debug('Routes loaded from cache');
                 $routes = $cachedRoutes;
             }
             if (empty($routes)) {

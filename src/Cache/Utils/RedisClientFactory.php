@@ -17,7 +17,14 @@ class RedisClientFactory
 {
     private const DEFAULT_PORT = 6379;
 
-    public function __invoke(string $dsnString): Redis|RedisInterface
+    /**
+     * Default parameter values:
+     * readTimeout: 2.5
+     * connectTimeout: 2.5
+     * retryInterval: 100
+     * persistent: true
+     */
+    public function create(string $dsnString): Redis|RedisInterface
     {
         $dsn = DsnParser::parse($dsnString);
         //calculate options
@@ -30,9 +37,9 @@ class RedisClientFactory
             'persistent'     => $dsn->getParameter('persistent', true),
         ];
         $redis = new Redis($options);
-        //optional database selection
-        if ($dsn->getParameter('database')) {
-            $redis->select($dsn->getParameter('database'));
+        //optional database selection (not empty path)
+        if ($dsn->getPath()) {
+            $redis->select($dsn->getPath());
         }
         //optional authentication
         if ($dsn->getParameter('user') || $dsn->getParameter('pass')) {

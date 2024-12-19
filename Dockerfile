@@ -14,11 +14,7 @@ FROM milejko/php:${PHP_VERSION}-${SERVER_VARIANT}-${OS_VARIANT} AS base
 #########################################################
 FROM base AS dist
 
-# Important performance hint:
-# KUICK_APP_ENV=prod should be defined here, or via environment variables
-# .env* files shouldn't be used in production
-ENV KUICK_APP_ENV=prod \
-    KUICK_APP_NAME=Kuick@Docker
+ENV KUICK_APP_NAME=Kuick@Docker
 
 COPY --link /etc/apache2 /etc/apache2
 COPY --link bin ./bin
@@ -32,9 +28,8 @@ RUN mkdir -m 777 var
 RUN set -eux; \
     composer install \ 
     --prefer-dist \
-    --ignore-platform-reqs \
-    --no-dev \
     --classmap-authoritative \
+    --no-dev \
     --no-scripts \
     --no-plugins
 

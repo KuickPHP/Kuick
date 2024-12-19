@@ -23,20 +23,22 @@ use Psr\Log\LogLevel;
  */
 class AppDIContainerBuilder
 {
-    public const PROJECT_DIR_CONFIGURATION_KEY = 'app.project.dir';
+    public const PROJECT_DIR_CONFIGURATION_KEY = 'kuick.app.project.dir';
     public const CACHE_PATH =  '/var/cache';
 
     private const COMPILED_FILENAME = 'CompiledContainer.php';
-    private const APP_ENV_KEY = 'KUICK_APP_ENV';
-    private const APP_ENV_CONFIGURATION_KEY = 'kuick.app.env';
-    private const READY_DEFINITION = 'kuick.app.name';
 
     private string $appEnv;
 
     public function __invoke(string $projectDir): ContainerInterface
     {
-        //determining kuick.app.env (ie. dev, prod)
-        $this->appEnv = $this->determineEnv($projectDir);
+        //parse and load .env files
+        new DotEnvLoader($projectDir);
+
+        //determining KUICK_APP_ENV (ie. dev, prod)
+        $this->appEnv = (false === getenv(KernelAbstract::APP_ENV)) ?
+            KernelAbstract::ENV_PROD :
+            getenv(KernelAbstract::APP_ENV);
 
         //remove previous compilation if KUICK_APP_ENV!=dev
         if ($this->appEnv == KernelAbstract::ENV_DEV) {
@@ -47,10 +49,10 @@ class AppDIContainerBuilder
         $container = $this->configureBuilder($projectDir)->build();
 
         //validating if container is built
-        if ($container->has(self::READY_DEFINITION)) {
+        if ($container->has(self::PROJECT_DIR_CONFIGURATION_KEY)) {
             $logger = $container->get(LoggerInterface::class);
             $logger->info('Application is running in ' . $this->appEnv . ' mode');
-            $logger->info('DI container loaded from cache');
+            $logger->debug('DI container loaded from cache');
             return $container;
         }
 
@@ -75,9 +77,6 @@ class AppDIContainerBuilder
         //loading DI definitions (configuration)
         (new AddDefinitions($builder))($projectDir, $this->appEnv);
 
-        //adding environment configuration
-        $builder->addDefinitions((new AppGetEnvironment())($projectDir));
-
         //logger
         (new BuildLogger($builder))();
 
@@ -99,17 +98,5 @@ class AppDIContainerBuilder
     private function removeContainer(string $projectDir): void
     {
         array_map('unlink', glob($projectDir . self::CACHE_PATH . DIRECTORY_SEPARATOR . $this->appEnv . DIRECTORY_SEPARATOR . self::COMPILED_FILENAME));
-    }
-
-    private function determineEnv(string $projectDir): string
-    {
-        //best performance - KUICK_APP_ENV found directly in the system environment variables
-        $envVarFromSystemEnv = getenv(self::APP_ENV_KEY);
-        if ($envVarFromSystemEnv) {
-            return $envVarFromSystemEnv;
-        }
-        //checking out .env files
-        $envVariablesFromDotEnv = (new AppGetEnvironment())($projectDir);
-        return $envVariablesFromDotEnv[self::APP_ENV_CONFIGURATION_KEY] ?? KernelAbstract::ENV_PROD;
     }
 }

@@ -3,13 +3,5 @@
     "license": "MIT",
     "require": {
         "kuick/framework": "^1.0"
-    },
-    "scripts": {
-        "post-install-cmd": [
-            "Kuick\\Composer\\ComposerInstaller::postInstall"
-        ],
-        "post-update-cmd": [
-            "Kuick\\Composer\\ComposerInstaller::postUpdate"
-        ]
     }
 }
