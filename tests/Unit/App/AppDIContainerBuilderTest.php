@@ -2,6 +2,7 @@
 
 namespace Tests\Kuick\App;
 
+use DI\NotFoundException;
 use Kuick\App\AppDIContainerBuilder;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -69,5 +70,16 @@ class AppDIContainerBuilderTest extends TestCase
         assertEquals('Europe/Paris', $cachedContainer->has('kuick.app.timezone'));
         assertFalse($cachedContainer->get('kuick.app.monolog.usemicroseconds'));
         assertEquals('INFO', $cachedContainer->get('kuick.app.monolog.level'));
+    }
+
+    /**
+     * Needs to be run in separate process, cause emmiter sends headers
+     * @runInSeparateProcess
+     */
+    public function testIfContainerBuildsOnEmptyDir(): void
+    {
+        $this->expectException(NotFoundException::class);
+        //
+        (new AppDIContainerBuilder())(self::$projectDir . '/empty');
     }
 }

@@ -19,7 +19,7 @@ use Symfony\Component\Console\Application;
 final class ConsoleKernel extends KernelAbstract
 {
     private const APP_NAME_KEY = 'kuick.app.name';
-    private const COMMAND_PATH_PATTERN = '/etc/*.commands.php';
+    private const COMMAND_PATH_PATTERN = '/config/*.commands.php';
 
     private Application $application;
 

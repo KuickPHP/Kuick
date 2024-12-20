@@ -41,7 +41,7 @@ class BuildRouteMatcher extends FactoryAbstract
             if (empty($routes)) {
                 //@TODO: extract route parsing to the external class
                 //app config (normal priority)
-                foreach (glob($projectDir . '/etc/*.routes.php') as $routeFile) {
+                foreach (glob($projectDir . '/config/*.routes.php') as $routeFile) {
                     $routes = array_merge($routes, include $routeFile);
                 }
                 //validating routes

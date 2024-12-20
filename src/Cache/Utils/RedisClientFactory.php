@@ -24,7 +24,7 @@ class RedisClientFactory
      * retryInterval: 100
      * persistent: true
      */
-    public function create(string $dsnString): Redis|RedisInterface
+    public function __invoke(string $dsnString): Redis|RedisInterface
     {
         $dsn = DsnParser::parse($dsnString);
         //calculate options

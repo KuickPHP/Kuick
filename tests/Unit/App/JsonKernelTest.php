@@ -2,11 +2,10 @@
 
 namespace Tests\Kuick\App;
 
-use DivisionByZeroError;
-use Kuick\App\AppException;
 use Kuick\App\JsonKernel;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
 
 use function PHPUnit\Framework\assertEquals;
 
@@ -16,13 +15,22 @@ use function PHPUnit\Framework\assertEquals;
  */
 class JsonKernelTest extends TestCase
 {
+    private static string $projectDir;
+
+    public static function setUpBeforeClass(): void
+    {
+        self::$projectDir = realpath(dirname(__DIR__) . '/../Mocks/MockProjectDir');
+        $fs = new Filesystem();
+        $fs->remove(self::$projectDir . '/var/cache');
+    }
+
     /**
      * Needs to be run in separate process, cause emmiter sends headers
      * @runInSeparateProcess
      */
     public function testIfNotFoundRouteEmmitsNotFoundResponse(): void
     {
-        $jk = new JsonKernel(dirname(__DIR__) . '/../Mocks/MockProjectDir');
+        $jk = new JsonKernel(self::$projectDir);
         $request = new ServerRequest('GET', 'something');
         ob_start();
         $jk($request);
@@ -37,7 +45,7 @@ class JsonKernelTest extends TestCase
     public function testIfContainerReturnsBuiltContainer(): void
     {
         ob_start();
-        $jk = new JsonKernel(dirname(__DIR__) . '/../Mocks/MockProjectDir');
+        $jk = new JsonKernel(self::$projectDir);
         ob_end_clean();
         $container = $jk->getContainer();
         assertEquals('Testing App', $container->get('kuick.app.name'));

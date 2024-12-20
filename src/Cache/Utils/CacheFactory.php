@@ -26,12 +26,12 @@ class CacheFactory
     /**
      * @throws InvalidArgumentException
      */
-    public function create(string $dsnString): CacheInterface
+    public function __invoke(string $dsnString): CacheInterface
     {
         $dsn = DsnParser::parse($dsnString);
         switch ($dsn->getScheme()) {
             case self::REDIS_SCHEME:
-                $redisClient = (new RedisClientFactory())->create($dsnString);
+                $redisClient = (new RedisClientFactory())->__invoke($dsnString);
                 return new RedisCache($redisClient);
             case self::FILE_SCHEME:
                 return new FileCache($dsn->getPath());

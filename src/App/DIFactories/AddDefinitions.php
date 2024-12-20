@@ -16,10 +16,10 @@ namespace Kuick\App\DIFactories;
 class AddDefinitions extends FactoryAbstract
 {
     private const DEFINITION_LOCATIONS = [
-        '/vendor/kuick/*/etc/di/*.di.php',
-        '/etc/di/*.di.php',
+        '/vendor/kuick/*/config/di/*.di.php',
+        '/config/di/*.di.php',
     ];
-    private const ENV_SPECIFIC_DEFINITION_LOCATIONS_TEMPLATE = '/etc/di/*.di@%s.php';
+    private const ENV_SPECIFIC_DEFINITION_LOCATIONS_TEMPLATE = '/config/di/*.di@%s.php';
 
     public function __invoke(string $projectDir, string $env): void
     {

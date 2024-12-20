@@ -19,25 +19,25 @@ class CacheFactoryTest extends TestCase
 {
     public function testIfFileCacheIsCreated(): void
     {
-        $cache = (new CacheFactory())->create('file:///tmp');
+        $cache = (new CacheFactory())->__invoke('file:///tmp');
         assertInstanceOf(FileCache::class, $cache);
     }
 
     public function testIfRedisCacheIsCreated(): void
     {
-        $cache = (new CacheFactory())->create('redis://127.0.0.1');
+        $cache = (new CacheFactory())->__invoke('redis://127.0.0.1');
         assertInstanceOf(RedisCache::class, $cache);
     }
 
     public function testIfArrayCacheIsCreated(): void
     {
-        $cache = (new CacheFactory())->create('array://');
+        $cache = (new CacheFactory())->__invoke('array://');
         assertInstanceOf(ArrayCache::class, $cache);
     }
 
     public function testIfExceptionIsThrownForInvalidDSN(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        (new CacheFactory())->create('inexistent://127.0.0.1');
+        (new CacheFactory())->__invoke('inexistent://127.0.0.1');
     }
 }

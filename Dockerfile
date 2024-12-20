@@ -18,7 +18,7 @@ ENV KUICK_APP_NAME=Kuick@Docker
 
 COPY --link /etc/apache2 /etc/apache2
 COPY --link bin ./bin
-COPY --link etc ./etc
+COPY --link config ./config
 COPY --link public ./public
 COPY --link composer.dist.json composer.json
 COPY --link version.* ./public/
@@ -41,7 +41,7 @@ FROM base AS test-runner
 ENV XDEBUG_ENABLE=1 \
     XDEBUG_MODE=coverage
 
-COPY ./etc/di ./etc/di
+COPY ./config/di ./config/di
 COPY ./src ./src
 COPY ./tests ./tests
 COPY ./composer.json ./composer.json

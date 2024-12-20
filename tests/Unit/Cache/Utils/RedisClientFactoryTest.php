@@ -17,19 +17,19 @@ class RedisClientFactoryTest extends TestCase
 {
     public function testIfConfigIsWorkingCorrectly(): void
     {
-        $client = (new RedisClientFactory())->create('redis://127.0.0.1:6379?persistent=false');
+        $client = (new RedisClientFactory())->__invoke('redis://127.0.0.1:6379?persistent=false');
         assertInstanceOf(Redis::class, $client);
     }
 
     public function testIfWrongRedisHostThrowsAnExceptionWithGivenDatabase(): void
     {
         $this->expectException(RedisException::class);
-        (new RedisClientFactory())->create('redis://some.inexistent.host:7000/1?persistent=false');
+        (new RedisClientFactory())->__invoke('redis://some.inexistent.host:7000/1?persistent=false');
     }
 
     public function testIfAuthorizationTakesPlace(): void
     {
         $this->expectException(RedisException::class);
-        (new RedisClientFactory())->create('redis://127.0.0.1:6379?user=user&pass=pass');
+        (new RedisClientFactory())->__invoke('redis://127.0.0.1:6379?user=user&pass=pass');
     }
 }
