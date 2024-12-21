@@ -48,7 +48,9 @@ COPY composer.json composer.json
 COPY php* ./
 
 RUN set -eux; \
-    echo "apc.enable_cli=1" >> /etc/php/${PHP_VERSION}/mods-available/apcu.ini; \
+    echo "apc.enable_cli=1" >> /etc/php/${PHP_VERSION}/mods-available/apcu.ini || \
+    echo "apc.enable_cli=1" >> /etc/php/${PHP_VERSION/./}/mods-available/apcu.ini || \
+    ; \
     composer install
 
 #####################
