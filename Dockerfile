@@ -1,8 +1,8 @@
 # syntax=docker/dockerfile:1.6
 
-ARG PHP_VERSION=8.4 \
+ARG PHP_VERSION=8.3 \
     SERVER_VARIANT=apache \
-    OS_VARIANT=noble
+    OS_VARIANT=alpine
 
 ###################
 # Base PHP target #
@@ -48,8 +48,9 @@ COPY composer.json composer.json
 COPY php* ./
 
 RUN set -eux; \
+    # debian & alpine have different paths for apcu.ini
     echo "apc.enable_cli=1" >> /etc/php/${PHP_VERSION}/mods-available/apcu.ini || \
-    echo "apc.enable_cli=1" >> /etc/php/${PHP_VERSION/./}/mods-available/apcu.ini; \
+    echo "apc.enable_cli=1" >> /etc/php${PHP_VERSION/./}/conf.d/apcu.ini; \
     composer install
 
 #####################
