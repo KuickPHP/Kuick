@@ -10,6 +10,7 @@
 
 namespace Kuick\Cache\Utils;
 
+use Kuick\Cache\ApcuCache;
 use Kuick\Cache\ArrayCache;
 use Kuick\Cache\FileCache;
 use Kuick\Cache\InvalidArgumentException;
@@ -19,10 +20,6 @@ use Psr\SimpleCache\CacheInterface;
 
 class CacheFactory
 {
-    private const REDIS_SCHEME = 'redis';
-    private const FILE_SCHEME = 'file';
-    private const ARRAY_SCHEME = 'array';
-
     /**
      * @throws InvalidArgumentException
      */
@@ -30,14 +27,16 @@ class CacheFactory
     {
         $dsn = DsnParser::parse($dsnString);
         switch ($dsn->getScheme()) {
-            case self::REDIS_SCHEME:
-                $redisClient = (new RedisClientFactory())->__invoke($dsnString);
-                return new RedisCache($redisClient);
-            case self::FILE_SCHEME:
-                return new FileCache($dsn->getPath());
-            case self::ARRAY_SCHEME:
+            case 'array':
                 return new ArrayCache();
+            case 'apcu':
+                return new ApcuCache();
+            case 'file':
+                return new FileCache($dsn->getPath());
+            case 'redis':
+                $redisClient = (new RedisClientFactory())($dsnString);
+                return new RedisCache($redisClient);
         }
-        throw new InvalidArgumentException('Cache backend invalid: should be one of redis, file, array');
+        throw new InvalidArgumentException('Cache backend invalid: should be one of array, apcu, file or redis');
     }
 }

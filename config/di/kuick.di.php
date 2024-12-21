@@ -8,6 +8,11 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
+use Kuick\Ops\UI\OpsController;
+use Kuick\Ops\Security\OpsGuard;
+use Kuick\Example\UI\PingController;
+
+use function DI\autowire;
 use function DI\env;
 
 return [
@@ -26,4 +31,9 @@ return [
 
     //there is no valid token by default, you should provide one through environment variables
     'kuick.ops.guard.token' => env('KUICK_OPS_GUARD_TOKEN', ''),
+
+    //performance optimization: optional autowire definitions
+    OpsGuard::class => autowire(OpsGuard::class),
+    OpsController::class => autowire(OpsController::class),
+    PingController::class => autowire(PingController::class),
 ];

@@ -23,6 +23,7 @@ use Psr\Log\LogLevel;
  */
 class AppDIContainerBuilder
 {
+    public const APP_ENV_CONFIGURATION_KEY = 'kuick.app.env';
     public const PROJECT_DIR_CONFIGURATION_KEY = 'kuick.app.project.dir';
     public const CACHE_PATH =  '/var/cache';
 
@@ -35,10 +36,8 @@ class AppDIContainerBuilder
         //parse and load .env files
         new DotEnvLoader($projectDir);
 
-        //determining KUICK_APP_ENV (ie. dev, prod)
-        $this->appEnv = (false === getenv(KernelAbstract::APP_ENV)) ?
-            KernelAbstract::ENV_PROD :
-            getenv(KernelAbstract::APP_ENV);
+        (false === getenv(KernelAbstract::APP_ENV)) && putenv(KernelAbstract::APP_ENV . '=' . KernelAbstract::ENV_PROD);
+        $this->appEnv = getenv(KernelAbstract::APP_ENV);
 
         //remove previous compilation if KUICK_APP_ENV!=dev
         if ($this->appEnv == KernelAbstract::ENV_DEV) {
@@ -59,11 +58,11 @@ class AppDIContainerBuilder
         //rebuilding if validation failed
         $container = $this->rebuildContainer($projectDir);
         $logger = $container->get(LoggerInterface::class);
+        $logger->notice('DI container rebuilt, cache written');
         $logger->log(
             $this->appEnv == KernelAbstract::ENV_DEV ? LogLevel::WARNING : LogLevel::INFO,
             'Application is running in ' . $this->appEnv . ' mode'
         );
-        $logger->notice('DI container rebuilt, cache written');
         return $container;
     }
 
@@ -72,7 +71,10 @@ class AppDIContainerBuilder
         $this->removeContainer($projectDir);
         $builder = $this->configureBuilder($projectDir);
 
-        $builder->addDefinitions([self::PROJECT_DIR_CONFIGURATION_KEY => $projectDir]);
+        $builder->addDefinitions([
+            self::APP_ENV_CONFIGURATION_KEY => $this->appEnv,
+            self::PROJECT_DIR_CONFIGURATION_KEY => $projectDir,
+        ]);
 
         //loading DI definitions (configuration)
         (new AddDefinitions($builder))($projectDir, $this->appEnv);
@@ -92,11 +94,18 @@ class AppDIContainerBuilder
             ->useAutowiring(true)
             ->useAttributes(true)
             ->enableCompilation($projectDir . self::CACHE_PATH . DIRECTORY_SEPARATOR . $this->appEnv);
+        $this->apcuEnabled() && $builder->enableDefinitionCache($projectDir . $this->appEnv);
         return $builder;
     }
 
     private function removeContainer(string $projectDir): void
     {
         array_map('unlink', glob($projectDir . self::CACHE_PATH . DIRECTORY_SEPARATOR . $this->appEnv . DIRECTORY_SEPARATOR . self::COMPILED_FILENAME));
+        $this->apcuEnabled() && apcu_clear_cache();
+    }
+
+    private function apcuEnabled(): bool
+    {
+        return function_exists('apcu_enabled') && apcu_enabled();
     }
 }

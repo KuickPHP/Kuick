@@ -12,7 +12,7 @@ use function PHPUnit\Framework\assertEquals;
 /**
  * @covers \Kuick\Example\Console\PingCommand
  */
-class PingActionTest extends TestCase
+class PingCommandTest extends TestCase
 {
     public function testIfKuickSaysHello(): void
     {

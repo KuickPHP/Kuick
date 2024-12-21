@@ -12,14 +12,13 @@ namespace Kuick\Cache;
 
 use DateInterval;
 use Kuick\Cache\Utils\CacheValueSerializer;
-use Kuick\Cache\Utils\RedisInterface;
 use Psr\SimpleCache\CacheInterface;
-use Redis;
 
-class RedisCache implements CacheInterface
+class ApcuCache implements CacheInterface
 {
-    public function __construct(private Redis|RedisInterface $redis)
+    public function __construct()
     {
+        function_exists('apcu_enabled') && apcu_enabled() || throw new CacheException('APCu is not enabled for ' . PHP_SAPI);
     }
 
     /**
@@ -30,7 +29,7 @@ class RedisCache implements CacheInterface
         if (!$this->has($key)) {
             return $default;
         }
-        return (new CacheValueSerializer())->unserialize($this->redis->get($key));
+        return (new CacheValueSerializer())->unserialize(apcu_fetch($key));
     }
 
     /**
@@ -39,7 +38,7 @@ class RedisCache implements CacheInterface
     public function set(string $key, mixed $value, null|int|DateInterval $ttl = null): bool
     {
         $ttlSeconds = ($ttl instanceof DateInterval) ? $ttl->s : $ttl;
-        return $this->redis->set($key, (new CacheValueSerializer())->serialize($value, $ttlSeconds ?? 0), $ttlSeconds ?? 0);
+        return apcu_store($key, (new CacheValueSerializer())->serialize($value, $ttlSeconds ?? 0), $ttlSeconds ?? 0);
     }
 
     /**
@@ -59,7 +58,7 @@ class RedisCache implements CacheInterface
      */
     public function has(string $key): bool
     {
-        return $this->redis->exists($key);
+        return apcu_exists($key);
     }
 
     /**
@@ -67,7 +66,7 @@ class RedisCache implements CacheInterface
      */
     public function delete(string $key): bool
     {
-        return $this->redis->del($key) !== false;
+        return apcu_delete($key) !== false;
     }
 
     /**
@@ -99,6 +98,6 @@ class RedisCache implements CacheInterface
      */
     public function clear(): bool
     {
-        return $this->redis->flushDB(false);
+        return apcu_clear_cache();
     }
 }

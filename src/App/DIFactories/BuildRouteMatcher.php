@@ -34,7 +34,10 @@ class BuildRouteMatcher extends FactoryAbstract
             $cache = new FileCache($projectDir . AppDIContainerBuilder::CACHE_PATH);
             $cachedRoutes = $cache->get(BuildRouteMatcher::CACHE_KEY);
             $routes = [];
-            if (KernelAbstract::ENV_PROD == getenv(KernelAbstract::APP_ENV) && null !== $cachedRoutes) {
+            if (
+                KernelAbstract::ENV_PROD === $container->get(AppDIContainerBuilder::APP_ENV_CONFIGURATION_KEY) &&
+                null !== $cachedRoutes
+            ) {
                 $logger->debug('Routes loaded from cache');
                 $routes = $cachedRoutes;
             }
