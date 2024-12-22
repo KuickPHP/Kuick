@@ -40,10 +40,7 @@ class FileCache implements CacheInterface
         if (!file_exists($cacheFilePath)) {
             return $default;
         }
-        //best performing PHP implementation
-        $handle = fopen($cacheFilePath, 'r');
-        $contents = (new CacheValueSerializer())->unserialize(fread($handle, filesize($cacheFilePath)));
-        fclose($handle);
+        $contents = (new CacheValueSerializer())->unserialize(file_get_contents($cacheFilePath));
         //value non existent or expired
         if (null === $contents) {
             return $default;
