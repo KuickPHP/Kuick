@@ -15,22 +15,35 @@ use Kuick\Http\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 use OpenApi\Attributes as OAA;
 
-#[OAA\PathItem('/api/ops')]
-#[OAA\Info(title: 'Kuick Framework API', version: '1.x')]
-#[OAA\SecurityScheme(securityScheme: 'bearerAuth', type: 'http', scheme: 'bearer', bearerFormat: 'JWT')]
+#[OAA\Info(title: 'Kuick Framework API', version: '1.2')]
+#[OAA\SecurityScheme(securityScheme: 'Bearer Token', type: 'http', scheme: 'bearer')]
 #[OAA\Get(
+    path: '/api/ops',
     description: 'Returns environment variables',
-    security: ['bearerAuth' => []],
+    tags: ['API'],
+    security: [['Bearer Token' => []]],
     responses: [
         new OAA\Response(
             response: 200,
             description: 'Array with environment variables',
             content: new OAA\JsonContent(properties: [
+                new OAA\Property(property: 'request', type: 'object'),
+                new OAA\Property(property: 'di-config', type: 'object'),
+                new OAA\Property(property: 'php-version'),
+                new OAA\Property(property: 'php-config'),
+                new OAA\Property(property: 'php-loaded-extensions'),
             ])
         ),
         new OAA\Response(
             response: 401,
-            description: 'Token is not present or invalid',
+            description: 'Token is not present',
+            content: new OAA\JsonContent(properties: [
+                new OAA\Property(property: "error", type: "string"),
+            ])
+        ),
+        new OAA\Response(
+            response: 403,
+            description: 'Token is invalid',
             content: new OAA\JsonContent(properties: [
                 new OAA\Property(property: "error", type: "string"),
             ])
