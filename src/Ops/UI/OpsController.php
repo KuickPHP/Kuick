@@ -15,8 +15,6 @@ use Kuick\Http\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 use OpenApi\Attributes as OAA;
 
-#[OAA\Info(title: 'Kuick Framework API', version: '1.2')]
-#[OAA\SecurityScheme(securityScheme: 'Bearer Token', type: 'http', scheme: 'bearer')]
 #[OAA\Get(
     path: '/api/ops',
     description: 'Returns environment variables',

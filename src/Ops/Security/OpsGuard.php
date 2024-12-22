@@ -13,8 +13,10 @@ namespace Kuick\Ops\Security;
 use DI\Attribute\Inject;
 use Kuick\Http\ForbiddenException;
 use Kuick\Http\UnauthorizedException;
+use OpenApi\Attributes\SecurityScheme;
 use Psr\Http\Message\ServerRequestInterface;
 
+#[SecurityScheme(securityScheme: 'Bearer Token', type: 'http', scheme: 'bearer')]
 class OpsGuard
 {
     private const AUTHORIZATION_HEADER = 'Authorization';
