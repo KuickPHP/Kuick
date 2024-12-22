@@ -13,7 +13,30 @@ namespace Kuick\Ops\UI;
 use DI\Container;
 use Kuick\Http\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
+use OpenApi\Attributes as OAA;
 
+#[OAA\PathItem('/api/ops')]
+#[OAA\Info(title: 'Kuick Framework API', version: '1.x')]
+#[OAA\SecurityScheme(securityScheme: 'bearerAuth', type: 'http', scheme: 'bearer', bearerFormat: 'JWT')]
+#[OAA\Get(
+    description: 'Returns environment variables',
+    security: ['bearerAuth' => []],
+    responses: [
+        new OAA\Response(
+            response: 200,
+            description: 'Array with environment variables',
+            content: new OAA\JsonContent(properties: [
+            ])
+        ),
+        new OAA\Response(
+            response: 401,
+            description: 'Token is not present or invalid',
+            content: new OAA\JsonContent(properties: [
+                new OAA\Property(property: "error", type: "string"),
+            ])
+        ),
+    ]
+)]
 class OpsController
 {
     public function __construct(private Container $container)

@@ -25,6 +25,10 @@ use Psr\Log\LoggerInterface;
 class BuildRouteMatcher extends FactoryAbstract
 {
     public const CACHE_KEY = 'kuick-app-routematcher-routes';
+    public const ROUTE_LOCATIONS = [
+        '/vendor/kuick/*/config/*.routes.php',
+        '/config/*.routes.php',
+    ];
 
     public function __invoke(): void
     {
@@ -44,8 +48,10 @@ class BuildRouteMatcher extends FactoryAbstract
             if (empty($routes)) {
                 //@TODO: extract route parsing to the external class
                 //app config (normal priority)
-                foreach (glob($projectDir . '/config/*.routes.php') as $routeFile) {
-                    $routes = array_merge($routes, include $routeFile);
+                foreach (BuildRouteMatcher::ROUTE_LOCATIONS as $routeLocation) {
+                    foreach (glob($projectDir . $routeLocation) as $routeFile) {
+                        $routes = array_merge($routes, include $routeFile);
+                    }
                 }
                 //validating routes
                 //decorating routes with available controller arguments

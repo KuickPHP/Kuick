@@ -16,11 +16,13 @@ FROM base AS dist
 
 ENV KUICK_APP_NAME=Kuick@Docker
 
-COPY --link /etc/apache2 /etc/apache2
+COPY --link etc/apache2 /etc/apache2
 COPY --link bin bin
 COPY --link config config
 COPY --link public public
-COPY --link composer.dist.json composer.json
+# example distribution files
+COPY --link example/composer.json composer.json
+COPY --link example/config config
 COPY --link version.* public/
 
 RUN mkdir -m 777 var

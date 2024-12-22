@@ -23,7 +23,8 @@
         "psr/simple-cache":"^3.0",
         "nyholm/dsn": "^2.0",
         "nyholm/psr7": "^1.8",
-        "nyholm/psr7-server": "^1.1"
+        "nyholm/psr7-server": "^1.1",
+        "zircote/swagger-php": "^4.11"
     },
     "scripts": {
         "fix:phpcbf": "phpcbf",

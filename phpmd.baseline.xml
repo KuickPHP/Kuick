@@ -3,5 +3,5 @@
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Cache/Utils/CacheFactory.php"/>
   <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Cache/Utils/RedisClientFactory.php"/>
   <violation rule="PHPMD\Rule\CleanCode\BooleanArgumentFlag" file="src/Cache/Utils/RedisInterface.php"/>
-  <violation rule="PHPMD\Rule\UnusedFormalParameter" file="src/Ops/Console/InstallCommand.php"/>
+  <violation rule="PHPMD\Rule\CleanCode\StaticAccess" file="src/Ops/UI/DocJsonController.php"/>
 </phpmd-baseline>

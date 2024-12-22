@@ -8,28 +8,26 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-use Kuick\Example\UI\PingController;
 use Kuick\Ops\Security\OpsGuard;
+use Kuick\Ops\UI\DocHtmlController;
+use Kuick\Ops\UI\DocJsonController;
 use Kuick\Ops\UI\OpsController;
 
 return [
-    //you probably want to remove this sample homepage
-    [
-        'path' => '/',
-        //optional method, defaults to GET
-        //'method' => 'GET',
-        'controller' => PingController::class,
-    ],
-    //named parameter see how the PingController handles such request
-    [
-        'path' => '/hello/(?<name>[a-zA-Z0-9-]{1,40})',
-        'controller' => PingController::class,
-    ],
     //ops route gives some insight of server environment
     //this route is protected by the Guard (see ./di/kuick.di.php file, and the OpsGuard)
     [
         'path' => '/api/ops',
         'controller' => OpsController::class,
         'guards' => [OpsGuard::class]
+    ],
+    //OpenAPI / Swagger HTML documentation
+    [
+        'path' => '/api/doc.json',
+        'controller' => DocJsonController::class,
+    ],
+    [
+        'path' => '/api/doc',
+        'controller' => DocHtmlController::class,
     ],
 ];
