@@ -24,16 +24,15 @@ class BuildRouteMatcherTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        $fs = new Filesystem();
         self::$projectDir = dirname(__DIR__) . '/../../Mocks/MockProjectDir';
         $cacheFiles = self::$projectDir . '/var/cache/kuick-app-routematcher-routes';
-        $fs->remove($cacheFiles);
+        (new Filesystem())->remove($cacheFiles);
     }
 
     public function testIfRoutesAreProperlyBuilt(): void
     {
         $container = $this->getContainer();
-        $rm = $container->get(RouteMatcher::class);
+        $routeMatcher = $container->get(RouteMatcher::class);
         assertEquals([
             [
                 'path' => '/hello/(?<userId>[0-9]{1,12})',
@@ -70,7 +69,7 @@ class BuildRouteMatcherTest extends TestCase
                 ],
                 'guards' => ['Tests\Kuick\Mocks\RequestDependentGuardMock']
             ],
-        ], $rm->getRoutes());
+        ], $routeMatcher->getRoutes());
     }
 
     public function testIfCachedContainerWorks(): void
@@ -78,20 +77,20 @@ class BuildRouteMatcherTest extends TestCase
         putenv('KUICK_APP_ENV=prod');
         //first build - create cache
         $container = $this->getContainer();
-        $rm = $container->get(RouteMatcher::class);
-        assertCount(2, $rm->getRoutes());
+        $routeMatcher = $container->get(RouteMatcher::class);
+        assertCount(2, $routeMatcher->getRoutes());
     }
 
     private function getContainer(): ContainerInterface
     {
         //cached from
-        $cb = new ContainerBuilder();
-        $cb->addDefinitions([
+        $builder = new ContainerBuilder();
+        $builder->addDefinitions([
             'kuick.app.env' => 'prod',
             'kuick.app.project.dir' => self::$projectDir,
             LoggerInterface::class => new NullLogger(),
         ]);
-        (new BuildRouteMatcher($cb))();
-        return $cb->build();
+        (new BuildRouteMatcher($builder))();
+        return $builder->build();
     }
 }

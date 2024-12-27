@@ -2,7 +2,7 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
          bootstrap="vendor/autoload.php"
-         cacheResultFile="public/build/.phpunit.cache/test-results"
+         cacheResultFile=".phpunit/cache"
          executionOrder="depends,defects"
          forceCoversAnnotation="true"
          beStrictAboutCoversAnnotation="false"
@@ -18,14 +18,13 @@
         </testsuite>
     </testsuites>
 
-    <coverage cacheDirectory="public/build/.phpunit.cache/code-coverage" processUncoveredFiles="true">
+    <coverage cacheDirectory=".phpunit" processUncoveredFiles="true">
         <include>
         <directory suffix=".php">./src</directory>
         </include>
         <report>
         <text outputFile="php://stdout"></text>
-        <html outputDirectory="public/build/phpunit" lowUpperBound="50" highLowerBound="80"/>
-        <clover outputFile="public/build/clover.xml" />
+        <clover outputFile="clover.xml" />
         </report>
     </coverage>
 </phpunit>

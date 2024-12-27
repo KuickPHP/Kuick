@@ -17,34 +17,28 @@
         "ext-mbstring": "*",
         "ext-reflection": "*",
         "ext-spl": "*",
-        "php-di/php-di": "^7.0",
+        "kuick/cache": "^1.0",
         "monolog/monolog": "^3.0",
-        "symfony/console": "^7.1",
-        "psr/simple-cache":"^3.0",
         "nyholm/dsn": "^2.0",
         "nyholm/psr7": "^1.8",
         "nyholm/psr7-server": "^1.1",
+        "php-di/php-di": "^7.0",
+        "psr/simple-cache":"^3.0",
+        "symfony/console": "^7.1",
         "zircote/swagger-php": "^4.11"
     },
     "scripts": {
-        "fix:phpcbf": "phpcbf",
-        "fix:php-cs-fixer": "php-cs-fixer fix src && php-cs-fixer fix tests",
-        "fix:all": [
-            "@fix:phpcbf",
-            "@fix:php-cs-fixer"
-        ],
-        "test:security-checker": "security-checker security:check",
-        "test:phpstan": "XDEBUG_MODE=off phpstan --level=5 --no-progress --memory-limit=512M analyse src tests/Unit -c phpstan-baseline.neon",
-        "test:phpcs": "phpcs",
-        "test:phpmd": "phpmd ./src text phpmd.xml.dist",
+        "fix:phpcbf": "phpcbf --standard=PSR12 src tests",
+        "test:phpstan": "XDEBUG_MODE=off phpstan --level=5 --no-progress --memory-limit=512M analyse src tests/Unit",
+        "test:phpcs": "phpcs -n --standard=PSR12 src tests/Unit",
+        "test:phpmd": "phpmd src tests/Unit text cleancode,codesize,controversial,design,naming,unusedcode",
         "test:phpunit": "XDEBUG_MODE=coverage phpunit",
         "test:all": [
             "@test:phpcs",
             "@test:phpstan",
             "@test:phpmd",
             "@test:phpunit"
-        ],
-        "generate:phpmd-baseline": "phpmd --generate-baseline ./src text phpmd.xml.dist"
+        ]
     },
     "autoload": {
         "psr-4": {
@@ -56,16 +50,7 @@
             "Tests\\Kuick\\": "tests"
         }
     },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
-        }
-    },
     "require-dev": {
-        "phpunit/phpunit": "^9.0",
-        "phpmd/phpmd": "^2.0",
-        "squizlabs/php_codesniffer": "^3.0",
-        "phpstan/phpstan": "^1.0",
-        "friendsofphp/php-cs-fixer": "^3.0"
+        "kuick/qa-toolkit": "^1.0"
     }
 }

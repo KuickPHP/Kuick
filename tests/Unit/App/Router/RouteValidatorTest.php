@@ -14,6 +14,7 @@ use function PHPUnit\Framework\assertTrue;
 
 /**
  * @covers \Kuick\App\Router\RouteValidator
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class RouteValidatorTest extends TestCase
 {

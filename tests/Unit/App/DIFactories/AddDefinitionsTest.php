@@ -25,9 +25,9 @@ class AddDefinitionsTest extends TestCase
 
     public function testIfDevDefinitionsAreLoaded(): void
     {
-        $cb = new ContainerBuilder();
-        (new AddDefinitions($cb))(self::$projectDir, 'dev');
-        $container = $cb->build();
+        $builder = new ContainerBuilder();
+        (new AddDefinitions($builder))(self::$projectDir, 'dev');
+        $container = $builder->build();
         assertEquals('Testing App', $container->get('kuick.app.name'));
         assertTrue($container->get('kuick.app.monolog.usemicroseconds'));
         assertEquals('WARNING', $container->get('kuick.app.monolog.level'));
@@ -36,9 +36,9 @@ class AddDefinitionsTest extends TestCase
 
     public function testIfProdDefinitionsAreLoaded(): void
     {
-        $cb = new ContainerBuilder();
-        (new AddDefinitions($cb))(self::$projectDir, 'prod');
-        $container = $cb->build();
+        $builder = new ContainerBuilder();
+        (new AddDefinitions($builder))(self::$projectDir, 'prod');
+        $container = $builder->build();
         assertEquals('Testing App', $container->get('kuick.app.name'));
         assertFalse($container->get('kuick.app.monolog.usemicroseconds'));
         assertEquals('WARNING', $container->get('kuick.app.monolog.level'));

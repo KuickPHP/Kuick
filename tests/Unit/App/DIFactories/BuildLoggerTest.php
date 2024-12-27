@@ -21,17 +21,17 @@ class BuildLoggerTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        $fs = new Filesystem();
+        $fsys = new Filesystem();
         self::$projectDir = dirname(__DIR__) . '/../../Mocks/MockProjectDir';
         $logDir = self::$projectDir . '/var/log';
-        $fs->remove($logDir);
-        $fs->mkdir($logDir);
+        $fsys->remove($logDir);
+        $fsys->mkdir($logDir);
     }
 
     public function testIfMinimalConfigProducesALogger(): void
     {
-        $cb = new ContainerBuilder();
-        $cb->addDefinitions([
+        $builder = new ContainerBuilder();
+        $builder->addDefinitions([
             'kuick.app.name' => 'test',
             'kuick.app.timezone' => 'Europe/Paris',
             'kuick.app.monolog.usemicroseconds' => false,
@@ -41,8 +41,8 @@ class BuildLoggerTest extends TestCase
             'kuick.app.monolog.level' => 'NOTICE',
 
         ]);
-        (new BuildLogger($cb))();
-        $container = $cb->build();
+        (new BuildLogger($builder))();
+        $container = $builder->build();
 
         $logger = $container->get(LoggerInterface::class);
         $logger->error('test');
@@ -51,9 +51,9 @@ class BuildLoggerTest extends TestCase
 
     public function testIfAddedStreamHandlerWritesTheLog(): void
     {
-        $cb = new ContainerBuilder();
+        $builder = new ContainerBuilder();
         $logfile = self::$projectDir . '/var/log/testing.log';
-        $cb->addDefinitions([
+        $builder->addDefinitions([
             'kuick.app.name' => 'test',
             'kuick.app.timezone' => 'Europe/Paris',
             'kuick.app.monolog.usemicroseconds' => true,
@@ -62,8 +62,8 @@ class BuildLoggerTest extends TestCase
             ],
             'kuick.app.monolog.level' => 'NOTICE',
         ]);
-        (new BuildLogger($cb))();
-        $container = $cb->build();
+        (new BuildLogger($builder))();
+        $container = $builder->build();
         $logger = $container->get(LoggerInterface::class);
         $logger->error('test');
         assertFileExists($logfile);

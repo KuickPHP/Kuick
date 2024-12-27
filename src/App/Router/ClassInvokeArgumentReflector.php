@@ -20,15 +20,19 @@ class ClassInvokeArgumentReflector
 {
     private const METHOD_NAME = '__invoke';
 
+    /**
+     *
+     */
     public function __invoke(string $className): array
     {
         if (!method_exists($className, self::METHOD_NAME)) {
             throw new AppException('Class not found: ' . $className);
         }
-        $invokeMethodReflection = new ReflectionMethod($className, self::METHOD_NAME);
+        $reflectionMethod = new ReflectionMethod($className, self::METHOD_NAME);
         $availableParams = [];
-        foreach ($invokeMethodReflection->getParameters() as $methodParam) {
+        foreach ($reflectionMethod->getParameters() as $methodParam) {
             $availableParams[$methodParam->getName()] = [
+                //@phpstan-ignore-next-line
                 'type' => $methodParam->getType()->getName(),
                 'isOptional' => $methodParam->isOptional(),
                 'default' => $methodParam->isDefaultValueAvailable() ? $methodParam->getDefaultValue() : null,

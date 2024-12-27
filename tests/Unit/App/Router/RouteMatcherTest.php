@@ -36,59 +36,59 @@ class RouteMatcherTest extends TestCase
 
     public function testIfRoutesCanBeSetAndGet(): void
     {
-        $rm = new RouteMatcher(new NullLogger());
-        $rm->setRoutes(self::ROUTES);
-        assertEquals(self::ROUTES, $rm->getRoutes());
+        $matcher = new RouteMatcher(new NullLogger());
+        $matcher->setRoutes(self::ROUTES);
+        assertEquals(self::ROUTES, $matcher->getRoutes());
     }
 
     public function testIfOptionsGetsDefaultOptionsController(): void
     {
-        $rm = new RouteMatcher(new NullLogger());
-        $rm->setRoutes(self::ROUTES);
+        $matcher = new RouteMatcher(new NullLogger());
+        $matcher->setRoutes(self::ROUTES);
 
-        assertEquals([], $rm->findRoute(new ServerRequest('OPTIONS', '/whatever')));
+        assertEquals([], $matcher->findRoute(new ServerRequest('OPTIONS', '/whatever')));
     }
 
     public function testIfOptionsReturnsEmptyRoute(): void
     {
-        $rm = new RouteMatcher(new NullLogger());
-        $rm->setRoutes(self::ROUTES);
+        $matcher = new RouteMatcher(new NullLogger());
+        $matcher->setRoutes(self::ROUTES);
 
         $this->expectException(NotFoundException::class);
         $this->expectExceptionCode(404);
         $this->expectExceptionMessage('Not found');
-        $rm->findRoute(new ServerRequest('GET', '/inexistent'));
+        $matcher->findRoute(new ServerRequest('GET', '/inexistent'));
     }
 
     public function testIfRouterMatchesDefinedRoutes(): void
     {
-        $rm = new RouteMatcher(new NullLogger());
-        $rm->setRoutes(self::ROUTES);
+        $matcher = new RouteMatcher(new NullLogger());
+        $matcher->setRoutes(self::ROUTES);
 
         assertEquals(
             self::ROUTES[0] + ['params' => []],
-            $rm->findRoute(new ServerRequest('GET', '/'))
+            $matcher->findRoute(new ServerRequest('GET', '/'))
         );
 
         assertEquals(
             self::ROUTES[1] + ['params' => ['userId' => 539]],
-            $rm->findRoute(new ServerRequest('PUT', '/api/user/539'))
+            $matcher->findRoute(new ServerRequest('PUT', '/api/user/539'))
         );
 
         assertEquals(
             self::ROUTES[2] + ['params' => ['message' => 'Some-Message-492']],
-            $rm->findRoute(new ServerRequest('GET', '/ping/Some-Message-492'))
+            $matcher->findRoute(new ServerRequest('GET', '/ping/Some-Message-492'))
         );
     }
 
     public function testIfMethodMismatchGivesThrowsMethodNotAllowed(): void
     {
-        $rm = new RouteMatcher(new NullLogger());
-        $rm->setRoutes(self::ROUTES);
+        $matcher = new RouteMatcher(new NullLogger());
+        $matcher->setRoutes(self::ROUTES);
 
         $this->expectException(MethodNotAllowedException::class);
         $this->expectExceptionCode(405);
         $this->expectExceptionMessage('POST method is not allowed for path: /');
-        $rm->findRoute(new ServerRequest('POST', '/'));
+        $matcher->findRoute(new ServerRequest('POST', '/'));
     }
 }

@@ -23,8 +23,8 @@ class ActionLauncherTest extends TestCase
 {
     public function testIfEmptyRouteGivesImmediateNoContentResponse(): void
     {
-        $al = new ActionLauncher(new ContainerMock(), new NullLogger());
-        $response = $al->__invoke([], new ServerRequest('OPTIONS', '/whatever'));
+        $launcher = new ActionLauncher(new ContainerMock(), new NullLogger());
+        $response = $launcher([], new ServerRequest('OPTIONS', '/whatever'));
         assertEquals(204, $response->getStatusCode());
         assertEquals('', $response->getBody()->getContents());
     }
@@ -36,9 +36,9 @@ class ActionLauncherTest extends TestCase
             ControllerMock::class => new ControllerMock(),
             ForbiddenGuardMock::class => new ForbiddenGuardMock(),
         ]);
-        $al = new ActionLauncher($container, new NullLogger());
+        $launcher = new ActionLauncher($container, new NullLogger());
         $this->expectException(ForbiddenException::class);
-        $al->__invoke([
+        $launcher([
             'method' => 'PUT',
             'guards' => [ForbiddenGuardMock::class],
             'arguments' => [ForbiddenGuardMock::class => []],
@@ -52,8 +52,8 @@ class ActionLauncherTest extends TestCase
             ControllerMock::class => new ControllerMock(),
             ForbiddenGuardMock::class => new ForbiddenGuardMock(),
         ]);
-        $al = new ActionLauncher($container, new NullLogger());
-        $response = $al->__invoke([
+        $launcher = new ActionLauncher($container, new NullLogger());
+        $response = $launcher([
             'method' => 'PUT',
             'path' => '/api/user/(?<userId>[0-9]{1,8})',
             //provided by route matcher
@@ -76,8 +76,8 @@ class ActionLauncherTest extends TestCase
             RequestDependentControllerMock::class => new RequestDependentControllerMock(),
             EmptyGuardMock::class => new EmptyGuardMock(),
         ]);
-        $al = new ActionLauncher($container, new NullLogger());
-        $response = $al->__invoke([
+        $launcher = new ActionLauncher($container, new NullLogger());
+        $response = $launcher([
             'method' => 'GET',
             'path' => '/',
             'guards' => [EmptyGuardMock::class],

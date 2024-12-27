@@ -28,6 +28,9 @@ class DocJsonController
     {
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function __invoke(): JsonResponse
     {
         $openapi = Generator::scan([$this->projectDir . self::SOURCE_PATH]);

@@ -20,8 +20,7 @@ class JsonKernelTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         self::$projectDir = realpath(dirname(__DIR__) . '/../Mocks/MockProjectDir');
-        $fs = new Filesystem();
-        $fs->remove(self::$projectDir . '/var/cache');
+        (new Filesystem())->remove(self::$projectDir . '/var/cache');
     }
 
     /**
@@ -30,10 +29,10 @@ class JsonKernelTest extends TestCase
      */
     public function testIfNotFoundRouteEmmitsNotFoundResponse(): void
     {
-        $jk = new JsonKernel(self::$projectDir);
+        $kernel = new JsonKernel(self::$projectDir);
         $request = new ServerRequest('GET', 'something');
         ob_start();
-        $jk($request);
+        $kernel($request);
         $data = ob_get_clean();
         assertEquals('{"error":"Not found"}', $data);
     }
@@ -45,9 +44,9 @@ class JsonKernelTest extends TestCase
     public function testIfContainerReturnsBuiltContainer(): void
     {
         ob_start();
-        $jk = new JsonKernel(self::$projectDir);
+        $kernel = new JsonKernel(self::$projectDir);
         ob_end_clean();
-        $container = $jk->getContainer();
+        $container = $kernel->getContainer();
         assertEquals('Testing App', $container->get('kuick.app.name'));
     }
 }

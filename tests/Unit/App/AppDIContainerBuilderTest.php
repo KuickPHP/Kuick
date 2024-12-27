@@ -47,8 +47,7 @@ class AppDIContainerBuilderTest extends TestCase
     {
         putenv('KUICK_APP_ENV=prod');
         //uncached build
-        $fs = new Filesystem();
-        $fs->remove(self::$projectDir . '/var/cache/prod');
+        (new Filesystem())->remove(self::$projectDir . '/var/cache/prod');
         $uncachedContainer = (new AppDIContainerBuilder())(self::$projectDir);
         assertEquals('Testing App', $uncachedContainer->get('kuick.app.name'));
         assertEquals('Europe/Paris', $uncachedContainer->get('kuick.app.timezone'));

@@ -22,10 +22,9 @@ class ResponseEmmiterTest extends TestCase
      */
     public function testEmmitedResponse(): void
     {
-        $re = new ResponseEmmiter();
         $response = new JsonResponse(['test']);
         ob_start();
-        $re($response);
+        (new ResponseEmmiter())($response);
         $content = ob_get_clean();
         assertEquals('["test"]', $content);
         assertEquals(['Content-Type: application/json'], xdebug_get_headers());
