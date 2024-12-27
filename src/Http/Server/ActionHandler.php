@@ -8,29 +8,31 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App\Router;
+namespace Kuick\Http\Server;
 
-use Kuick\Http\ResponseCodes;
-use Nyholm\Psr7\Response;
+use Kuick\Http\Message\Response;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 
-/**
- *
- */
-class ActionLauncher
+class ActionHandler implements RequestHandlerInterface
 {
-    public function __construct(private ContainerInterface $container, private LoggerInterface $logger)
+    public function __construct(
+        private ContainerInterface $container,
+        private Router $router,
+        private LoggerInterface $logger
+    )
     {
     }
 
-    public function __invoke(array $route, ServerRequestInterface $request): ResponseInterface
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        $route = $this->router->findRoute($request);
         if (empty($route)) {
             $this->logger->info('No action was executed to serve OPTIONS');
-            return new Response(ResponseCodes::NO_CONTENT);
+            return new Response(Response::HTTP_NO_CONTENT);
         }
         if (isset($route['guards'])) {
             $this->logger->debug('Executing guards');

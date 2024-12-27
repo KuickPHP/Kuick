@@ -3,7 +3,7 @@
 namespace Kuick\Ops\UI;
 
 use DI\Attribute\Inject;
-use Kuick\Http\JsonResponse;
+use Kuick\Http\Message\JsonResponse;
 use OpenApi\Attributes as OAA;
 use OpenApi\Generator;
 
@@ -14,7 +14,7 @@ use OpenApi\Generator;
     tags: ['API'],
     responses: [
         new OAA\Response(
-            response: 200,
+            response: JsonResponse::HTTP_OK,
             description: 'Array with environment variables',
             content: new OAA\JsonContent()
         ),

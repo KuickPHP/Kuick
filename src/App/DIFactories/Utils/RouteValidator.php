@@ -8,9 +8,10 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App\Router;
+namespace Kuick\App\DIFactories\Utils;
 
 use Kuick\Http\InternalServerErrorException;
+use Kuick\Http\Server\Router;
 use Throwable;
 
 /**
@@ -38,7 +39,7 @@ class RouteValidator
         }
         try {
             //test against empty string
-            preg_match(sprintf(RouteMatcher::MATCH_PATTERN, $route['path']), '');
+            preg_match(sprintf(Router::MATCH_PATTERN, $route['path']), '');
         } catch (Throwable $error) {
             throw new InternalServerErrorException('Path invalid: ' . $route['path'] . ', ' . $error->getMessage());
         }

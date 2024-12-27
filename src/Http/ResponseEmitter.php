@@ -12,7 +12,7 @@ namespace Kuick\Http;
 
 use Psr\Http\Message\ResponseInterface;
 
-class ResponseEmmiter
+class ResponseEmitter
 {
     public function __invoke(ResponseInterface $response): void
     {

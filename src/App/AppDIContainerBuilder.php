@@ -12,11 +12,14 @@ namespace Kuick\App;
 
 use DI\ContainerBuilder;
 use Kuick\App\DIFactories\BuildLogger;
-use Kuick\App\DIFactories\BuildRouteMatcher;
 use Kuick\App\DIFactories\AddDefinitions;
+use Kuick\App\DIFactories\BuildRouter;
+use Kuick\Http\Server\ActionHandler;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+
+use function DI\autowire;
 
 /**
  *
@@ -74,6 +77,7 @@ class AppDIContainerBuilder
         $builder->addDefinitions([
             self::APP_ENV_CONFIGURATION_KEY => $this->appEnv,
             self::PROJECT_DIR_CONFIGURATION_KEY => $projectDir,
+            ActionHandler::class => autowire(ActionHandler::class),
         ]);
 
         //loading DI definitions (configuration)
@@ -83,7 +87,7 @@ class AppDIContainerBuilder
         (new BuildLogger($builder))();
 
         //action matcher
-        (new BuildRouteMatcher($builder))();
+        (new BuildRouter($builder))();
 
         return $builder->build();
     }

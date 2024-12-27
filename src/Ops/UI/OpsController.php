@@ -11,7 +11,7 @@
 namespace Kuick\Ops\UI;
 
 use DI\Container;
-use Kuick\Http\JsonResponse;
+use Kuick\Http\Message\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 use OpenApi\Attributes as OAA;
 
@@ -22,7 +22,7 @@ use OpenApi\Attributes as OAA;
     security: [['Bearer Token' => []]],
     responses: [
         new OAA\Response(
-            response: 200,
+            response: JsonResponse::HTTP_OK,
             description: 'Array with environment variables',
             content: new OAA\JsonContent(properties: [
                 new OAA\Property(property: 'request', type: 'object'),
@@ -33,14 +33,14 @@ use OpenApi\Attributes as OAA;
             ])
         ),
         new OAA\Response(
-            response: 401,
+            response: JsonResponse::HTTP_UNAUTHORIZED,
             description: 'Token is not present',
             content: new OAA\JsonContent(properties: [
                 new OAA\Property(property: "error", type: "string"),
             ])
         ),
         new OAA\Response(
-            response: 403,
+            response: JsonResponse::HTTP_FORBIDDEN,
             description: 'Token is invalid',
             content: new OAA\JsonContent(properties: [
                 new OAA\Property(property: "error", type: "string"),

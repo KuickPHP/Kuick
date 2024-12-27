@@ -10,6 +10,8 @@
 
 namespace Kuick\App;
 
+use FilesystemIterator;
+use GlobIterator;
 use Symfony\Component\Console\Application;
 
 /**
@@ -28,7 +30,7 @@ final class ConsoleKernel extends KernelAbstract
         //create a new application
         $this->application = new Application($this->container->get(self::APP_NAME_KEY));
         //adding commands
-        foreach (glob($projectDir . self::COMMAND_PATH_PATTERN) as $commandFile) {
+        foreach (new GlobIterator($projectDir . self::COMMAND_PATH_PATTERN, FilesystemIterator::KEY_AS_FILENAME) as $commandFile) {
             foreach (include $commandFile as $commandClass) {
                 $this->application->add($this->container->get($commandClass));
             }
