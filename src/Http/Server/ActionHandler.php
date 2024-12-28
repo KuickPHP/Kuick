@@ -48,7 +48,7 @@ class ActionHandler implements RequestHandlerInterface
         foreach ($route['guards'] as $guardName) {
             $this->logger->debug('Executing guard: ' . $guardName);
             call_user_func_array($this->container->get($guardName), $this->getArguments($guardName, $route, $request));
-            $this->logger->debug('Guard OK: ' . $guardName);
+            $this->logger->debug('Guard pass: ' . $guardName);
         }
     }
 

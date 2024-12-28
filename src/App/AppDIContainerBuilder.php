@@ -28,6 +28,8 @@ class AppDIContainerBuilder
     public const PROJECT_DIR_CONFIGURATION_KEY = 'kuick.app.project.dir';
     public const CACHE_PATH =  '/var/cache';
 
+    private const COMPILED_FILENAME = 'CompiledContainer.php';
+
     private string $appEnv;
 
     public function __invoke(string $projectDir): ContainerInterface
@@ -62,6 +64,7 @@ class AppDIContainerBuilder
 
     private function rebuildContainer(string $projectDir): ContainerInterface
     {
+        $this->removeContainer($projectDir);
         $builder = $this->configureBuilder($projectDir);
 
         $builder->addDefinitions([
@@ -85,11 +88,26 @@ class AppDIContainerBuilder
     {
         $builder = (new ContainerBuilder())
             ->useAutowiring(true)
-            ->useAttributes(true);
-        if (KernelAbstract::ENV_PROD === $this->appEnv) {
-            $builder->enableCompilation($projectDir . self::CACHE_PATH . DIRECTORY_SEPARATOR . $this->appEnv);
-            function_exists('apcu_enabled') && apcu_enabled() && $builder->enableDefinitionCache($projectDir . $this->appEnv);
-        }
+            ->useAttributes(true)
+            ->enableCompilation($projectDir . self::CACHE_PATH . DIRECTORY_SEPARATOR . $this->appEnv);
+        $this->apcuEnabled() && $builder->enableDefinitionCache($projectDir . $this->appEnv);
         return $builder;
+    }
+
+    private function removeContainer(string $projectDir): void
+    {
+        array_map('unlink', glob($projectDir . self::CACHE_PATH . DIRECTORY_SEPARATOR . $this->appEnv . DIRECTORY_SEPARATOR . self::COMPILED_FILENAME));
+        if ($this->apcuEnabled()) {
+            $apcuIterator = new APCUIterator('$php-di.definitions.' . $projectDir . $this->appEnv . '$');
+            //DI definition apcu cache cleanup
+            foreach ($apcuIterator as $key) {
+                apcu_delete($key['key']);
+            }
+        }
+    }
+
+    private function apcuEnabled(): bool
+    {
+        return function_exists('apcu_enabled') && apcu_enabled();
     }
 }

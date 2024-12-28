@@ -25,12 +25,15 @@ use Psr\Log\LoggerInterface;
  */
 class BuildRouter extends FactoryAbstract
 {
-    public const CACHE_FILE = '/kuick-app-routematcher-routes.php';
+    public const CACHE_FILE = '/kuick-app-routes.php';
     public const ROUTE_LOCATIONS = [
         '/vendor/kuick/*/config/*.routes.php',
         '/config/*.routes.php',
     ];
 
+    /**
+     * @SuppressWarnings(PHPMD.ErrorControlOperator)
+     */
     public function __invoke(): void
     {
         $this->builder->addDefinitions([Router::class => function (ContainerInterface $container): Router {
@@ -66,6 +69,9 @@ class BuildRouter extends FactoryAbstract
                     foreach ($route['guards'] as $guard) {
                         $routes[$routeKey]['arguments'][$guard] = (new ClassInvokeArgumentReflector())($guard);
                     }
+                }
+                if (!file_exists(dirname($cacheFile))) {
+                    mkdir(dirname($cacheFile));
                 }
                 file_put_contents($cacheFile, sprintf('<?php return %s;', var_export($routes, true)));
                 $logger->notice('Routes analyzed, cache written');

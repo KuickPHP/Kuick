@@ -3,8 +3,8 @@
 namespace Kuick\Tests\App\DIFactories;
 
 use DI\ContainerBuilder;
-use Kuick\App\DIFactories\BuildRouteMatcher;
-use Kuick\App\Router\RouteMatcher;
+use Kuick\App\DIFactories\BuildRouter;
+use Kuick\Http\Server\Router;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -15,24 +15,24 @@ use function PHPUnit\Framework\assertCount;
 use function PHPUnit\Framework\assertEquals;
 
 /**
- * @covers \Kuick\App\DIFactories\BuildRouteMatcher
+ * @covers \Kuick\App\DIFactories\BuildRouter
  * @covers \Kuick\App\DIFactories\FactoryAbstract
  */
-class BuildRouteMatcherTest extends TestCase
+class BuildRouterTest extends TestCase
 {
     public static string $projectDir;
 
     public static function setUpBeforeClass(): void
     {
         self::$projectDir = dirname(__DIR__) . '/../../Mocks/MockProjectDir';
-        $cacheFiles = self::$projectDir . '/var/cache/kuick-app-routematcher-routes';
-        (new Filesystem())->remove($cacheFiles);
+        $cacheFile = self::$projectDir . '/var/cache/kuick-app-routes.php';
+        (new Filesystem())->remove($cacheFile);
     }
 
     public function testIfRoutesAreProperlyBuilt(): void
     {
         $container = $this->getContainer();
-        $routeMatcher = $container->get(RouteMatcher::class);
+        $routeMatcher = $container->get(Router::class);
         assertEquals([
             [
                 'path' => '/hello/(?<userId>[0-9]{1,12})',
@@ -77,7 +77,7 @@ class BuildRouteMatcherTest extends TestCase
         putenv('KUICK_APP_ENV=prod');
         //first build - create cache
         $container = $this->getContainer();
-        $routeMatcher = $container->get(RouteMatcher::class);
+        $routeMatcher = $container->get(Router::class);
         assertCount(2, $routeMatcher->getRoutes());
     }
 
@@ -90,7 +90,7 @@ class BuildRouteMatcherTest extends TestCase
             'kuick.app.project.dir' => self::$projectDir,
             LoggerInterface::class => new NullLogger(),
         ]);
-        (new BuildRouteMatcher($builder))();
+        (new BuildRouter($builder))();
         return $builder->build();
     }
 }

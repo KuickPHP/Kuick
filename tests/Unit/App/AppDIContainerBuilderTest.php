@@ -30,8 +30,8 @@ class AppDIContainerBuilderTest extends TestCase
     public function testIfContainerIsRebuiltForDev(): void
     {
         #kuick.app.env = dev (from .env)
-        $adcb = (new AppDIContainerBuilder());
-        $container = $adcb(self::$projectDir);
+        $builder = (new AppDIContainerBuilder());
+        $container = $builder(self::$projectDir);
         assertEquals('Testing App', $container->get('kuick.app.name'));
         assertEquals('Europe/Warsaw', $container->get('kuick.app.timezone'));
         assertEquals('local value', $container->get('example'));

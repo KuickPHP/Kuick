@@ -1,8 +1,8 @@
 <?php
 
-namespace Kuick\Tests\App\Router;
+namespace Kuick\Tests\App\DIFactories\Utils;
 
-use Kuick\App\Router\RouteValidator;
+use Kuick\App\DIFactories\Utils\RouteValidator;
 use Kuick\Http\InternalServerErrorException;
 use PHPUnit\Framework\TestCase;
 use Kuick\Tests\Mocks\ControllerMock;
@@ -13,7 +13,7 @@ use Kuick\Tests\Mocks\InvalidGuardMock;
 use function PHPUnit\Framework\assertTrue;
 
 /**
- * @covers \Kuick\App\Router\RouteValidator
+ * @covers \Kuick\App\DIFactories\Utils\RouteValidator
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
 class RouteValidatorTest extends TestCase

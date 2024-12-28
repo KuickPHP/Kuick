@@ -35,9 +35,4 @@ abstract class KernelAbstract
         ($this->container->get(AppSetLocalization::class))();
         $this->logger->debug('Localization setup completed');
     }
-
-    public function getContainer(): ContainerInterface
-    {
-        return $this->container;
-    }
 }

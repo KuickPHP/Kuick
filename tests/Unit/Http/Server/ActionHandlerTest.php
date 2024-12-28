@@ -2,7 +2,6 @@
 
 namespace Kuick\Tests\Http\Server;
 
-use Kuick\App\Router\ActionLauncher;
 use Kuick\Http\ForbiddenException;
 use Kuick\Http\Server\ActionHandler;
 use Kuick\Http\Server\Router;
@@ -26,7 +25,7 @@ class ActionHandlerTest extends TestCase
     public function testIfEmptyRouteGivesImmediateNoContentResponse(): void
     {
         $launcher = new ActionHandler(new ContainerMock(), new Router(new NullLogger()), new NullLogger());
-        $response = $launcher([], new ServerRequest('OPTIONS', '/whatever'));
+        $response = $launcher->handle(new ServerRequest('OPTIONS', '/whatever'));
         assertEquals(204, $response->getStatusCode());
         assertEquals('', $response->getBody()->getContents());
     }
@@ -39,10 +38,12 @@ class ActionHandlerTest extends TestCase
             ForbiddenGuardMock::class => new ForbiddenGuardMock(),
         ]);
         $routes = [
-            'path' => '/',
-            'method' => 'PUT',
-            'guards' => [ForbiddenGuardMock::class],
-            'arguments' => [ForbiddenGuardMock::class => []],
+            [
+                'path' => '/',
+                'method' => 'PUT',
+                'guards' => [ForbiddenGuardMock::class],
+                'arguments' => [ForbiddenGuardMock::class => []],
+            ]
         ];
         $router = new Router(new NullLogger());
         $router->setRoutes($routes);
@@ -51,26 +52,31 @@ class ActionHandlerTest extends TestCase
         $handler->handle(new ServerRequest('PUT', '/'));
     }
 
-    /*public function testIfRunningAMockActionGives200JsonResponse(): void
+    public function testIfRunningAMockActionGives200JsonResponse(): void
     {
         //add controller and guard to the container
         $container = new ContainerMock([
             ControllerMock::class => new ControllerMock(),
             ForbiddenGuardMock::class => new ForbiddenGuardMock(),
         ]);
-        $launcher = new ActionLauncher($container, new NullLogger());
-        $response = $launcher([
-            'method' => 'PUT',
-            'path' => '/api/user/(?<userId>[0-9]{1,8})',
-            //provided by route matcher
-            'params' => ['userId' => 1234],
-            'controller' => ControllerMock::class,
-            //provided by reflection
-            'arguments' => [
-                ControllerMock::class => ['userId' => ['type' => 'int', 'default' => null]],
-                ForbiddenGuardMock::class => [],
-            ],
-        ], new ServerRequest('PUT', '/api/user/1234'));
+        $routes = [
+            [
+                'method' => 'PUT',
+                'path' => '/api/user/(?<userId>[0-9]{1,8})',
+                //provided by route matcher
+                'params' => ['userId' => 1234],
+                'controller' => ControllerMock::class,
+                //provided by reflection
+                'arguments' => [
+                    ControllerMock::class => ['userId' => ['type' => 'int', 'default' => null]],
+                    ForbiddenGuardMock::class => [],
+                ],
+            ]
+        ];
+        $router = new Router(new NullLogger);
+        $router->setRoutes($routes);
+        $launcher = new ActionHandler($container, $router, new NullLogger());
+        $response = $launcher->handle(new ServerRequest('PUT', '/api/user/1234'));
         assertEquals(200, $response->getStatusCode());
         assertEquals('{"userId":1234}', $response->getBody()->getContents());
     }
@@ -82,19 +88,24 @@ class ActionHandlerTest extends TestCase
             RequestDependentControllerMock::class => new RequestDependentControllerMock(),
             EmptyGuardMock::class => new EmptyGuardMock(),
         ]);
-        $launcher = new ActionLauncher($container, new NullLogger());
-        $response = $launcher([
-            'method' => 'GET',
-            'path' => '/',
-            'guards' => [EmptyGuardMock::class],
-            'controller' => RequestDependentControllerMock::class,
-            //provided by reflection
-            'arguments' => [
-                RequestDependentControllerMock::class => ['request' => ['type' => ServerRequestInterface::class, 'default' => null]],
-                EmptyGuardMock::class => ['message' => ['type' => 'string', 'default' => '', 'optional' => true]],
-            ],
-        ], new ServerRequest('GET', '/?test=123&another=321'));
+        $routes = [
+            [
+                'method' => 'GET',
+                'path' => '/',
+                'guards' => [EmptyGuardMock::class],
+                'controller' => RequestDependentControllerMock::class,
+                //provided by reflection
+                'arguments' => [
+                    RequestDependentControllerMock::class => ['request' => ['type' => ServerRequestInterface::class, 'default' => null]],
+                    EmptyGuardMock::class => ['message' => ['type' => 'string', 'default' => '', 'optional' => true]],
+                ],
+            ]
+        ];
+        $router = new Router(new NullLogger);
+        $router->setRoutes($routes);
+        $launcher = new ActionHandler($container, $router, new NullLogger());
+        $response = $launcher->handle(new ServerRequest('GET', '/?test=123&another=321'));
         assertEquals(200, $response->getStatusCode());
         assertEquals('{"queryParams":{"test":"123","another":"321"}}', $response->getBody()->getContents());
-    }*/
+    }
 }

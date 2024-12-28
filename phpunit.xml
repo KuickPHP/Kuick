@@ -24,6 +24,7 @@
         </include>
         <report>
         <text outputFile="php://stdout"></text>
+        <html outputDirectory="public/build/phpunit" lowUpperBound="70" highLowerBound="95"></html>
         <clover outputFile="clover.xml" />
         </report>
     </coverage>
