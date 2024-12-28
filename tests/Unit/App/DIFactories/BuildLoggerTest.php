@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Kuick\App\DIFactories;
+namespace Kuick\Tests\App\DIFactories;
 
 use DI\ContainerBuilder;
 use Kuick\App\DIFactories\BuildLogger;

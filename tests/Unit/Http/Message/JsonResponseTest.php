@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Kuick\Http;
+namespace Kuick\Tests\Http\Message;
 
-use Kuick\Http\JsonResponse;
-use Kuick\Http\ResponseCodes;
+use Kuick\Http\Message\JsonResponse;
+use Kuick\Http\Message\Response;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use PHPUnit\Framework\TestCase;
 
@@ -12,7 +12,7 @@ use function PHPUnit\Framework\assertFalse;
 use function PHPUnit\Framework\assertTrue;
 
 /**
- * @covers \Kuick\Http\JsonResponse
+ * @covers \Kuick\Http\Message\JsonResponse
  */
 class JsonResponseTest extends TestCase
 {
@@ -26,8 +26,8 @@ class JsonResponseTest extends TestCase
 
     public function testMoreComplicatedJsonResponseIsWellFormatted(): void
     {
-        $response = (new JsonResponse(['test' => 'example'], ResponseCodes::OK, ['X-One-header' => 'one']))
-            ->withStatus(ResponseCodes::CREATED)
+        $response = (new JsonResponse(['test' => 'example'], Response::HTTP_OK, ['X-One-header' => 'one']))
+            ->withStatus(Response::HTTP_CREATED)
             ->withHeader('X-Header', 'header')
             ->withAddedHeader('X-test', 'remove')
             ->withAddedHeader('X-Another', 'another')

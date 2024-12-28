@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\Kuick\App\Router;
+namespace Kuick\Tests\App\Router;
 
 use Kuick\App\AppException;
 use Kuick\App\Router\ClassInvokeArgumentReflector;
 use PHPUnit\Framework\TestCase;
-use Tests\Kuick\Mocks\ControllerMock;
-use Tests\Kuick\Mocks\InvalidGuardMock;
+use Kuick\Tests\Mocks\ControllerMock;
+use Kuick\Tests\Mocks\InvalidGuardMock;
 
 use function PHPUnit\Framework\assertEquals;
 

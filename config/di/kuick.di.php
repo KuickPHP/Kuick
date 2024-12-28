@@ -10,7 +10,7 @@
 
 use Kuick\Ops\UI\OpsController;
 use Kuick\Ops\Security\OpsGuard;
-use Kuick\Example\UI\PingController;
+use Kuick\Http\Server\ActionHandler;
 
 use function DI\autowire;
 use function DI\env;
@@ -33,7 +33,7 @@ return [
     'kuick.ops.guard.token' => env('KUICK_OPS_GUARD_TOKEN', ''),
 
     //performance optimization: optional autowire definitions
+    ActionHandler::class => autowire(ActionHandler::class),
     OpsGuard::class => autowire(OpsGuard::class),
     OpsController::class => autowire(OpsController::class),
-    PingController::class => autowire(PingController::class),
 ];

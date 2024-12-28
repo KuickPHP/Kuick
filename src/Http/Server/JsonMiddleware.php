@@ -13,7 +13,6 @@ namespace Kuick\Http\Server;
 use Kuick\Http\Message\JsonErrorResponse;
 use Kuick\Http\Message\Response;
 use Monolog\Level;
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -37,7 +36,7 @@ class JsonMiddleware implements MiddlewareInterface
         Response::HTTP_INTERNAL_SERVER_ERROR => Level::Error,
     ];
 
-    public function __construct(private ContainerInterface $container, private LoggerInterface $logger)
+    public function __construct(private LoggerInterface $logger)
     {
     }
 

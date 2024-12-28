@@ -40,8 +40,8 @@ class BuildRouter extends FactoryAbstract
             $cachedRoutes = @include $cacheFile;
             $routes = [];
             if (
-                KernelAbstract::ENV_PROD === $container->get(AppDIContainerBuilder::APP_ENV_CONFIGURATION_KEY) &&
-                null !== $cachedRoutes
+                !empty($cachedRoutes) &&
+                KernelAbstract::ENV_PROD === $container->get(AppDIContainerBuilder::APP_ENV_CONFIGURATION_KEY)
             ) {
                 $logger->debug('Routes loaded from cache');
                 $routes = $cachedRoutes;

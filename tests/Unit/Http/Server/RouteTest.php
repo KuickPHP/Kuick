@@ -1,21 +1,21 @@
 <?php
 
-namespace Tests\Kuick\App\Router;
+namespace Kuick\Tests\Http\Server;
 
-use Kuick\App\Router\RouteMatcher;
+use Kuick\Http\Server\Router;
 use Kuick\Http\MethodNotAllowedException;
 use Kuick\Http\NotFoundException;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use Tests\Kuick\Mocks\ControllerMock;
+use Kuick\Tests\Mocks\ControllerMock;
 
 use function PHPUnit\Framework\assertEquals;
 
 /**
- * @covers \Kuick\App\Router\RouteMatcher
+ * @covers \Kuick\Http\Server\Router
  */
-class RouteMatcherTest extends TestCase
+class RouteTest extends TestCase
 {
     private const ROUTES = [
         [
@@ -36,14 +36,14 @@ class RouteMatcherTest extends TestCase
 
     public function testIfRoutesCanBeSetAndGet(): void
     {
-        $matcher = new RouteMatcher(new NullLogger());
+        $matcher = new Router(new NullLogger());
         $matcher->setRoutes(self::ROUTES);
         assertEquals(self::ROUTES, $matcher->getRoutes());
     }
 
     public function testIfOptionsGetsDefaultOptionsController(): void
     {
-        $matcher = new RouteMatcher(new NullLogger());
+        $matcher = new Router(new NullLogger());
         $matcher->setRoutes(self::ROUTES);
 
         assertEquals([], $matcher->findRoute(new ServerRequest('OPTIONS', '/whatever')));
@@ -51,7 +51,7 @@ class RouteMatcherTest extends TestCase
 
     public function testIfOptionsReturnsEmptyRoute(): void
     {
-        $matcher = new RouteMatcher(new NullLogger());
+        $matcher = new Router(new NullLogger());
         $matcher->setRoutes(self::ROUTES);
 
         $this->expectException(NotFoundException::class);
@@ -62,7 +62,7 @@ class RouteMatcherTest extends TestCase
 
     public function testIfRouterMatchesDefinedRoutes(): void
     {
-        $matcher = new RouteMatcher(new NullLogger());
+        $matcher = new Router(new NullLogger());
         $matcher->setRoutes(self::ROUTES);
 
         assertEquals(
@@ -83,7 +83,7 @@ class RouteMatcherTest extends TestCase
 
     public function testIfMethodMismatchGivesThrowsMethodNotAllowed(): void
     {
-        $matcher = new RouteMatcher(new NullLogger());
+        $matcher = new Router(new NullLogger());
         $matcher->setRoutes(self::ROUTES);
 
         $this->expectException(MethodNotAllowedException::class);

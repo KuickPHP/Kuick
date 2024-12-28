@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Kuick\App\DIFactories;
+namespace Kuick\Tests\App\DIFactories;
 
 use DI\ContainerBuilder;
 use Kuick\App\DIFactories\BuildRouteMatcher;
@@ -36,9 +36,9 @@ class BuildRouteMatcherTest extends TestCase
         assertEquals([
             [
                 'path' => '/hello/(?<userId>[0-9]{1,12})',
-                'controller' => 'Tests\Kuick\Mocks\ControllerMock',
+                'controller' => 'Kuick\Tests\Mocks\ControllerMock',
                 'arguments' => [
-                    'Tests\Kuick\Mocks\ControllerMock' => [
+                    'Kuick\Tests\Mocks\ControllerMock' => [
                         'userId' => [
                             'type' => 'int',
                             'isOptional' => false,
@@ -50,16 +50,16 @@ class BuildRouteMatcherTest extends TestCase
             [
                 'method' => 'POST',
                 'path' => '/',
-                'controller' => 'Tests\Kuick\Mocks\RequestDependentControllerMock',
+                'controller' => 'Kuick\Tests\Mocks\RequestDependentControllerMock',
                 'arguments' =>  [
-                    'Tests\Kuick\Mocks\RequestDependentControllerMock' => [
+                    'Kuick\Tests\Mocks\RequestDependentControllerMock' => [
                         'request' => [
                             'type' => 'Psr\Http\Message\ServerRequestInterface',
                             'isOptional' => false,
                             'default' => null,
                         ],
                     ],
-                    'Tests\Kuick\Mocks\RequestDependentGuardMock' => [
+                    'Kuick\Tests\Mocks\RequestDependentGuardMock' => [
                         'request' => [
                             'type' => 'Psr\Http\Message\ServerRequestInterface',
                             'isOptional' => false,
@@ -67,7 +67,7 @@ class BuildRouteMatcherTest extends TestCase
                         ],
                     ],
                 ],
-                'guards' => ['Tests\Kuick\Mocks\RequestDependentGuardMock']
+                'guards' => ['Kuick\Tests\Mocks\RequestDependentGuardMock']
             ],
         ], $routeMatcher->getRoutes());
     }

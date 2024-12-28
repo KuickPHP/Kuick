@@ -10,9 +10,9 @@
 
 namespace Kuick\App;
 
-use Kuick\Http\ResponseEmitter;
 use Kuick\Http\Server\ActionHandler;
 use Kuick\Http\Server\JsonMiddleware;
+use Kuick\Http\Server\ResponseEmitter;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**

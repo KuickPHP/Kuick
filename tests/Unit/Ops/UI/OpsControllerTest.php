@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Kuick\Ops\UI;
+namespace Kuick\Tests\Ops\UI;
 
 use DI\Container;
 use Kuick\Ops\UI\OpsController;

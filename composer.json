@@ -2,7 +2,7 @@
     "name": "kuick/framework",
     "type": "library",
     "description": "Kuick is an extremely low footprint application framework, suitable for high throughput workloads",
-    "keywords": ["framework", "json server", "psr"],
+    "keywords": ["framework", "json server", "psr-15", "kuick"],
     "license": "MIT",
     "authors": [
         {
@@ -47,7 +47,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\Kuick\\": "tests"
+            "Kuick\\Tests\\": "tests"
         }
     },
     "require-dev": {

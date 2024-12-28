@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Kuick\App;
+namespace Kuick\Tests\App;
 
 use Kuick\App\AppSetLocalization;
 use PHPUnit\Framework\TestCase;

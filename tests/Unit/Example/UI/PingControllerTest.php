@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Kuick\Example\UI;
+namespace Kuick\Tests\Example\UI;
 
 use Kuick\Example\UI\PingController;
 use PHPUnit\Framework\TestCase;

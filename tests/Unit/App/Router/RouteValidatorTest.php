@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\Kuick\App\Router;
+namespace Kuick\Tests\App\Router;
 
 use Kuick\App\Router\RouteValidator;
 use Kuick\Http\InternalServerErrorException;
 use PHPUnit\Framework\TestCase;
-use Tests\Kuick\Mocks\ControllerMock;
-use Tests\Kuick\Mocks\ForbiddenGuardMock;
-use Tests\Kuick\Mocks\InvalidControllerMock;
-use Tests\Kuick\Mocks\InvalidGuardMock;
+use Kuick\Tests\Mocks\ControllerMock;
+use Kuick\Tests\Mocks\ForbiddenGuardMock;
+use Kuick\Tests\Mocks\InvalidControllerMock;
+use Kuick\Tests\Mocks\InvalidGuardMock;
 
 use function PHPUnit\Framework\assertTrue;
 
@@ -150,7 +150,7 @@ class RouteValidatorTest extends TestCase
         ];
         $this->expectException(InternalServerErrorException::class);
         $this->expectExceptionCode(500);
-        $this->expectExceptionMessage('Controller: Tests\Kuick\Mocks\InvalidControllerMock" is missing __invoke() method, path: /');
+        $this->expectExceptionMessage('Controller: Kuick\Tests\Mocks\InvalidControllerMock" is missing __invoke() method, path: /');
         (new RouteValidator())($brokenPath);
     }
 
@@ -202,7 +202,7 @@ class RouteValidatorTest extends TestCase
         ];
         $this->expectException(InternalServerErrorException::class);
         $this->expectExceptionCode(500);
-        $this->expectExceptionMessage('Guard: "Tests\Kuick\Mocks\InvalidGuardMock" is missing __invoke() method, path: /');
+        $this->expectExceptionMessage('Guard: "Kuick\Tests\Mocks\InvalidGuardMock" is missing __invoke() method, path: /');
         (new RouteValidator())($brokenPath);
     }
 }

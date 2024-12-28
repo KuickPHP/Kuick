@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Kuick\Ops\Security;
+namespace Kuick\Tests\Ops\Security;
 
 use Kuick\Http\ForbiddenException;
 use Kuick\Http\UnauthorizedException;

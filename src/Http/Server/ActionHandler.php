@@ -23,8 +23,7 @@ class ActionHandler implements RequestHandlerInterface
         private ContainerInterface $container,
         private Router $router,
         private LoggerInterface $logger
-    )
-    {
+    ) {
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface

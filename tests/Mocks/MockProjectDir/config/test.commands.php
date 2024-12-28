@@ -1,6 +1,6 @@
 <?php
 
-use Tests\Kuick\Mocks\CommandMock;
+use Kuick\Tests\Mocks\CommandMock;
 
 return [
     CommandMock::class,

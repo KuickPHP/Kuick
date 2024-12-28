@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Kuick\App;
+namespace Kuick\Tests\App;
 
 use DI\NotFoundException;
 use Kuick\App\AppDIContainerBuilder;
