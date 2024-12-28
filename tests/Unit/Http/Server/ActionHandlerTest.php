@@ -73,7 +73,7 @@ class ActionHandlerTest extends TestCase
                 ],
             ]
         ];
-        $router = new Router(new NullLogger);
+        $router = new Router(new NullLogger());
         $router->setRoutes($routes);
         $launcher = new ActionHandler($container, $router, new NullLogger());
         $response = $launcher->handle(new ServerRequest('PUT', '/api/user/1234'));
@@ -101,7 +101,7 @@ class ActionHandlerTest extends TestCase
                 ],
             ]
         ];
-        $router = new Router(new NullLogger);
+        $router = new Router(new NullLogger());
         $router->setRoutes($routes);
         $launcher = new ActionHandler($container, $router, new NullLogger());
         $response = $launcher->handle(new ServerRequest('GET', '/?test=123&another=321'));

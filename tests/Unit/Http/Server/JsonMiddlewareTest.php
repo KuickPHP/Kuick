@@ -27,18 +27,18 @@ class JsonMiddlewareTest extends TestCase
 {
     public function testIfMiddlewareProducesAResponse(): void
     {
-        $middleware = new JsonMiddleware(new NullLogger);
-        $response = $middleware->process(new ServerRequest('GET', '/whatever'), new EmptyActionHandler);
-        
+        $middleware = new JsonMiddleware(new NullLogger());
+        $response = $middleware->process(new ServerRequest('GET', '/whatever'), new EmptyActionHandler());
+
         assertEquals(200, $response->getStatusCode());
         assertEquals('example', $response->getBody()->getContents());
     }
 
     public function testIfMiddlewareProducesAJsonResponseEvenIfExceptionIsThrown(): void
     {
-        $middleware = new JsonMiddleware(new NullLogger);
-        $response = $middleware->process(new ServerRequest('GET', '/whatever'), new ActionHandlerThrowingException);
-        
+        $middleware = new JsonMiddleware(new NullLogger());
+        $response = $middleware->process(new ServerRequest('GET', '/whatever'), new ActionHandlerThrowingException());
+
         assertEquals(500, $response->getStatusCode());
         assertEquals('{"error":"some exception"}', $response->getBody()->getContents());
     }
