@@ -37,7 +37,7 @@ jobs:
           PHP_VERSION=${{ matrix.php-version }}
           OS_VARIANT=${{ matrix.os-variant }}
     - name: Run tests
-      run: docker run --rm -v ./:/var/www/html/public/build php${{ matrix.php-version }}-${{ matrix.os-variant}}-checks sh -c "composer test:all"
+      run: docker run --rm -v ./:/var/www/html php${{ matrix.php-version }}-${{ matrix.os-variant}}-checks sh -c "composer test:all"
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
