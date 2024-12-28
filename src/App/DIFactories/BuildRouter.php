@@ -74,7 +74,7 @@ class BuildRouter extends FactoryAbstract
                     }
                 }
                 if (!file_exists(dirname($cacheFile))) {
-                    mkdir(dirname($cacheFile));
+                    mkdir(dirname($cacheFile), 0777, true);
                 }
                 file_put_contents($cacheFile, sprintf('<?php return %s;', var_export($routes, true)));
                 $logger->notice('Routes analyzed, cache written');

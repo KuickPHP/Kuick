@@ -17,7 +17,7 @@ test: version.txt
 	# generate CI_TAG to avoid concurrent run collisions
 	$(eval CI_TAG := $(IMAGE_NAME):$(shell date +%s%N))
 	docker build --target=test-runner --tag $(CI_TAG) .
-	docker run --rm -v ./public/build:/var/www/html/public/build $(CI_TAG) composer test:all
+	docker run --rm -v ./:/var/www/html $(CI_TAG) composer test:all
 	docker image rm $(CI_TAG)
 
 build: version.txt

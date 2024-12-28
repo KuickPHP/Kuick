@@ -18,16 +18,14 @@ ENV KUICK_APP_NAME=Kuick@Docker
 
 COPY --link etc/apache2 /etc/apache2
 COPY --link bin bin
-COPY --link config config
 COPY --link public public
 # example distribution files
 COPY --link example/composer.json composer.json
 COPY --link example/config config
 COPY --link version.* public/
 
-RUN mkdir -m 777 var
-
 RUN set -eux; \
+    mkdir -m 777 var; \
     composer install \ 
     --prefer-dist \
     --classmap-authoritative \
@@ -41,30 +39,20 @@ RUN set -eux; \
 FROM base AS test-runner
 
 ENV XDEBUG_ENABLE=1 \
-    XDEBUG_MODE=coverage
+    XDEBUG_MODE=coverage \
+    OPCACHE_VALIDATE_TIMESTAMPS=1
 
-COPY config/di config/di
-COPY src src
-COPY tests tests
-COPY composer.json composer.json
-COPY php* ./
-
+# debian & alpine have different paths for apcu.ini
 RUN set -eux; \
-    # debian & alpine have different paths for apcu.ini
     echo "apc.enable_cli=1" >> /etc/php/${PHP_VERSION}/mods-available/apcu.ini || \
-    echo "apc.enable_cli=1" >> /etc/php${PHP_VERSION/./}/conf.d/apcu.ini; \
-    composer install
+    echo "apc.enable_cli=1" >> /etc/php${PHP_VERSION/./}/conf.d/apcu.ini
 
 #####################
 # Dev server target #
 #####################
-FROM base AS dev-server
+FROM test-runner AS dev-server
 
 COPY ./etc/apache2 /etc/apache2
 
-ENV XDEBUG_ENABLE=1 \
-    XDEBUG_MODE=off \
-    OPCACHE_VALIDATE_TIMESTAMPS=1
-
-RUN echo "apc.enable_cli=1" >> /etc/php/${PHP_VERSION}/mods-available/apcu.ini
+ENV XDEBUG_MODE=dev
 

@@ -27,17 +27,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-    - name: Build test runner
-      uses: docker/build-push-action@v5
-      with:
-        push: false
-        target: test-runner
-        tags: php${{ matrix.php-version }}-${{ matrix.os-variant}}-checks
-        build-args: |
-          PHP_VERSION=${{ matrix.php-version }}
-          OS_VARIANT=${{ matrix.os-variant }}
     - name: Run tests
-      run: docker run --rm -v ./:/var/www/html php${{ matrix.php-version }}-${{ matrix.os-variant}}-checks sh -c "composer test:all"
+      run: make test
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
