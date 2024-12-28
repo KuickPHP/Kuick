@@ -27,19 +27,12 @@ abstract class KernelAbstract
 
     public function __construct(string $projectDir)
     {
-        set_error_handler(function (int $errno, string $message, string $file, int $line): void {
-            throw new AppException($message . ' ' . $file . ' (' . $line . ')', $errno);
-        });
         //building DI container
         $this->container = (new AppDIContainerBuilder())($projectDir);
         $this->logger = $this->container->get(LoggerInterface::class);
+        $this->logger->debug('Kernel booted');
         //localization setup
         ($this->container->get(AppSetLocalization::class))();
         $this->logger->debug('Localization setup completed');
-    }
-
-    public function getContainer(): ContainerInterface
-    {
-        return $this->container;
     }
 }

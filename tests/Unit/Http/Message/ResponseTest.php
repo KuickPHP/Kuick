@@ -1,9 +1,8 @@
 <?php
 
-namespace Tests\Kuick\Http;
+namespace Kuick\Tests\Http\Message;
 
-use Kuick\Http\JsonResponse;
-use Kuick\Http\ResponseCodes;
+use Kuick\Http\Message\Response;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use PHPUnit\Framework\TestCase;
 
@@ -12,30 +11,27 @@ use function PHPUnit\Framework\assertFalse;
 use function PHPUnit\Framework\assertTrue;
 
 /**
- * @covers \Kuick\Http\JsonResponse
+ * @covers \Kuick\Http\Message\Response
  */
-class JsonResponseTest extends TestCase
+class ResponseTest extends TestCase
 {
     public function testIfSimpleJsonResponseIsWellFormatted(): void
     {
-        $response = new JsonResponse(['test' => 'example']);
-        assertEquals('application/json', $response->getHeaderLine('Content-type'));
+        $response = new Response(200, [], 'test');
         assertEquals(200, $response->getStatusCode());
-        assertEquals('{"test":"example"}', $response->getBody()->getContents());
+        assertEquals('test', $response->getBody()->getContents());
     }
 
     public function testMoreComplicatedJsonResponseIsWellFormatted(): void
     {
-        $response = (new JsonResponse(['test' => 'example'], ResponseCodes::OK, ['X-One-header' => 'one']))
-            ->withStatus(ResponseCodes::CREATED)
+        $response = (new Response(Response::HTTP_OK, ['X-One-header' => 'one'], 'body'))
+            ->withStatus(Response::HTTP_CREATED)
             ->withHeader('X-Header', 'header')
             ->withAddedHeader('X-test', 'remove')
             ->withAddedHeader('X-Another', 'another')
             ->withProtocolVersion('1.1')
             ->withoutHeader('X-test')
             ->withBody((new Psr17Factory())->createStream('{"Hello world"}'));
-
-        assertEquals('application/json', $response->getHeaderLine('Content-type'));
 
         assertEquals('one', $response->getHeaderLine('X-One-header'));
         assertEquals(['one'], $response->getHeader('X-One-header'));
@@ -50,7 +46,6 @@ class JsonResponseTest extends TestCase
 
         assertEquals([
             'X-One-header',
-            'Content-Type',
             'X-Header',
             'X-Another'
         ], array_keys($response->getHeaders()));

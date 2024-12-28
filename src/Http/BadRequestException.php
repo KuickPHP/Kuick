@@ -10,7 +10,9 @@
 
 namespace Kuick\Http;
 
+use Kuick\Http\Message\Response;
+
 class BadRequestException extends ResponseException
 {
-    protected $code = ResponseCodes::BAD_REQUEST;
+    protected $code = Response::HTTP_BAD_REQUEST;
 }

@@ -10,46 +10,54 @@
 
 namespace Kuick\App\DIFactories;
 
+use FilesystemIterator;
+use GlobIterator;
 use Kuick\App\AppDIContainerBuilder;
+use Kuick\App\DIFactories\Utils\ClassInvokeArgumentReflector;
+use Kuick\App\DIFactories\Utils\RouteValidator;
 use Kuick\App\KernelAbstract;
-use Kuick\App\Router\ClassInvokeArgumentReflector;
-use Kuick\App\Router\RouteMatcher;
-use Kuick\App\Router\RouteValidator;
-use Kuick\Cache\FileCache;
+use Kuick\Http\Server\Router;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
  *
  */
-class BuildRouteMatcher extends FactoryAbstract
+class BuildRouter extends FactoryAbstract
 {
-    public const CACHE_KEY = 'kuick-app-routematcher-routes';
+    public const CACHE_FILE = '/kuick-app-routes.php';
     public const ROUTE_LOCATIONS = [
         '/vendor/kuick/*/config/*.routes.php',
         '/config/*.routes.php',
     ];
 
+    /**
+     * @TODO: extract route parsing to the external class
+     *
+     * @SuppressWarnings(PHPMD.ErrorControlOperator)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
     public function __invoke(): void
     {
-        $this->builder->addDefinitions([RouteMatcher::class => function (ContainerInterface $container): RouteMatcher {
+        $this->builder->addDefinitions([Router::class => function (ContainerInterface $container): Router {
             $logger = $container->get(LoggerInterface::class);
             $projectDir = $container->get(AppDIContainerBuilder::PROJECT_DIR_CONFIGURATION_KEY);
-            $cache = new FileCache($projectDir . AppDIContainerBuilder::CACHE_PATH);
-            $cachedRoutes = $cache->get(BuildRouteMatcher::CACHE_KEY);
+            $cacheFile = $projectDir . AppDIContainerBuilder::CACHE_PATH . BuildRouter::CACHE_FILE;
+            $cachedRoutes = @include $cacheFile;
             $routes = [];
             if (
-                KernelAbstract::ENV_PROD === $container->get(AppDIContainerBuilder::APP_ENV_CONFIGURATION_KEY) &&
-                null !== $cachedRoutes
+                !empty($cachedRoutes) &&
+                KernelAbstract::ENV_PROD === $container->get(AppDIContainerBuilder::APP_ENV_CONFIGURATION_KEY)
             ) {
                 $logger->debug('Routes loaded from cache');
                 $routes = $cachedRoutes;
             }
             if (empty($routes)) {
-                //@TODO: extract route parsing to the external class
+                //@TODO: extract this part
                 //app config (normal priority)
-                foreach (BuildRouteMatcher::ROUTE_LOCATIONS as $routeLocation) {
-                    foreach (glob($projectDir . $routeLocation) as $routeFile) {
+                foreach (BuildRouter::ROUTE_LOCATIONS as $routeLocation) {
+                    $routeIterator = new GlobIterator($projectDir . $routeLocation, FilesystemIterator::KEY_AS_FILENAME);
+                    foreach ($routeIterator as $routeFile) {
                         $routes = array_merge($routes, include $routeFile);
                     }
                 }
@@ -65,10 +73,13 @@ class BuildRouteMatcher extends FactoryAbstract
                         $routes[$routeKey]['arguments'][$guard] = (new ClassInvokeArgumentReflector())($guard);
                     }
                 }
-                $cache->set(BuildRouteMatcher::CACHE_KEY, $routes);
+                if (!file_exists(dirname($cacheFile))) {
+                    mkdir(dirname($cacheFile));
+                }
+                file_put_contents($cacheFile, sprintf('<?php return %s;', var_export($routes, true)));
                 $logger->notice('Routes analyzed, cache written');
             }
-            return (new RouteMatcher($container->get(LoggerInterface::class)))->setRoutes($routes);
+            return (new Router($container->get(LoggerInterface::class)))->setRoutes($routes);
         }]);
     }
 }

@@ -10,7 +10,9 @@
 
 namespace Kuick\Http;
 
+use Kuick\Http\Message\Response;
+
 class ConflictException extends ResponseException
 {
-    protected $code = ResponseCodes::CONFLICT;
+    protected $code = Response::HTTP_CONFLICT;
 }

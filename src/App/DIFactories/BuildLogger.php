@@ -21,7 +21,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
 /**
- *
+ * Logger factory
  */
 class BuildLogger extends FactoryAbstract
 {

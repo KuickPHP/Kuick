@@ -8,11 +8,11 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\Http;
+namespace Kuick\Http\Server;
 
 use Psr\Http\Message\ResponseInterface;
 
-class ResponseEmmiter
+class ResponseEmitter
 {
     public function __invoke(ResponseInterface $response): void
     {

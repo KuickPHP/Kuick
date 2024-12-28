@@ -10,7 +10,7 @@
 
 namespace Kuick\Example\UI;
 
-use Kuick\Http\JsonResponse;
+use Kuick\Http\Message\JsonResponse;
 
 class PingController
 {

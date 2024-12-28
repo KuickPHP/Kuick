@@ -2,8 +2,7 @@
 
 namespace Kuick\Ops\UI;
 
-use Kuick\Http\ResponseCodes;
-use Nyholm\Psr7\Response;
+use Kuick\Http\Message\Response;
 
 class DocHtmlController
 {
@@ -39,6 +38,6 @@ class DocHtmlController
 
     public function __invoke(): Response
     {
-        return new Response(ResponseCodes::OK, [], self::TEMPLATE);
+        return new Response(Response::HTTP_OK, [], self::TEMPLATE);
     }
 }

@@ -8,7 +8,7 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App\Router;
+namespace Kuick\Http\Server;
 
 use Kuick\App\AppException;
 

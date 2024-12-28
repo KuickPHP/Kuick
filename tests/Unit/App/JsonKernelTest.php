@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Kuick\App;
+namespace Kuick\Tests\App;
 
 use Kuick\App\JsonKernel;
 use Nyholm\Psr7\ServerRequest;
@@ -37,16 +37,16 @@ class JsonKernelTest extends TestCase
         assertEquals('{"error":"Not found"}', $data);
     }
 
-    /**
-     * Needs to be run in separate process, cause DI builder won't work other way
-     * @runInSeparateProcess
-     */
-    public function testIfContainerReturnsBuiltContainer(): void
-    {
-        ob_start();
-        $kernel = new JsonKernel(self::$projectDir);
-        ob_end_clean();
-        $container = $kernel->getContainer();
-        assertEquals('Testing App', $container->get('kuick.app.name'));
-    }
+    // /**
+    //  * Needs to be run in separate process, cause DI builder won't work other way
+    //  * @runInSeparateProcess
+    //  */
+    // public function testIfContainerReturnsBuiltContainer(): void
+    // {
+    //     ob_start();
+    //     $kernel = new JsonKernel(self::$projectDir);
+    //     ob_end_clean();
+    //     $container = $kernel->getContainer();
+    //     assertEquals('Testing App', $container->get('kuick.app.name'));
+    // }
 }

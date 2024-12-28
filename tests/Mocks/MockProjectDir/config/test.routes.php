@@ -8,9 +8,9 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-use Tests\Kuick\Mocks\ControllerMock;
-use Tests\Kuick\Mocks\RequestDependentControllerMock;
-use Tests\Kuick\Mocks\RequestDependentGuardMock;
+use Kuick\Tests\Mocks\ControllerMock;
+use Kuick\Tests\Mocks\RequestDependentControllerMock;
+use Kuick\Tests\Mocks\RequestDependentGuardMock;
 
 return [
     [

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Kuick\Example\Command;
+namespace Kuick\Tests\Example\Command;
 
 use Kuick\Example\Console\PingCommand;
 use PHPUnit\Framework\TestCase;

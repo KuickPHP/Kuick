@@ -1,18 +1,15 @@
 <?php
 
-namespace Tests\Kuick\Http;
+namespace Kuick\Tests\Http;
 
-use Kuick\Http\JsonErrorResponse;
-use Kuick\Http\JsonResponse;
-use Kuick\Http\ResponseCodes;
-use Kuick\Http\ResponseEmmiter;
+use Kuick\Http\Message\JsonResponse;
+use Kuick\Http\Server\ResponseEmitter;
 use PHPUnit\Framework\TestCase;
 
 use function PHPUnit\Framework\assertEquals;
-use function PHPUnit\Framework\assertTrue;
 
 /**
- * @covers \Kuick\Http\ResponseEmmiter
+ * @covers \Kuick\Http\Server\ResponseEmitter
  */
 class ResponseEmmiterTest extends TestCase
 {
@@ -24,7 +21,7 @@ class ResponseEmmiterTest extends TestCase
     {
         $response = new JsonResponse(['test']);
         ob_start();
-        (new ResponseEmmiter())($response);
+        (new ResponseEmitter())($response);
         $content = ob_get_clean();
         assertEquals('["test"]', $content);
         assertEquals(['Content-Type: application/json'], xdebug_get_headers());

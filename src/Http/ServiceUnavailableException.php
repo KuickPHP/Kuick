@@ -10,7 +10,9 @@
 
 namespace Kuick\Http;
 
+use Kuick\Http\Message\Response;
+
 class ServiceUnavailableException extends ResponseException
 {
-    protected $code = ResponseCodes::SERVICE_UNAVAILABLE;
+    protected $code = Response::HTTP_SERVICE_UNAVAILABLE;
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Kuick\Mocks;
+namespace Kuick\Tests\Mocks;
 
 class InvalidGuardMock
 {

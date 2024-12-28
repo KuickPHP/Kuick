@@ -1,17 +1,17 @@
 <?php
 
-namespace Tests\Kuick\App\Router;
+namespace Kuick\Tests\App\DIFactories\Utils;
 
 use Kuick\App\AppException;
-use Kuick\App\Router\ClassInvokeArgumentReflector;
+use Kuick\App\DIFactories\Utils\ClassInvokeArgumentReflector;
 use PHPUnit\Framework\TestCase;
-use Tests\Kuick\Mocks\ControllerMock;
-use Tests\Kuick\Mocks\InvalidGuardMock;
+use Kuick\Tests\Mocks\ControllerMock;
+use Kuick\Tests\Mocks\InvalidGuardMock;
 
 use function PHPUnit\Framework\assertEquals;
 
 /**
- * @covers \Kuick\App\Router\ClassInvokeArgumentReflector
+ * @covers \Kuick\App\DIFactories\Utils\ClassInvokeArgumentReflector
  */
 class ClassInvokeArgumentReflectorTest extends TestCase
 {

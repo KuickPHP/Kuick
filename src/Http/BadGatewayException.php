@@ -10,7 +10,9 @@
 
 namespace Kuick\Http;
 
+use Kuick\Http\Message\Response;
+
 class BadGatewayException extends ResponseException
 {
-    protected $code = ResponseCodes::BAD_GATEWAY;
+    protected $code = Response::HTTP_BAD_GATEWAY;
 }

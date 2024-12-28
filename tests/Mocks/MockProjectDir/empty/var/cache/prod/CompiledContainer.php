@@ -5,47 +5,57 @@
  */
 class CompiledContainer extends DI\CompiledContainer
 {
-    public const METHOD_MAPPING = array(
-  'Kuick\\App\\Router\\RouteMatcher' => 'get1',
-  'Psr\\Log\\LoggerInterface' => 'get2',
-  'kuick.app.project.dir' => 'get3',
-);
+    const METHOD_MAPPING = array (
+    'Kuick\\Http\\Server\\Router' => 'get1',
+    'Psr\\Log\\LoggerInterface' => 'get2',
+    'kuick.app.env' => 'get3',
+    'kuick.app.project.dir' => 'get4',
+    );
 
     protected function get1()
     {
-        return $this->resolveFactory(static function (\Psr\Container\ContainerInterface $container): \Kuick\App\Router\RouteMatcher {
+        return $this->resolveFactory(static function (\Psr\Container\ContainerInterface $container): \Kuick\Http\Server\Router {
             $logger = $container->get(\Psr\Log\LoggerInterface::class);
             $projectDir = $container->get(\Kuick\App\AppDIContainerBuilder::PROJECT_DIR_CONFIGURATION_KEY);
-            $cache = new \Kuick\Cache\FileCache($projectDir . \Kuick\App\AppDIContainerBuilder::CACHE_PATH);
-            $cachedRoutes = $cache->get(\Kuick\App\DIFactories\BuildRouteMatcher::CACHE_KEY);
+            $cacheFile = $projectDir . \Kuick\App\AppDIContainerBuilder::CACHE_PATH . \Kuick\App\DIFactories\BuildRouter::CACHE_FILE;
+            $cachedRoutes = @include $cacheFile;
             $routes = [];
-            if (\Kuick\App\KernelAbstract::ENV_PROD == getenv(\Kuick\App\KernelAbstract::APP_ENV) && null !== $cachedRoutes) {
+            if (
+                !empty($cachedRoutes) &&
+                \Kuick\App\KernelAbstract::ENV_PROD === $container->get(\Kuick\App\AppDIContainerBuilder::APP_ENV_CONFIGURATION_KEY)
+            ) {
                 $logger->debug('Routes loaded from cache');
                 $routes = $cachedRoutes;
             }
             if (empty($routes)) {
                 //@TODO: extract route parsing to the external class
                 //app config (normal priority)
-                foreach (glob($projectDir . '/config/*.routes.php') as $routeFile) {
-                    $routes = array_merge($routes, include $routeFile);
+                foreach (\Kuick\App\DIFactories\BuildRouter::ROUTE_LOCATIONS as $routeLocation) {
+                    $routeIterator = new \GlobIterator($projectDir . $routeLocation, \FilesystemIterator::KEY_AS_FILENAME);
+                    foreach ($routeIterator as $routeFile) {
+                        $routes = array_merge($routes, include $routeFile);
+                    }
                 }
                 //validating routes
                 //decorating routes with available controller arguments
                 foreach ($routes as $routeKey => $route) {
-                    (new \Kuick\App\Router\RouteValidator())($route);
-                    $routes[$routeKey]['arguments'][$route['controller']] = (new \Kuick\App\Router\ClassInvokeArgumentReflector())($route['controller']);
+                    (new \Kuick\App\DIFactories\Utils\RouteValidator())($route);
+                    $routes[$routeKey]['arguments'][$route['controller']] = (new \Kuick\App\DIFactories\Utils\ClassInvokeArgumentReflector())($route['controller']);
                     if (!isset($route['guards'])) {
                         continue;
                     }
                     foreach ($route['guards'] as $guard) {
-                        $routes[$routeKey]['arguments'][$guard] = (new \Kuick\App\Router\ClassInvokeArgumentReflector())($guard);
+                        $routes[$routeKey]['arguments'][$guard] = (new \Kuick\App\DIFactories\Utils\ClassInvokeArgumentReflector())($guard);
                     }
                 }
-                $cache->set(\Kuick\App\DIFactories\BuildRouteMatcher::CACHE_KEY, $routes);
+                if (!file_exists(dirname($cacheFile))) {
+                    mkdir(dirname($cacheFile));
+                }
+                file_put_contents($cacheFile, sprintf('<?php return %s;', var_export($routes, true)));
                 $logger->notice('Routes analyzed, cache written');
             }
-            return (new \Kuick\App\Router\RouteMatcher($container->get(\Psr\Log\LoggerInterface::class)))->setRoutes($routes);
-        }, 'Kuick\\App\\Router\\RouteMatcher');
+            return (new \Kuick\Http\Server\Router($container->get(\Psr\Log\LoggerInterface::class)))->setRoutes($routes);
+        }, 'Kuick\\Http\\Server\\Router');
     }
 
     protected function get2()
@@ -83,7 +93,11 @@ class CompiledContainer extends DI\CompiledContainer
 
     protected function get3()
     {
-        return '/var/www/html/tests/Mocks/MockProjectDir/empty';
+        return 'prod';
     }
 
+    protected function get4()
+    {
+        return '/var/www/html/tests/Mocks/MockProjectDir/empty';
+    }
 }

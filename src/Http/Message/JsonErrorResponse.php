@@ -8,7 +8,7 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\Http;
+namespace Kuick\Http\Message;
 
 class JsonErrorResponse extends JsonResponse
 {
@@ -17,9 +17,9 @@ class JsonErrorResponse extends JsonResponse
 
     public function __construct(
         string $message = self::DEFAULT_MESSAGE,
-        int $code = ResponseCodes::INTERNAL_SERVER_ERROR
+        int $code = self::HTTP_INTERNAL_SERVER_ERROR
     ) {
-        $code = $code == 0 ? ResponseCodes::INTERNAL_SERVER_ERROR : $code;
+        $code = $code == 0 ? self::HTTP_INTERNAL_SERVER_ERROR : $code;
         parent::__construct([self::ERROR_KEY => $message], $code);
     }
 }

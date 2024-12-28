@@ -1,17 +1,24 @@
 <?php
 
-namespace Kuick\App\Router;
+/**
+ * Kuick Framework (https://github.com/milejko/kuick)
+ *
+ * @link       https://github.com/milejko/kuick
+ * @copyright  Copyright (c) 2010-2024 Mariusz Miłejko (mariusz@milejko.pl)
+ * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
+ */
+
+namespace Kuick\Http\Server;
 
 use Kuick\Http\MethodNotAllowedException;
 use Kuick\Http\NotFoundException;
-use Kuick\Http\RequestMethods;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- *
+ * Action router
  */
-class RouteMatcher
+class Router
 {
     public const MATCH_PATTERN = '#^%s$#';
     private array $routes = [];
@@ -34,14 +41,14 @@ class RouteMatcher
     public function findRoute(ServerRequestInterface $request): array
     {
         //empty route for OPTIONS
-        if (RequestMethods::OPTIONS == $request->getMethod()) {
+        if ('OPTIONS' == $request->getMethod()) {
             return [];
         }
         $requestMethod = $request->getMethod();
         $mismatchedMethod = null;
         foreach ($this->routes as $route) {
             //method defaults to GET
-            $routeMethod = $route['method'] ?? RequestMethods::GET;
+            $routeMethod = $route['method'] ?? 'GET';
             //trim right slash
             $requestPath = $request->getUri()->getPath() == '/' ? '/' : rtrim($request->getUri()->getPath(), '/');
             $this->logger->debug('Trying route: ' . $routeMethod . ' ' . $route['path']);
@@ -53,7 +60,7 @@ class RouteMatcher
             }
             $route['params'] = $this->parseRouteParams($results);
             //methods are matching or HEAD to GET route
-            if ($requestMethod == $routeMethod || ($requestMethod == RequestMethods::HEAD && $routeMethod == RequestMethods::GET)) {
+            if ($requestMethod == $routeMethod || ($requestMethod == 'HEAD' && $routeMethod == 'GET')) {
                 $this->logger->debug('Matched route: ' . $routeMethod . ' ' . $route['path']);
                 return $route;
             }

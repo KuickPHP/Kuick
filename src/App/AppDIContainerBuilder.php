@@ -10,10 +10,11 @@
 
 namespace Kuick\App;
 
+use APCUIterator;
 use DI\ContainerBuilder;
 use Kuick\App\DIFactories\BuildLogger;
-use Kuick\App\DIFactories\BuildRouteMatcher;
 use Kuick\App\DIFactories\AddDefinitions;
+use Kuick\App\DIFactories\BuildRouter;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -38,11 +39,6 @@ class AppDIContainerBuilder
 
         (false === getenv(KernelAbstract::APP_ENV)) && putenv(KernelAbstract::APP_ENV . '=' . KernelAbstract::ENV_PROD);
         $this->appEnv = getenv(KernelAbstract::APP_ENV);
-
-        //remove previous compilation if KUICK_APP_ENV!=dev
-        if ($this->appEnv == KernelAbstract::ENV_DEV) {
-            $this->removeContainer($projectDir);
-        }
 
         //build or load from cache
         $container = $this->configureBuilder($projectDir)->build();
@@ -83,7 +79,7 @@ class AppDIContainerBuilder
         (new BuildLogger($builder))();
 
         //action matcher
-        (new BuildRouteMatcher($builder))();
+        (new BuildRouter($builder))();
 
         return $builder->build();
     }
@@ -101,7 +97,13 @@ class AppDIContainerBuilder
     private function removeContainer(string $projectDir): void
     {
         array_map('unlink', glob($projectDir . self::CACHE_PATH . DIRECTORY_SEPARATOR . $this->appEnv . DIRECTORY_SEPARATOR . self::COMPILED_FILENAME));
-        $this->apcuEnabled() && apcu_clear_cache();
+        if ($this->apcuEnabled()) {
+            $apcuIterator = new APCUIterator('$php-di.definitions.' . $projectDir . $this->appEnv . '$');
+            //DI definition apcu cache cleanup
+            foreach ($apcuIterator as $key) {
+                apcu_delete($key['key']);
+            }
+        }
     }
 
     private function apcuEnabled(): bool

@@ -8,7 +8,7 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App\Router;
+namespace Kuick\App\DIFactories\Utils;
 
 use Kuick\App\AppException;
 use ReflectionMethod;

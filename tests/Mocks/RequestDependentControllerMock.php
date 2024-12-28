@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Kuick\Mocks;
+namespace Kuick\Tests\Mocks;
 
-use Kuick\Http\JsonResponse;
+use Kuick\Http\Message\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
 
 class RequestDependentControllerMock
