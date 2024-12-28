@@ -18,7 +18,6 @@
         "ext-reflection": "*",
         "ext-spl": "*",
         "monolog/monolog": "^3.0",
-        "nyholm/dsn": "^2.0",
         "nyholm/psr7": "^1.8",
         "nyholm/psr7-server": "^1.1",
         "php-di/php-di": "^7.0",
