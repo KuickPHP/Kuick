@@ -15,7 +15,7 @@ Ready to deploy images you can find here: https://hub.docker.com/r/kuickphp/kuic
 1. Run using Docker
 This example utilizes the smallest, Alpine distribution.
 ```
-docker run -p 8080:80 kuickphp/kuick:1.2-alpine
+docker run -p 8080:80 kuickphp/kuick:1.3-alpine
 ```
 Now you can try it out by opening http://localhost:8080/<br>
 

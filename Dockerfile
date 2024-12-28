@@ -14,7 +14,8 @@ FROM milejko/php:${PHP_VERSION}-${SERVER_VARIANT}-${OS_VARIANT} AS base
 #########################################################
 FROM base AS dist
 
-ENV KUICK_APP_NAME=Kuick@Docker
+ENV KUICK_APP_NAME=Kuick@Docker \
+    OPCACHE_VALIDATE_TIMESTAMPS=0
 
 COPY --link etc/apache2 /etc/apache2
 COPY --link bin bin
