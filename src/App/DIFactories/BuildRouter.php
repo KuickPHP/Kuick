@@ -32,7 +32,10 @@ class BuildRouter extends FactoryAbstract
     ];
 
     /**
+     * @TODO: extract route parsing to the external class
+     *
      * @SuppressWarnings(PHPMD.ErrorControlOperator)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function __invoke(): void
     {
@@ -50,7 +53,7 @@ class BuildRouter extends FactoryAbstract
                 $routes = $cachedRoutes;
             }
             if (empty($routes)) {
-                //@TODO: extract route parsing to the external class
+                //@TODO: extract this part
                 //app config (normal priority)
                 foreach (BuildRouter::ROUTE_LOCATIONS as $routeLocation) {
                     $routeIterator = new GlobIterator($projectDir . $routeLocation, FilesystemIterator::KEY_AS_FILENAME);
