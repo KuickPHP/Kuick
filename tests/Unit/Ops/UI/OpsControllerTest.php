@@ -24,6 +24,8 @@ class OpsControllerTest extends TestCase
         self::assertEquals([
             'request',
             'di-config',
+            'opcache-status',
+            'apcu-status',
             'php-version',
             'php-config',
             'php-loaded-extensions'

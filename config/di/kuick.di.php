@@ -8,9 +8,11 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
+use Kuick\App\AppSetLocalization;
 use Kuick\Ops\UI\OpsController;
 use Kuick\Ops\Security\OpsGuard;
 use Kuick\Http\Server\ActionHandler;
+use Kuick\Http\Server\JsonMiddleware;
 
 use function DI\autowire;
 use function DI\env;
@@ -33,7 +35,9 @@ return [
     'kuick.ops.guard.token' => env('KUICK_OPS_GUARD_TOKEN', ''),
 
     //performance optimization: optional autowire definitions
+    AppSetLocalization::class => autowire(),
     ActionHandler::class => autowire(),
+    JsonMiddleware::class => autowire(),
     OpsGuard::class => autowire(),
     OpsController::class => autowire(),
 ];

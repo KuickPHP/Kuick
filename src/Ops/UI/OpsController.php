@@ -10,7 +10,6 @@
 
 namespace Kuick\Ops\UI;
 
-use APCUIterator;
 use DI\Container;
 use Kuick\Http\Message\JsonResponse;
 use Psr\Http\Message\ServerRequestInterface;
@@ -28,6 +27,8 @@ use OpenApi\Attributes as OAA;
             content: new OAA\JsonContent(properties: [
                 new OAA\Property(property: 'request', type: 'object'),
                 new OAA\Property(property: 'di-config', type: 'object'),
+                new OAA\Property(property: 'opcache-status', type: 'object'),
+                new OAA\Property(property: 'apcu-status', type: 'object'),
                 new OAA\Property(property: 'php-version'),
                 new OAA\Property(property: 'php-config'),
                 new OAA\Property(property: 'php-loaded-extensions'),
@@ -67,6 +68,8 @@ class OpsController
                 'body' => $request->getBody()->getContents(),
             ],
             'di-config' => $this->getConfigDefinitions(),
+            'opcache-status' => opcache_get_status(),
+            'apcu-status' => function_exists('apcu_enabled') && apcu_enabled() ? apcu_cache_info() : 'disabled',
             'php-version' => phpversion(),
             'php-config' => ini_get_all(null, false),
             'php-loaded-extensions' => implode(', ', get_loaded_extensions()),
