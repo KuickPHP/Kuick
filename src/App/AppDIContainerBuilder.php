@@ -37,14 +37,15 @@ class AppDIContainerBuilder
         //parse and load .env files
         new DotEnvLoader($projectDir);
 
+        //setting default env
         (false === getenv(KernelAbstract::APP_ENV)) && putenv(KernelAbstract::APP_ENV . '=' . KernelAbstract::ENV_PROD);
         $this->appEnv = getenv(KernelAbstract::APP_ENV);
 
         //build or load from cache
         $container = $this->configureBuilder($projectDir)->build();
 
-        //validating if container is built
-        if ($container->has(self::PROJECT_DIR_CONFIGURATION_KEY)) {
+        //for production mode, check if container is already built and return it if so
+        if ($this->appEnv == KernelAbstract::ENV_PROD && $container->has(self::PROJECT_DIR_CONFIGURATION_KEY)) {
             $logger = $container->get(LoggerInterface::class);
             $logger->info('Application is running in ' . $this->appEnv . ' mode');
             $logger->debug('DI container loaded from cache');
