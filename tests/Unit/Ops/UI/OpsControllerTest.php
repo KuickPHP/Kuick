@@ -23,6 +23,7 @@ class OpsControllerTest extends TestCase
         $responseJsonKeys = array_keys(json_decode($response->getBody()->getContents(), true));
         self::assertEquals([
             'request',
+            'environment',
             'di-config',
             'opcache-status',
             'apcu-status',

@@ -26,6 +26,7 @@ use OpenApi\Attributes as OAA;
             description: 'Array with environment variables',
             content: new OAA\JsonContent(properties: [
                 new OAA\Property(property: 'request', type: 'object'),
+                new OAA\Property(property: 'environment', type: 'object'),
                 new OAA\Property(property: 'di-config', type: 'object'),
                 new OAA\Property(property: 'opcache-status', type: 'object'),
                 new OAA\Property(property: 'apcu-status', type: 'object'),
@@ -61,12 +62,13 @@ class OpsController
         return new JsonResponse([
             'request' => [
                 'method' => $request->getMethod(),
-                'uri' => $request->getUri(),
+                'uri' => $request->getUri()->__toString(),
                 'headers' => $request->getHeaders(),
                 'path' => $request->getUri()->getPath(),
                 'queryParams' => $request->getUri()->getQuery(),
                 'body' => $request->getBody()->getContents(),
             ],
+            'environment' => getenv(),
             'di-config' => $this->getConfigDefinitions(),
             'opcache-status' => opcache_get_status(),
             'apcu-status' => function_exists('apcu_enabled') && apcu_enabled() ? apcu_cache_info() : 'disabled',
