@@ -51,7 +51,7 @@ class JsonMiddleware implements MiddlewareInterface
                 $logLevel,
                 $error->getMessage() . ' ' . $error->getFile() . ' (' . $error->getLine() . ') ' . $error->getTraceAsString()
             );
-            return new JsonErrorResponse($error->getMessage(), $error->getCode());
+            return new JsonErrorResponse($error->getMessage(), is_int($error->getCode()) ? $error->getCode() : Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }
