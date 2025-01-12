@@ -35,7 +35,6 @@ return [
     'kuick.ops.guard.token' => env('KUICK_OPS_GUARD_TOKEN', ''),
 
     //performance optimization: optional autowire definitions
-    AppSetLocalization::class => autowire(),
     ActionHandler::class => autowire(),
     JsonMiddleware::class => autowire(),
     OpsGuard::class => autowire(),

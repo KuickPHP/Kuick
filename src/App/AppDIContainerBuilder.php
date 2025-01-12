@@ -14,6 +14,7 @@ use APCUIterator;
 use DI\ContainerBuilder;
 use Kuick\App\DIFactories\BuildLogger;
 use Kuick\App\DIFactories\AddDefinitions;
+use Kuick\App\DIFactories\BuildEventDispatcher;
 use Kuick\App\DIFactories\BuildRouter;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -38,14 +39,14 @@ class AppDIContainerBuilder
         new DotEnvLoader($projectDir);
 
         //setting default env
-        (false === getenv(KernelAbstract::APP_ENV)) && putenv(KernelAbstract::APP_ENV . '=' . KernelAbstract::ENV_PROD);
-        $this->appEnv = getenv(KernelAbstract::APP_ENV);
+        (false === getenv(KernelInterface::APP_ENV)) && putenv(KernelInterface::APP_ENV . '=' . KernelInterface::ENV_PROD);
+        $this->appEnv = getenv(KernelInterface::APP_ENV);
 
         //build or load from cache
         $container = $this->configureBuilder($projectDir)->build();
 
         //for production mode, check if container is already built and return it if so
-        if ($this->appEnv == KernelAbstract::ENV_PROD && $container->has(self::PROJECT_DIR_CONFIGURATION_KEY)) {
+        if ($this->appEnv == KernelInterface::ENV_PROD && $container->has(self::PROJECT_DIR_CONFIGURATION_KEY)) {
             $logger = $container->get(LoggerInterface::class);
             $logger->info('Application is running in ' . $this->appEnv . ' mode');
             $logger->debug('DI container loaded from cache');
@@ -57,7 +58,7 @@ class AppDIContainerBuilder
         $logger = $container->get(LoggerInterface::class);
         $logger->notice('DI container rebuilt, cache written');
         $logger->log(
-            $this->appEnv == KernelAbstract::ENV_DEV ? LogLevel::WARNING : LogLevel::INFO,
+            $this->appEnv == KernelInterface::ENV_DEV ? LogLevel::WARNING : LogLevel::INFO,
             'Application is running in ' . $this->appEnv . ' mode'
         );
         return $container;
@@ -79,6 +80,9 @@ class AppDIContainerBuilder
         //logger
         (new BuildLogger($builder))();
 
+        //event dispatcher
+        (new BuildEventDispatcher($builder))();
+
         //action matcher
         (new BuildRouter($builder))();
 
@@ -89,9 +93,12 @@ class AppDIContainerBuilder
     {
         $builder = (new ContainerBuilder())
             ->useAutowiring(true)
-            ->useAttributes(true)
-            ->enableCompilation($projectDir . self::CACHE_PATH . DIRECTORY_SEPARATOR . $this->appEnv);
-        $this->apcuEnabled() && $builder->enableDefinitionCache($projectDir . $this->appEnv);
+            ->useAttributes(true);
+        //apcu cache for definitions
+        if ($this->appEnv == KernelInterface::ENV_PROD) {
+            $builder->enableCompilation($projectDir . self::CACHE_PATH . DIRECTORY_SEPARATOR . $this->appEnv);
+            $this->apcuEnabled() && $builder->enableDefinitionCache($projectDir . $this->appEnv);
+        }
         return $builder;
     }
 

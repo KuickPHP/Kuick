@@ -22,24 +22,17 @@ final class ConsoleKernel extends KernelAbstract
     private const APP_NAME_KEY = 'kuick.app.name';
     private const COMMAND_PATH_PATTERN = '/config/*.commands.php';
 
-    private Application $application;
-
-    public function __construct(string $projectDir)
+    public function __invoke(): void
     {
-        parent::__construct($projectDir);
         //create a new application
-        $this->application = new Application($this->container->get(self::APP_NAME_KEY));
+        $application = new Application($this->getContainer()->get(self::APP_NAME_KEY));
         //adding commands
-        foreach (new GlobIterator($projectDir . self::COMMAND_PATH_PATTERN, FilesystemIterator::KEY_AS_FILENAME) as $commandFile) {
+        foreach (new GlobIterator($this->projectDir . self::COMMAND_PATH_PATTERN, FilesystemIterator::KEY_AS_FILENAME) as $commandFile) {
             foreach (include $commandFile as $commandClass) {
-                $this->application->add($this->container->get($commandClass));
+                $application->add($this->getContainer()->get($commandClass));
             }
         }
         ini_set('max_execution_time', 0);
-    }
-
-    public function __invoke(): void
-    {
-        $this->application->run();
+        $application->run();
     }
 }

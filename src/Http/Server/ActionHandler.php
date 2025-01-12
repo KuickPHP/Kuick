@@ -28,39 +28,52 @@ class ActionHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $route = $this->router->findRoute($request);
-        if (empty($route)) {
+        $routeMatch = $this->router->matchRoute($request);
+        // empty route for OPTIONS
+        if (null === $routeMatch) {
             $this->logger->info('No action was executed to serve OPTIONS');
             return new Response(Response::HTTP_NO_CONTENT);
         }
-        if (isset($route['guards'])) {
-            $this->logger->debug('Executing guards');
-            $this->executeGuards($route, $request);
+        // execute middlewares
+        if (!empty($routeMatch->route->middlewares)) {
+            $this->logger->debug('Executing middlewares for route: ' . $routeMatch->route->path);
+            $this->executeMiddlewares($routeMatch, $request);
         }
-        //run action
-        $response = call_user_func_array($this->container->get($route['controller']), $this->getArguments($route['controller'], $route, $request));
-        $this->logger->info('Action executed: ' . $route['controller']);
+        // execute action
+        $response = $this->executeAction($routeMatch, $request);
+        $this->logger->info('Action executed: ' . $routeMatch->route->controller);
         return $response;
     }
 
-    private function executeGuards(array $route, ServerRequestInterface $request): void
+    private function executeAction(RouteMatch $routeMatch, ServerRequestInterface $request): ResponseInterface
     {
-        foreach ($route['guards'] as $guardName) {
-            $this->logger->debug('Executing guard: ' . $guardName);
-            call_user_func_array($this->container->get($guardName), $this->getArguments($guardName, $route, $request));
-            $this->logger->debug('Guard pass: ' . $guardName);
+        return call_user_func_array(
+            $this->container->get($routeMatch->route->controller), 
+            $this->getArguments($routeMatch->route->controllerArguments, $routeMatch, $request)
+        );
+    }
+
+    private function executeMiddlewares(RouteMatch $routeMatch, ServerRequestInterface $request): void
+    {
+        foreach ($routeMatch->route->middlewares as $middlewareName) {
+            $this->logger->debug('Executing middleware: ' . $middlewareName);
+            call_user_func_array(
+                $this->container->get($middlewareName),
+                $this->getArguments($routeMatch->route->middlewareArguments[$middlewareName] ?? [], $routeMatch, $request)
+            );
+            $this->logger->debug('Middleware completed: ' . $middlewareName);
         }
     }
 
-    private function getArguments(string $targetClass, array $route, ServerRequestInterface $request): array
+    private function getArguments(array $methodArguments, RouteMatch $routeMatch, ServerRequestInterface $request): array
     {
         $arguments = [];
-        foreach ($route['arguments'][$targetClass] as $argName => $argProperties) {
+        foreach ($methodArguments as $argName => $argProperties) {
             if ($argProperties['type'] == ServerRequestInterface::class) {
                 $arguments[$argName] = $request;
                 continue;
             }
-            $arguments[$argName] = $route['params'][$argName] ?? $argProperties['default'];
+            $arguments[$argName] = $routeMatch->params[$argName] ?? $argProperties['default'];
         }
         return $arguments;
     }

@@ -8,14 +8,11 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App;
+namespace Kuick\App\Listeners;
 
 use DI\Attribute\Inject;
 
-/**
- * Locale configurator
- */
-final class AppSetLocalization
+class SetupLocaleListener
 {
     private const DEFAULT_LOCALE = 'en_US.utf-8';
 

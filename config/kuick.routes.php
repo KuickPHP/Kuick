@@ -8,6 +8,7 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
+use Kuick\Http\Server\Route;
 use Kuick\Ops\Security\OpsGuard;
 use Kuick\Ops\UI\DocHtmlController;
 use Kuick\Ops\UI\DocJsonController;
@@ -16,18 +17,8 @@ use Kuick\Ops\UI\OpsController;
 return [
     //ops route gives some insight of server environment
     //this route is protected by the Guard (see ./di/kuick.di.php file, and the OpsGuard)
-    [
-        'path' => '/api/ops',
-        'controller' => OpsController::class,
-        'guards' => [OpsGuard::class]
-    ],
+    new Route('/api/ops', OpsController::class, [OpsGuard::class]),
     //OpenAPI / Swagger HTML documentation
-    [
-        'path' => '/api/doc.json',
-        'controller' => DocJsonController::class,
-    ],
-    [
-        'path' => '/api/doc',
-        'controller' => DocHtmlController::class,
-    ],
+    new Route('/api/doc.json', DocJsonController::class),
+    new Route('/api/doc', DocHtmlController::class),
 ];

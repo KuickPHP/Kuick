@@ -8,7 +8,7 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-use Kuick\App\JsonKernel;
+use Kuick\App\HttpKernel;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7Server\ServerRequestCreator;
 
@@ -17,7 +17,7 @@ require $projectDir . '/vendor/autoload.php';
 
 $psr17Factory = new Psr17Factory();
 
-(new JsonKernel($projectDir))((new ServerRequestCreator(
+(new HttpKernel($projectDir))->handleRequest((new ServerRequestCreator(
     $psr17Factory, // ServerRequestFactory
     $psr17Factory, // UriFactory
     $psr17Factory, // UploadedFileFactory

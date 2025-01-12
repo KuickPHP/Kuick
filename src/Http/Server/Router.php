@@ -27,49 +27,55 @@ class Router
     {
     }
 
+    /**
+     * @param Route[] $routes
+     */
     public function setRoutes(array $routes): self
     {
         $this->routes = $routes;
         return $this;
     }
 
+    /**
+     * @return Route[]
+     */
     public function getRoutes(): array
     {
         return $this->routes;
     }
 
-    public function findRoute(ServerRequestInterface $request): array
+    public function matchRoute(ServerRequestInterface $request): ?RouteMatch
     {
         //empty route for OPTIONS
         if ('OPTIONS' == $request->getMethod()) {
-            return [];
+            return null;
         }
         $requestMethod = $request->getMethod();
         $mismatchedMethod = null;
+        /**
+         * @var Route $route
+         */
         foreach ($this->routes as $route) {
-            //method defaults to GET
-            $routeMethod = $route['method'] ?? 'GET';
             //trim right slash
             $requestPath = $request->getUri()->getPath() == '/' ? '/' : rtrim($request->getUri()->getPath(), '/');
-            $this->logger->debug('Trying route: ' . $routeMethod . ' ' . $route['path']);
+            $this->logger->debug('Trying route: ' . $route->method . ' ' . $route->path);
             //matching route
             $results = [];
-            $matchResult = preg_match('#^' . $route['path'] . '$#', $requestPath, $results);
+            $matchResult = preg_match('#^' . $route->path . '$#', $requestPath, $results);
             if (!$matchResult) {
                 continue;
             }
-            $route['params'] = $this->parseRouteParams($results);
             //methods are matching or HEAD to GET route
-            if ($requestMethod == $routeMethod || ($requestMethod == 'HEAD' && $routeMethod == 'GET')) {
-                $this->logger->debug('Matched route: ' . $routeMethod . ' ' . $route['path']);
-                return $route;
+            if ($requestMethod == $route->method || ($requestMethod == 'HEAD' && $route->method == 'GET')) {
+                $this->logger->debug('Matched route: ' . $route->path . ' ' . $route->path);
+                return new RouteMatch($route, $this->parseRouteParams($results));
             }
             //method mismatch
-            $this->logger->debug('Method mismatch, but action matching path: ' . $route['path']);
+            $this->logger->debug('Method mismatch, but action matching path: ' . $route->path);
             $mismatchedMethod = $route;
         }
         if (null !== $mismatchedMethod) {
-            throw new MethodNotAllowedException($requestMethod . ' method is not allowed for path: ' . $mismatchedMethod['path']);
+            throw new MethodNotAllowedException($requestMethod . ' method is not allowed for path: ' . $mismatchedMethod->path);
         }
         throw new NotFoundException('Not found');
     }

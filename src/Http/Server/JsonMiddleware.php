@@ -29,14 +29,16 @@ class JsonMiddleware implements MiddlewareInterface
         Response::HTTP_BAD_REQUEST => Level::Notice,
         Response::HTTP_METHOD_NOT_ALLOWED => Level::Notice,
         Response::HTTP_FORBIDDEN => Level::Notice,
-        Response::HTTP_CONFLICT => Level::Warning,
-        Response::HTTP_GATEWAY_TIMEOUT => Level::Warning,
+        Response::HTTP_CONFLICT => Level::Notice,
         Response::HTTP_NOT_IMPLEMENTED => Level::Warning,
+        Response::HTTP_GATEWAY_TIMEOUT => Level::Error,
         Response::HTTP_BAD_GATEWAY => Level::Error,
         Response::HTTP_INTERNAL_SERVER_ERROR => Level::Error,
     ];
 
-    public function __construct(private LoggerInterface $logger)
+    public function __construct(
+        private LoggerInterface $logger
+    )
     {
     }
 
@@ -45,13 +47,13 @@ class JsonMiddleware implements MiddlewareInterface
         $this->logger->info('Handling JSON request: ' . $request->getMethod() . ' ' . $request->getUri()->getPath());
         try {
             return $handler->handle($request);
-        } catch (Throwable $error) {
-            $logLevel = self::EXCEPTION_CODE_LOG_LEVEL_MAP[$error->getCode()] ?? LogLevel::EMERGENCY;
+        } catch (Throwable $throwable) {
+            $logLevel = self::EXCEPTION_CODE_LOG_LEVEL_MAP[$throwable->getCode()] ?? LogLevel::EMERGENCY;
             $this->logger->log(
                 $logLevel,
-                $error->getMessage() . ' ' . $error->getFile() . ' (' . $error->getLine() . ') ' . $error->getTraceAsString()
+                $throwable->getMessage() . ' ' . $throwable->getFile() . ' (' . $throwable->getLine() . ') ' . $throwable->getTraceAsString()
             );
-            return new JsonErrorResponse($error->getMessage(), is_int($error->getCode()) ? $error->getCode() : Response::HTTP_INTERNAL_SERVER_ERROR);
+            return new JsonErrorResponse($throwable->getMessage(), is_int($throwable->getCode()) ? $throwable->getCode() : Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 }

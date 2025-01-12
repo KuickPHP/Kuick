@@ -2,7 +2,7 @@
 
 namespace Kuick\Tests\App;
 
-use Kuick\App\JsonKernel;
+use Kuick\App\HttpKernel;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -10,10 +10,10 @@ use Symfony\Component\Filesystem\Filesystem;
 use function PHPUnit\Framework\assertEquals;
 
 /**
- * @covers \Kuick\App\JsonKernel
+ * @covers \Kuick\App\HttpKernel
  * @covers \Kuick\App\KernelAbstract
  */
-class JsonKernelTest extends TestCase
+class HttpKernelTest extends TestCase
 {
     private static string $projectDir;
 
@@ -29,7 +29,7 @@ class JsonKernelTest extends TestCase
      */
     public function testIfNotFoundRouteEmmitsNotFoundResponse(): void
     {
-        $kernel = new JsonKernel(self::$projectDir);
+        $kernel = new HttpKernel(self::$projectDir);
         $request = new ServerRequest('GET', 'something');
         ob_start();
         $kernel($request);
