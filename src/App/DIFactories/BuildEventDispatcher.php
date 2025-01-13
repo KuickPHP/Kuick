@@ -12,6 +12,7 @@ namespace Kuick\App\DIFactories;
 
 use Kuick\App\AppDIContainerBuilder;
 use Kuick\App\DIFactories\Utils\ListenerConfigLoader;
+use Kuick\App\SystemCacheInterface;
 use Kuick\Event\EventDispatcher;
 use Kuick\Event\ListenerPriority;
 use Kuick\Event\ListenerProvider;
@@ -23,10 +24,9 @@ class BuildEventDispatcher extends FactoryAbstract
 {
     public function __invoke(): void
     {
-        $this->builder->addDefinitions([EventDispatcherInterface::class => function (ContainerInterface $container): EventDispatcherInterface {
+        $this->builder->addDefinitions([EventDispatcherInterface::class => function (ContainerInterface $container, LoggerInterface $logger, SystemCacheInterface $cache): EventDispatcherInterface {
             $listenerProvider = new ListenerProvider();
-            $logger = $container->get(LoggerInterface::class);
-            foreach ((new ListenerConfigLoader($logger))(
+            foreach ((new ListenerConfigLoader($cache, $logger))(
                 $container->get(AppDIContainerBuilder::PROJECT_DIR_CONFIGURATION_KEY),
                 $container->get(AppDIContainerBuilder::APP_ENV_CONFIGURATION_KEY)
             ) as $listener) {

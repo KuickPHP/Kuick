@@ -10,7 +10,7 @@
 
 namespace Kuick\Http\Server\Listeners;
 
-use Kuick\Http\Server\ActionHandler;
+use Kuick\Http\Server\RequestHandler;
 use Kuick\Http\Server\Events\RequestReceived;
 use Kuick\Http\Server\JsonMiddleware;
 
@@ -18,13 +18,13 @@ final class HandleRequestListener
 {
     public function __construct(
         private JsonMiddleware $jsonMiddleware,
-        private ActionHandler $actionHandler
+        private RequestHandler $requestHandler
     )
     {    
     }
 
     public function __invoke(RequestReceived $event): void
     {
-        $event->setResponse($this->jsonMiddleware->process($event->getRequest(), $this->actionHandler));
+        $event->setResponse($this->jsonMiddleware->process($event->getRequest(), $this->requestHandler));
     }
 }

@@ -26,7 +26,7 @@ use Psr\Log\LogLevel;
 class AppDIContainerBuilder
 {
     public const APP_ENV_CONFIGURATION_KEY = 'kuick.app.env';
-    public const PROJECT_DIR_CONFIGURATION_KEY = 'kuick.app.project.dir';
+    public const PROJECT_DIR_CONFIGURATION_KEY = 'kuick.app.projectDir';
     public const CACHE_PATH =  '/var/cache';
 
     private const COMPILED_FILENAME = 'CompiledContainer.php';
@@ -42,18 +42,21 @@ class AppDIContainerBuilder
         (false === getenv(KernelInterface::APP_ENV)) && putenv(KernelInterface::APP_ENV . '=' . KernelInterface::ENV_PROD);
         $this->appEnv = getenv(KernelInterface::APP_ENV);
 
+        //remove container if not in production mode
+        $this->appEnv !== KernelInterface::ENV_PROD && $this->removeContainer($projectDir);
+
         //build or load from cache
         $container = $this->configureBuilder($projectDir)->build();
 
         //for production mode, check if container is already built and return it if so
-        if ($this->appEnv == KernelInterface::ENV_PROD && $container->has(self::PROJECT_DIR_CONFIGURATION_KEY)) {
+        if ($container->has(self::PROJECT_DIR_CONFIGURATION_KEY)) {
             $logger = $container->get(LoggerInterface::class);
             $logger->info('Application is running in ' . $this->appEnv . ' mode');
             $logger->debug('DI container loaded from cache');
             return $container;
         }
-
         //rebuilding if validation failed
+        $this->removeContainer($projectDir);
         $container = $this->rebuildContainer($projectDir);
         $logger = $container->get(LoggerInterface::class);
         $logger->notice('DI container rebuilt, cache written');
@@ -66,7 +69,6 @@ class AppDIContainerBuilder
 
     private function rebuildContainer(string $projectDir): ContainerInterface
     {
-        $this->removeContainer($projectDir);
         $builder = $this->configureBuilder($projectDir);
 
         $builder->addDefinitions([
@@ -93,11 +95,11 @@ class AppDIContainerBuilder
     {
         $builder = (new ContainerBuilder())
             ->useAutowiring(true)
-            ->useAttributes(true);
+            ->useAttributes(true)
+            ->enableCompilation($projectDir . self::CACHE_PATH . DIRECTORY_SEPARATOR . $this->appEnv);
         //apcu cache for definitions
-        if ($this->appEnv == KernelInterface::ENV_PROD) {
-            $builder->enableCompilation($projectDir . self::CACHE_PATH . DIRECTORY_SEPARATOR . $this->appEnv);
-            $this->apcuEnabled() && $builder->enableDefinitionCache($projectDir . $this->appEnv);
+        if ($this->appEnv == KernelInterface::ENV_PROD && $this->apcuEnabled()) {
+            $builder->enableDefinitionCache($projectDir . $this->appEnv);
         }
         return $builder;
     }

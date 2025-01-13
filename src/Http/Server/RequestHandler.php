@@ -11,16 +11,18 @@
 namespace Kuick\Http\Server;
 
 use Kuick\Http\Message\Response;
+use Kuick\Http\Server\Utils\InvokableArgumentReflector;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 
-class ActionHandler implements RequestHandlerInterface
+class RequestHandler implements RequestHandlerInterface
 {
     public function __construct(
         private ContainerInterface $container,
+        private InvokableArgumentReflector $invokableArgumentReflector,
         private Router $router,
         private LoggerInterface $logger
     ) {
@@ -48,8 +50,8 @@ class ActionHandler implements RequestHandlerInterface
     private function executeAction(RouteMatch $routeMatch, ServerRequestInterface $request): ResponseInterface
     {
         return call_user_func_array(
-            $this->container->get($routeMatch->route->controller), 
-            $this->getArguments($routeMatch->route->controllerArguments, $routeMatch, $request)
+            $this->container->get($routeMatch->route->controller),
+            $this->getArguments($routeMatch->route->controller, $routeMatch, $request)
         );
     }
 
@@ -59,16 +61,17 @@ class ActionHandler implements RequestHandlerInterface
             $this->logger->debug('Executing middleware: ' . $middlewareName);
             call_user_func_array(
                 $this->container->get($middlewareName),
-                $this->getArguments($routeMatch->route->middlewareArguments[$middlewareName] ?? [], $routeMatch, $request)
+                $this->getArguments($middlewareName, $routeMatch, $request)    
             );
             $this->logger->debug('Middleware completed: ' . $middlewareName);
         }
     }
 
-    private function getArguments(array $methodArguments, RouteMatch $routeMatch, ServerRequestInterface $request): array
+    private function getArguments(string $className, RouteMatch $routeMatch, ServerRequestInterface $request): array
     {
+        $invokeArguments = $this->invokableArgumentReflector->getForClass($className);
         $arguments = [];
-        foreach ($methodArguments as $argName => $argProperties) {
+        foreach ($invokeArguments as $argName => $argProperties) {
             if ($argProperties['type'] == ServerRequestInterface::class) {
                 $arguments[$argName] = $request;
                 continue;

@@ -8,11 +8,13 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-use Kuick\App\AppSetLocalization;
+use Kuick\App\SystemCache;
+use Kuick\App\SystemCacheInterface;
 use Kuick\Ops\UI\OpsController;
 use Kuick\Ops\Security\OpsGuard;
-use Kuick\Http\Server\ActionHandler;
 use Kuick\Http\Server\JsonMiddleware;
+use Kuick\Http\Server\RequestHandler;
+use Kuick\Http\Server\Utils\InvokableArgumentReflector;
 
 use function DI\autowire;
 use function DI\env;
@@ -34,9 +36,12 @@ return [
     //there is no valid token by default, you should provide one through environment variables
     'kuick.ops.guard.token' => env('KUICK_OPS_GUARD_TOKEN', ''),
 
+    SystemCacheInterface::class => autowire(SystemCache::class),
+
     //performance optimization: optional autowire definitions
-    ActionHandler::class => autowire(),
+    InvokableArgumentReflector::class => autowire(),
     JsonMiddleware::class => autowire(),
+    RequestHandler::class => autowire(),
     OpsGuard::class => autowire(),
     OpsController::class => autowire(),
 ];
