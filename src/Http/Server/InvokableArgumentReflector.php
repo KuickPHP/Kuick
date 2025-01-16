@@ -8,7 +8,7 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\Http\Server\Utils;
+namespace Kuick\Http\Server;
 
 use Kuick\App\AppException;
 use Kuick\App\SystemCacheInterface;
@@ -26,8 +26,7 @@ class InvokableArgumentReflector
     public function __construct(
         private SystemCacheInterface $cache,
         private LoggerInterface $logger,
-    )
-    {
+    ) {
     }
 
     /**

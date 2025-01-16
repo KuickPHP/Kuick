@@ -4,38 +4,33 @@
  * Kuick Framework (https://github.com/milejko/kuick)
  *
  * @link       https://github.com/milejko/kuick
- * @copyright  Copyright (c) 2010-2024 Mariusz Miłejko (mariusz@milejko.pl)
+ * @copyright  Copyright (c) 2010-2025 Mariusz Miłejko (mariusz@milejko.pl)
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
 namespace Kuick\Http\Server;
 
-use Kuick\Http\Message\Response;
-use Kuick\Http\Server\Utils\InvokableArgumentReflector;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 
-class RequestHandler implements RequestHandlerInterface
+class RoutingMiddleware implements MiddlewareInterface
 {
     public function __construct(
+        private Router $router,
         private ContainerInterface $container,
         private InvokableArgumentReflector $invokableArgumentReflector,
-        private Router $router,
-        private LoggerInterface $logger
-    ) {
+        private LoggerInterface $logger,
+    )
+    {
     }
 
-    public function handle(ServerRequestInterface $request): ResponseInterface
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $routeMatch = $this->router->matchRoute($request);
-        // empty route for OPTIONS
-        if (null === $routeMatch) {
-            $this->logger->info('No action was executed to serve OPTIONS');
-            return new Response(Response::HTTP_NO_CONTENT);
-        }
         // execute middlewares
         if (!empty($routeMatch->route->middlewares)) {
             $this->logger->debug('Executing middlewares for route: ' . $routeMatch->route->path);
@@ -61,7 +56,7 @@ class RequestHandler implements RequestHandlerInterface
             $this->logger->debug('Executing middleware: ' . $middlewareName);
             call_user_func_array(
                 $this->container->get($middlewareName),
-                $this->getArguments($middlewareName, $routeMatch, $request)    
+                $this->getArguments($middlewareName, $routeMatch, $request)
             );
             $this->logger->debug('Middleware completed: ' . $middlewareName);
         }

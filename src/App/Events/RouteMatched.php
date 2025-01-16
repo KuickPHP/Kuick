@@ -8,10 +8,16 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\Http\Server;
+namespace Kuick\Http\Server\Events;
 
-use Exception;
-
-class RouterException extends Exception
+final class RouteMatched
 {
+    public function __construct(private array $route = [])
+    {
+    }
+
+    public function getRoute(): array
+    {
+        return $this->route;
+    }
 }

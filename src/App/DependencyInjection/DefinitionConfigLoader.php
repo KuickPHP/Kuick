@@ -8,18 +8,24 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App\DIFactories;
+namespace Kuick\App\DependencyInjection;
+
+use DI\ContainerBuilder;
 
 /**
  *
  */
-class AddDefinitions extends FactoryAbstract
+class DefinitionConfigLoader
 {
     private const DEFINITION_LOCATIONS = [
         '/vendor/kuick/*/config/di/*.di.php',
         '/config/di/*.di.php',
     ];
     private const ENV_SPECIFIC_DEFINITION_LOCATIONS_TEMPLATE = '/config/di/*.di@%s.php';
+
+    public function __construct(private ContainerBuilder $builder)
+    {
+    }
 
     public function __invoke(string $projectDir, string $env): void
     {

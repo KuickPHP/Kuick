@@ -8,11 +8,12 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App\DIFactories\Utils;
+namespace Kuick\App\DependencyInjection;
 
 use FilesystemIterator;
 use GlobIterator;
-use Kuick\App\KernelInterface;
+use Kuick\App\AppException;
+use Kuick\App\Listener;
 use Kuick\App\SystemCacheInterface;
 use Psr\Log\LoggerInterface;
 
@@ -23,15 +24,14 @@ class ListenerConfigLoader
 {
     private const CACHE_KEY = 'kuick-app-event-listeners';
     private const LISTENERS_LOCATIONS = [
-        '/vendor/kuick/*/config/listeners/*.listeners.php',
-        '/config/listeners/*.listeners.php',
+        '/vendor/kuick/*/config/*.listeners.php',
+        '/config/*.listeners.php',
     ];
 
     public function __construct(
         private SystemCacheInterface $cache,
         private LoggerInterface $logger
-    )
-    {
+    ) {
     }
 
     public function __invoke(string $projectDir): array
@@ -47,7 +47,12 @@ class ListenerConfigLoader
             foreach ($listenerIterator as $listenerFile) {
                 $includedListeners = include $listenerFile;
                 $this->logger->info('Listeners file added: ' . $listenerFile . ', containing: ' . count($includedListeners) . ' listeners');
-                $listeners = array_merge($listeners, include $listenerFile);
+                $listeners = array_merge($listeners, $includedListeners);
+            }
+        }
+        foreach ($listeners as $listener) {
+            if (!($listener instanceof Listener)) {
+                throw new AppException('Listener must be an instance of ' . Listener::class);
             }
         }
         $this->cache->set(self::CACHE_KEY, $listeners);

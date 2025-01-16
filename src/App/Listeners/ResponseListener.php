@@ -8,16 +8,16 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\Http\Server\Events;
+namespace Kuick\App\Listeners;
 
-final class RouteMatched
+use Kuick\App\Events\ResponseCreated;
+use Kuick\Http\Server\ResponseEmitter;
+
+final class ResponseListener
 {
-    public function __construct(private array $route = [])
+    public function __invoke(ResponseCreated $event): void
     {
-    }
-
-    public function getRoute(): array
-    {
-        return $this->route;
+        // emmit response
+        (new ResponseEmitter())($event->getResponse());
     }
 }

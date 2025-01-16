@@ -8,9 +8,10 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App\DIFactories;
+namespace Kuick\App\DependencyInjection;
 
 use DateTimeZone;
+use DI\ContainerBuilder;
 use Kuick\App\AppException;
 use Monolog\Handler\FingersCrossedHandler;
 use Monolog\Handler\FirePHPHandler;
@@ -21,10 +22,14 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
 /**
- * Logger factory
+ * Logger builder
  */
-class BuildLogger extends FactoryAbstract
+class LoggerBuilder
 {
+    public function __construct(private ContainerBuilder $builder)
+    {
+    }
+
     public function __invoke(): void
     {
         $this->builder->addDefinitions([LoggerInterface::class => function (ContainerInterface $container): LoggerInterface {

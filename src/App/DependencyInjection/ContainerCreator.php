@@ -8,14 +8,11 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App;
+namespace Kuick\App\DependencyInjection;
 
 use APCUIterator;
 use DI\ContainerBuilder;
-use Kuick\App\DIFactories\BuildLogger;
-use Kuick\App\DIFactories\AddDefinitions;
-use Kuick\App\DIFactories\BuildEventDispatcher;
-use Kuick\App\DIFactories\BuildRouter;
+use Kuick\App\Kernel;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -23,33 +20,26 @@ use Psr\Log\LogLevel;
 /**
  *
  */
-class AppDIContainerBuilder
+class ContainerCreator
 {
-    public const APP_ENV_CONFIGURATION_KEY = 'kuick.app.env';
-    public const PROJECT_DIR_CONFIGURATION_KEY = 'kuick.app.projectDir';
-    public const CACHE_PATH =  '/var/cache';
-
+    private const CACHE_PATH =  '/var/cache';
     private const COMPILED_FILENAME = 'CompiledContainer.php';
-
     private string $appEnv;
 
     public function __invoke(string $projectDir): ContainerInterface
     {
-        //parse and load .env files
-        new DotEnvLoader($projectDir);
-
         //setting default env
-        (false === getenv(KernelInterface::APP_ENV)) && putenv(KernelInterface::APP_ENV . '=' . KernelInterface::ENV_PROD);
-        $this->appEnv = getenv(KernelInterface::APP_ENV);
+        (false === getenv(Kernel::APP_ENV)) && putenv(Kernel::APP_ENV . '=' . Kernel::ENV_PROD);
+        $this->appEnv = getenv(Kernel::APP_ENV);
 
         //remove container if not in production mode
-        $this->appEnv !== KernelInterface::ENV_PROD && $this->removeContainer($projectDir);
+        $this->appEnv !== Kernel::ENV_PROD && $this->removeContainer($projectDir);
 
         //build or load from cache
         $container = $this->configureBuilder($projectDir)->build();
 
         //for production mode, check if container is already built and return it if so
-        if ($container->has(self::PROJECT_DIR_CONFIGURATION_KEY)) {
+        if ($container->has(Kernel::DI_PROJECT_DIR_KEY)) {
             $logger = $container->get(LoggerInterface::class);
             $logger->info('Application is running in ' . $this->appEnv . ' mode');
             $logger->debug('DI container loaded from cache');
@@ -61,7 +51,7 @@ class AppDIContainerBuilder
         $logger = $container->get(LoggerInterface::class);
         $logger->notice('DI container rebuilt, cache written');
         $logger->log(
-            $this->appEnv == KernelInterface::ENV_DEV ? LogLevel::WARNING : LogLevel::INFO,
+            $this->appEnv == Kernel::ENV_DEV ? LogLevel::WARNING : LogLevel::INFO,
             'Application is running in ' . $this->appEnv . ' mode'
         );
         return $container;
@@ -72,21 +62,23 @@ class AppDIContainerBuilder
         $builder = $this->configureBuilder($projectDir);
 
         $builder->addDefinitions([
-            self::APP_ENV_CONFIGURATION_KEY => $this->appEnv,
-            self::PROJECT_DIR_CONFIGURATION_KEY => $projectDir,
+            Kernel::DI_APP_ENV_KEY => $this->appEnv,
+            Kernel::DI_PROJECT_DIR_KEY => $projectDir,
         ]);
 
         //loading DI definitions (configuration)
-        (new AddDefinitions($builder))($projectDir, $this->appEnv);
+        (new DefinitionConfigLoader($builder))($projectDir, $this->appEnv);
 
-        //logger
-        (new BuildLogger($builder))();
+        (new RequestHandlerBuilder($builder))();
+
+        //logger builder
+        (new LoggerBuilder($builder))();
 
         //event dispatcher
-        (new BuildEventDispatcher($builder))();
+        (new EventDispatcherBuilder($builder))();
 
         //action matcher
-        (new BuildRouter($builder))();
+        (new RouterBuilder($builder))();
 
         return $builder->build();
     }
@@ -94,11 +86,10 @@ class AppDIContainerBuilder
     private function configureBuilder(string $projectDir): ContainerBuilder
     {
         $builder = (new ContainerBuilder())
-            ->useAutowiring(true)
             ->useAttributes(true)
             ->enableCompilation($projectDir . self::CACHE_PATH . DIRECTORY_SEPARATOR . $this->appEnv);
         //apcu cache for definitions
-        if ($this->appEnv == KernelInterface::ENV_PROD && $this->apcuEnabled()) {
+        if ($this->appEnv == Kernel::ENV_PROD && $this->apcuEnabled()) {
             $builder->enableDefinitionCache($projectDir . $this->appEnv);
         }
         return $builder;

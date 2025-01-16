@@ -44,12 +44,12 @@ class Router
         return $this->routes;
     }
 
-    public function matchRoute(ServerRequestInterface $request): ?RouteMatch
+    /**
+     * @throws NotFoundException
+     * @throws MethodNotAllowedException
+     */
+    public function matchRoute(ServerRequestInterface $request): RouteMatch
     {
-        //empty route for OPTIONS
-        if ('OPTIONS' == $request->getMethod()) {
-            return null;
-        }
         $requestMethod = $request->getMethod();
         $mismatchedMethod = null;
         /**
@@ -66,7 +66,7 @@ class Router
                 continue;
             }
             //methods are matching or HEAD to GET route
-            if ($requestMethod == $route->method || ($requestMethod == 'HEAD' && $route->method == 'GET')) {
+            if ($requestMethod == $route->method || ($requestMethod == Route::METHOD_HEAD && $route->method == Route::METHOD_GET)) {
                 $this->logger->debug('Matched route: ' . $route->path . ' ' . $route->path);
                 return new RouteMatch($route, $this->parseRouteParams($results));
             }

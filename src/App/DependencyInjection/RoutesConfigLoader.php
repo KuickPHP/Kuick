@@ -8,12 +8,13 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App\DIFactories\Utils;
+namespace Kuick\App\DependencyInjection;
 
 use FilesystemIterator;
 use GlobIterator;
-use Kuick\App\KernelInterface;
+use Kuick\App\AppException;
 use Kuick\App\SystemCacheInterface;
+use Kuick\Http\Server\Route;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -30,8 +31,7 @@ class RoutesConfigLoader
     public function __construct(
         private SystemCacheInterface $cache,
         private LoggerInterface $logger
-    )
-    {
+    ) {
     }
 
     public function __invoke(string $projectDir): array
@@ -47,7 +47,12 @@ class RoutesConfigLoader
             foreach ($routeIterator as $routeFile) {
                 $includedRoutes = include $routeFile;
                 $this->logger->info('Route file added: ' . $routeFile . ', containing: ' . count($includedRoutes) . ' routes');
-                $routes = array_merge($routes, include $routeFile);
+                $routes = array_merge($routes, $includedRoutes);
+            }
+        }
+        foreach ($routes as $route) {
+            if (!($route instanceof Route)) {
+                throw new AppException('Route must be an instance of ' . Route::class);
             }
         }
         $this->cache->set(self::CACHE_KEY, $routes);

@@ -22,24 +22,22 @@ class SystemCache extends LayeredCache implements SystemCacheInterface
     public function __construct(
         #[Inject('kuick.app.projectDir')] string $projetcDir,
         #[Inject('kuick.app.env')] string $env,
-    )
-    {
-        if ($env !== KernelInterface::ENV_PROD) {
+    ) {
+        // in non-prod env we use NullCache only
+        if ($env !== Kernel::ENV_PROD) {
             parent::__construct([new NullCache()]);
             return;
         }
-        $cacheStack = [
+        // cache stack for prod env
+        $prodCacheStack = [
             new InMemoryCache(),
         ];
-        if ($this->isApcuAvailable()) {
-            $cacheStack[] = new ApcuCache();
+        // if apcu cache is available - we use it
+        if (file_exists('apcu_enabled') && apcu_enabled()) {
+            $prodCacheStack[] = new ApcuCache();
         }
-        $cacheStack[] = new FilesystemCache($projetcDir . self::CACHE_PATH);
-        parent::__construct($cacheStack);
-    }
-
-    private function isApcuAvailable(): bool
-    {
-        return file_exists('apcu_enabled') && apcu_enabled(); 
+        // filesystem cache is always used
+        $prodCacheStack[] = new FilesystemCache($projetcDir . self::CACHE_PATH);
+        parent::__construct($prodCacheStack);
     }
 }

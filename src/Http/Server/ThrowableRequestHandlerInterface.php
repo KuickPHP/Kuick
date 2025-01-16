@@ -8,18 +8,13 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\Http\Server\Events;
+namespace Kuick\Http\Server;
 
+use Psr\Http\Server\RequestHandlerInterface;
 use Throwable;
 
-final class ResponseExceptionCatched
+interface ThrowableRequestHandlerInterface extends RequestHandlerInterface
 {
-    public function __construct(private Throwable $exception)
-    {
-    }
-
-    public function getException(): Throwable
-    {
-        return $this->exception;
-    }
+    public function setThrowable(Throwable $throwable): self;
+    public function getThrowable(): Throwable;
 }

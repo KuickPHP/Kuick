@@ -8,13 +8,8 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App\DIFactories;
+namespace Kuick\App;
 
-use DI\ContainerBuilder;
-
-abstract class FactoryAbstract
+class ListenerException extends AppException
 {
-    public function __construct(protected ContainerBuilder $builder)
-    {
-    }
 }

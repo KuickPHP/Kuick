@@ -8,28 +8,14 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\Http\Server\Events;
+namespace Kuick\App\Events;
 
-use Kuick\Http\Message\Response;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class RequestReceived
 {
-    private Response $response;
-
     public function __construct(private ServerRequestInterface $request)
     {
-    }
-
-    public function setResponse(Response $response): self
-    {
-        $this->response = $response;
-        return $this;
-    }
-
-    public function getResponse(): Response
-    {
-        return $this->response;
     }
 
     public function getRequest(): ServerRequestInterface

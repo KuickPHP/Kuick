@@ -41,7 +41,7 @@ class RouteValidator
 
     private function validateMethod(Route $route): void
     {
-        //method name invalid
+        //limited to standard HTTP methods except HEAD and OPTIONS
         if (!in_array($route->method, [
             Route::METHOD_GET,
             Route::METHOD_POST,
@@ -58,10 +58,6 @@ class RouteValidator
         //action not defined
         if (empty($route->controller)) {
             throw new RouterException('Route is missing controller class name, path: ' . $route->path);
-        }
-        //method defined but not a string
-        if (!is_string($route->controller)) {
-            throw new RouterException('Route controller class name is not a string, path: ' . $route->path);
         }
         //inexistent class
         if (!class_exists($route->controller)) {

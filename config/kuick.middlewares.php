@@ -8,18 +8,9 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App\Events;
+use Kuick\Http\Server\Middleware;
+use Kuick\Http\Server\RoutingMiddleware;
 
-use Kuick\App\Kernel;
-
-class KernelCreated
-{
-    public function __construct(private Kernel $kernel)
-    {
-    }
-
-    public function getKernel(): Kernel
-    {
-        return $this->kernel;
-    }
-}
+return [
+    new Middleware(RoutingMiddleware::class, Middleware::PRIORITY_NORMAL),
+];

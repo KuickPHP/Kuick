@@ -8,10 +8,10 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App\DIFactories;
+namespace Kuick\App\DependencyInjection;
 
-use Kuick\App\AppDIContainerBuilder;
-use Kuick\App\DIFactories\Utils\RoutesConfigLoader;
+use DI\ContainerBuilder;
+use Kuick\App\Kernel;
 use Kuick\App\SystemCacheInterface;
 use Kuick\Http\Server\Router;
 use Psr\Container\ContainerInterface;
@@ -20,15 +20,19 @@ use Psr\Log\LoggerInterface;
 /**
  *
  */
-class BuildRouter extends FactoryAbstract
+class RouterBuilder
 {
+    public function __construct(private ContainerBuilder $builder)
+    {
+    }
+
     public function __invoke(): void
     {
         $this->builder->addDefinitions([Router::class => function (ContainerInterface $container, LoggerInterface $logger, SystemCacheInterface $cache): Router {
             return (new Router($logger))->setRoutes(
                 (new RoutesConfigLoader($cache, $logger))(
-                    $container->get(AppDIContainerBuilder::PROJECT_DIR_CONFIGURATION_KEY),
-                    $container->get(AppDIContainerBuilder::APP_ENV_CONFIGURATION_KEY)
+                    $container->get(Kernel::DI_PROJECT_DIR_KEY),
+                    $container->get(Kernel::DI_APP_ENV_KEY)
                 )
             );
         }]);

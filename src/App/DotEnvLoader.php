@@ -41,9 +41,9 @@ class DotEnvLoader
             );
         }
         //app env calculation
-        $appEnv = (false === getenv(KernelInterface::APP_ENV)) ?
-            ($dotEnvValues[KernelInterface::APP_ENV] ?? KernelInterface::ENV_PROD) :
-            getenv(KernelInterface::APP_ENV);
+        $appEnv = (false === getenv(Kernel::APP_ENV)) ?
+            ($dotEnvValues[Kernel::APP_ENV] ?? Kernel::ENV_PROD) :
+            getenv(Kernel::APP_ENV);
 
         //app env specific .env (ie. .env.prod) values
         if (isset($dotEnvFileList[self::ENV_FILE_PREFIX . $appEnv])) {

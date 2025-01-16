@@ -12,6 +12,6 @@ namespace Kuick\Http\Server;
 
 use Exception;
 
-class RouterException extends Exception
+class MiddlewareException extends Exception
 {
 }

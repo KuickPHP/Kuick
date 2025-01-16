@@ -12,7 +12,7 @@ namespace Kuick\App\Listeners;
 
 use DI\Attribute\Inject;
 
-class SetupLocaleListener
+class LocalizationListener
 {
     private const DEFAULT_LOCALE = 'en_US.utf-8';
 
