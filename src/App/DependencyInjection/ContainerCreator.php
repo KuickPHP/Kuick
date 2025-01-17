@@ -61,23 +61,22 @@ class ContainerCreator
     {
         $builder = $this->configureBuilder($projectDir);
 
-        $builder->addDefinitions([
-            Kernel::DI_APP_ENV_KEY => $this->appEnv,
-            Kernel::DI_PROJECT_DIR_KEY => $projectDir,
-        ]);
-
-        //loading DI definitions (configuration)
+        // loading definitions
         (new DefinitionConfigLoader($builder))($projectDir, $this->appEnv);
 
+        // building application services
+        (new ServiceBuilder($builder))();
+
+        // building request handler
         (new RequestHandlerBuilder($builder))();
 
-        //logger builder
+        // creating logger
         (new LoggerBuilder($builder))();
 
-        //event dispatcher
+        // creating event dispatcher
         (new EventDispatcherBuilder($builder))();
 
-        //action matcher
+        // creating router matcher
         (new RouterBuilder($builder))();
 
         return $builder->build();

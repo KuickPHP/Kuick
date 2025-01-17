@@ -33,7 +33,7 @@ class SystemCache extends LayeredCache implements SystemCacheInterface
             new InMemoryCache(),
         ];
         // if apcu cache is available - we use it
-        if (file_exists('apcu_enabled') && apcu_enabled()) {
+        if (function_exists('apcu_enabled') && apcu_enabled()) {
             $prodCacheStack[] = new ApcuCache();
         }
         // filesystem cache is always used

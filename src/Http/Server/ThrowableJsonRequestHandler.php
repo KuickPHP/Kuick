@@ -10,15 +10,16 @@
 
 namespace Kuick\Http\Server;
 
-use Kuick\Http\Message\JsonErrorResponse;
+use Kuick\Http\Message\JsonResponse;
 use Kuick\Http\Message\Response;
+use Kuick\Http\Server\ThrowableRequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Throwable;
 
-class JsonThrowableRequestHandler implements ThrowableRequestHandlerInterface
+class ThrowableJsonRequestHandler implements ThrowableRequestHandlerInterface
 {
     private const EXCEPTION_CODE_LOG_LEVEL_MAP = [
         Response::HTTP_NOT_FOUND => LogLevel::NOTICE,
@@ -58,7 +59,7 @@ class JsonThrowableRequestHandler implements ThrowableRequestHandlerInterface
                 $this->getExceptionDetailedInformation() :
                 $this->getExceptionMessage()
         );
-        return new JsonErrorResponse($this->throwable->getMessage(), $this->getResponseCode());
+        return new JsonResponse(['error' => $this->throwable->getMessage()], $this->getResponseCode());
     }
 
     private function getExceptionMessage(): string

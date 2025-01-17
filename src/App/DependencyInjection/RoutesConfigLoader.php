@@ -24,6 +24,7 @@ class RoutesConfigLoader
 {
     private const CACHE_KEY = 'kuick-app-routes';
     private const ROUTE_LOCATIONS = [
+        //@TODO: remove this (attach files to the distribution)
         '/vendor/kuick/*/config/*.routes.php',
         '/config/*.routes.php',
     ];

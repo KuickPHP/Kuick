@@ -22,7 +22,7 @@ class RouteValidator
         $this->validatePath($route);
         $this->validateMethod($route);
         $this->validateController($route);
-        $this->validateMiddleware($route);
+        $this->validateGuards($route);
     }
 
     private function validatePath(Route $route): void
@@ -69,25 +69,25 @@ class RouteValidator
         }
     }
 
-    private function validateMiddleware(Route $route): void
+    private function validateGuards(Route $route): void
     {
-        //optional middlewares
-        if (empty($route->middlewares)) {
+        //optional guards
+        if (empty($route->guards)) {
             return;
         }
         //validating each guard
-        foreach ($route->middlewares as $middleware) {
+        foreach ($route->guards as $guard) {
             //guard is not a string
-            if (!is_string($middleware)) {
-                throw new RouterException('Middleware class name is not a string, path: ' . $route->path);
+            if (!is_string($guard)) {
+                throw new RouterException('Guard class name is not a string, path: ' . $route->path);
             }
             //inexistent class
-            if (!class_exists($middleware)) {
-                throw new RouterException('Middleware: "' . $middleware . '" does not exist, path: ' . $route->path);
+            if (!class_exists($guard)) {
+                throw new RouterException('Guard: "' . $guard . '" does not exist, path: ' . $route->path);
             }
             //inexistent __invoke() method
-            if (!method_exists($middleware, '__invoke')) {
-                throw new RouterException('Middleware: "' . $middleware . '" is not invokable, path: ' . $route->path);
+            if (!method_exists($guard, '__invoke')) {
+                throw new RouterException('Middleware: "' . $guard . '" is not invokable, path: ' . $route->path);
             }
         }
     }

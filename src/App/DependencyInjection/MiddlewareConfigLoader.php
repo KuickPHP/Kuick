@@ -14,7 +14,7 @@ use FilesystemIterator;
 use GlobIterator;
 use Kuick\App\AppException;
 use Kuick\App\SystemCacheInterface;
-use Kuick\Http\Server\Middleware;
+use Kuick\App\Middleware;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -52,12 +52,16 @@ class MiddlewareConfigLoader
                 $middlewares = array_merge($middlewares, $includedMiddlewares);
             }
         }
+        $orderedMiddlewares = [];
         foreach ($middlewares as $middleware) {
             if (!($middleware instanceof Middleware)) {
                 throw new AppException('Middleware must be an instance of ' . Middleware::class);
             }
+            $orderedMiddlewares[$middleware->priority] = $middleware->middleware;
         }
-        $this->cache->set(self::CACHE_KEY, $middlewares);
-        return $middlewares;
+        krsort($orderedMiddlewares);
+        $this->cache->set(self::CACHE_KEY, $orderedMiddlewares);
+        $this->logger->notice('Middlewares parsed (' . count($orderedMiddlewares) . '), cache written');
+        return $orderedMiddlewares;
     }
 }

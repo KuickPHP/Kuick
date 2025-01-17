@@ -15,7 +15,7 @@ use GlobIterator;
 use Kuick\App\Events\CommandReceived;
 use Symfony\Component\Console\Application;
 
-class CommandListener
+class CommandLaunchingListener
 {
     private const APP_NAME_KEY = 'kuick.app.name';
     private const COMMAND_PATH_PATTERN = '/config/*.commands.php';

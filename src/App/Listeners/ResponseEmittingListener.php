@@ -13,7 +13,7 @@ namespace Kuick\App\Listeners;
 use Kuick\App\Events\ResponseCreated;
 use Kuick\Http\Server\ResponseEmitter;
 
-final class ResponseListener
+final class ResponseEmittingListener
 {
     public function __invoke(ResponseCreated $event): void
     {

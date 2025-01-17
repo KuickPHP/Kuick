@@ -15,7 +15,6 @@ use Kuick\App\Events\KernelCreated;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
-use Psr\Http\Server\RequestHandlerInterface;
 
 /**
  * Application Kernel

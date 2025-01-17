@@ -10,6 +10,7 @@
 
 namespace Kuick\Http\Server;
 
+use Kuick\App\InvokableArgumentReflector;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -21,7 +22,9 @@ class RoutingMiddleware implements MiddlewareInterface
 {
     public function __construct(
         private Router $router,
+        // @TODO: consider adding those invokables to the router (? maybe)
         private ContainerInterface $container,
+        // @TODO: remove this dependency, move it out to the Router configuration
         private InvokableArgumentReflector $invokableArgumentReflector,
         private LoggerInterface $logger,
     )
@@ -31,10 +34,10 @@ class RoutingMiddleware implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $routeMatch = $this->router->matchRoute($request);
-        // execute middlewares
-        if (!empty($routeMatch->route->middlewares)) {
-            $this->logger->debug('Executing middlewares for route: ' . $routeMatch->route->path);
-            $this->executeMiddlewares($routeMatch, $request);
+        // execute guards
+        if (!empty($routeMatch->route->guards)) {
+            $this->logger->debug('Executing guards for route: ' . $routeMatch->route->path);
+            $this->executeGuards($routeMatch, $request);
         }
         // execute action
         $response = $this->executeAction($routeMatch, $request);
@@ -50,15 +53,15 @@ class RoutingMiddleware implements MiddlewareInterface
         );
     }
 
-    private function executeMiddlewares(RouteMatch $routeMatch, ServerRequestInterface $request): void
+    private function executeGuards(RouteMatch $routeMatch, ServerRequestInterface $request): void
     {
-        foreach ($routeMatch->route->middlewares as $middlewareName) {
-            $this->logger->debug('Executing middleware: ' . $middlewareName);
+        foreach ($routeMatch->route->guards as $guardName) {
+            $this->logger->debug('Executing guard: ' . $guardName);
             call_user_func_array(
-                $this->container->get($middlewareName),
-                $this->getArguments($middlewareName, $routeMatch, $request)
+                $this->container->get($guardName),
+                $this->getArguments($guardName, $routeMatch, $request)
             );
-            $this->logger->debug('Middleware completed: ' . $middlewareName);
+            $this->logger->debug('Guard pass: ' . $guardName);
         }
     }
 

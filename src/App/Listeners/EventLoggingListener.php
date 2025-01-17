@@ -12,7 +12,7 @@ namespace Kuick\App\Listeners;
 
 use Psr\Log\LoggerInterface;
 
-class LoggerListener
+class EventLoggingListener
 {
     public function __construct(private LoggerInterface $logger)
     {

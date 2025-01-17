@@ -15,7 +15,7 @@ use Kuick\App\Events\ResponseCreated;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class RequestListener
+final class RequestHandlingListener
 {
     public function __construct(
         private RequestHandlerInterface $requestHandler,

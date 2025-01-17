@@ -8,9 +8,15 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-use Kuick\Http\Server\Middleware;
+use Kuick\App\Middleware;
+use Kuick\App\MiddlewarePriority;
+use Kuick\Http\Server\OptionsSendingMiddleware;
 use Kuick\Http\Server\RoutingMiddleware;
 
 return [
-    new Middleware(RoutingMiddleware::class, Middleware::PRIORITY_NORMAL),
+    // default 204 for OPTIONS    
+    new Middleware(OptionsSendingMiddleware::class, MiddlewarePriority::PRIORITY_HIGHEST),
+    // routing middleware by Kuick
+    // @TODO: extract guard execution to the another middleware
+    new Middleware(RoutingMiddleware::class, MiddlewarePriority::PRIORITY_LOWEST),
 ];

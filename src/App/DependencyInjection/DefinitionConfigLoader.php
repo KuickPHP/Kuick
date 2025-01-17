@@ -11,6 +11,7 @@
 namespace Kuick\App\DependencyInjection;
 
 use DI\ContainerBuilder;
+use Kuick\App\Kernel;
 
 /**
  *
@@ -18,6 +19,7 @@ use DI\ContainerBuilder;
 class DefinitionConfigLoader
 {
     private const DEFINITION_LOCATIONS = [
+         //@TODO: remove this (attach files to the distribution)
         '/vendor/kuick/*/config/di/*.di.php',
         '/config/di/*.di.php',
     ];
@@ -29,6 +31,10 @@ class DefinitionConfigLoader
 
     public function __invoke(string $projectDir, string $env): void
     {
+        $this->builder->addDefinitions([
+            Kernel::DI_APP_ENV_KEY => $env,
+            Kernel::DI_PROJECT_DIR_KEY => $projectDir,
+        ]);
         //adding global definition files
         foreach (self::DEFINITION_LOCATIONS as $definitionsLocation) {
             foreach (glob($projectDir . $definitionsLocation) as $definitionFile) {

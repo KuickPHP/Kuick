@@ -8,7 +8,7 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\Http\Server;
+namespace Kuick\App;
 
 use Kuick\App\AppException;
 use Kuick\App\SystemCacheInterface;

@@ -26,7 +26,7 @@ class Route
     public function __construct(
         public readonly string $path,
         public readonly string $controller,
-        public readonly array $middlewares = [],
+        public readonly array $guards = [],
         public readonly string $method = self::METHOD_GET,
     ) {
         // validate route
