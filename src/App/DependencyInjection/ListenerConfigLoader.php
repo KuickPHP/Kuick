@@ -13,7 +13,7 @@ namespace Kuick\App\DependencyInjection;
 use FilesystemIterator;
 use GlobIterator;
 use Kuick\App\AppException;
-use Kuick\App\Listener;
+use Kuick\App\Config\Listener;
 use Kuick\App\SystemCacheInterface;
 use Psr\Log\LoggerInterface;
 

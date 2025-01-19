@@ -8,13 +8,14 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\Http\Server;
+namespace Kuick\App\Config;
 
 /**
  * Route definition
  */
 class Route
 {
+    // @TODO: unify request methods with the request method constants
     public const METHOD_GET = 'GET';
     public const METHOD_HEAD = 'HEAD';
     public const METHOD_OPTIONS = 'OPTIONS';
@@ -25,9 +26,8 @@ class Route
 
     public function __construct(
         public readonly string $path,
-        public readonly string $controller,
-        public readonly array $guards = [],
-        public readonly string $method = self::METHOD_GET,
+        public readonly string $controllerClassName,
+        public readonly array $methods = [self::METHOD_GET],
     ) {
         // validate route
         new RouteValidator($this);

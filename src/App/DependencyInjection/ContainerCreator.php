@@ -79,6 +79,9 @@ class ContainerCreator
         // creating router matcher
         (new RouterBuilder($builder))();
 
+        // creating guardhouse
+        (new GuardhouseBuilder($builder))();
+
         return $builder->build();
     }
 

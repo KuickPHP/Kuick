@@ -8,10 +8,10 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App;
+namespace Kuick\App\Config;
 
 use Exception;
 
-class MiddlewareException extends Exception
+class ConfigException extends Exception
 {
 }

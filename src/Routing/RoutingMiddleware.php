@@ -8,28 +8,30 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\Http\Server;
+namespace Kuick\Routing;
 
-use Kuick\Http\Message\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerInterface;
 
-/** 
- * Options Sending Middleware
- */
-class OptionsSendingMiddleware implements MiddlewareInterface
+class RoutingMiddleware implements MiddlewareInterface
 {
-    private const OPTIONS_METHOD = 'OPTIONS';
+    public function __construct(
+        private Router $router,
+        private LoggerInterface $logger,
+    )
+    {
+    }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        // 204 for OPTIONS
-        if (self::OPTIONS_METHOD == $request->getMethod()) {
-            return new Response(Response::HTTP_NO_CONTENT);
-        }
-        // forward if request method is different than OPTIONS
-        return $handler->handle($request);
+        $executableRoute = $this->router->matchRoute($request);
+        // execute action
+        $controllerClass = get_class($executableRoute->controller);
+        $response = $executableRoute->execute($request);
+        $this->logger->info('Action executed: ' . $controllerClass);
+        return $response;
     }
 }

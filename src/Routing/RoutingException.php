@@ -8,8 +8,10 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App;
+namespace Kuick\Routing;
 
-class ListenerException extends AppException
+use Exception;
+
+class RouterException extends Exception
 {
 }

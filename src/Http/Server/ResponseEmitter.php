@@ -12,6 +12,9 @@ namespace Kuick\Http\Server;
 
 use Psr\Http\Message\ResponseInterface;
 
+/**
+ * Response Emitter
+ */
 class ResponseEmitter
 {
     public function __invoke(ResponseInterface $response): void

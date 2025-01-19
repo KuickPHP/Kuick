@@ -14,13 +14,14 @@ use DI\ContainerBuilder;
 use Kuick\App\Kernel;
 use Kuick\App\SystemCacheInterface;
 use Kuick\Routing\Router;
+use Kuick\Security\Guardhouse;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
  *
  */
-class RouterBuilder
+class GuardhouseBuilder
 {
     public function __construct(private ContainerBuilder $builder)
     {
@@ -28,16 +29,16 @@ class RouterBuilder
 
     public function __invoke(): void
     {
-        $this->builder->addDefinitions([Router::class => function (ContainerInterface $container, LoggerInterface $logger, SystemCacheInterface $cache): Router {
-            $routes = (new RoutesConfigLoader($cache, $logger))(
+        $this->builder->addDefinitions([Guardhouse::class => function (ContainerInterface $container, LoggerInterface $logger, SystemCacheInterface $cache): Guardhouse {
+            $guards = (new GuardsConfigLoader($cache, $logger))(
                 $container->get(Kernel::DI_PROJECT_DIR_KEY),
                 $container->get(Kernel::DI_APP_ENV_KEY)
             );
-            $router = new Router($logger);
-            foreach ($routes as $route) {
-                $router->addRoute($route->path, $container->get($route->controllerClassName), $route->methods);
+            $guardhouse = new Guardhouse($logger);
+            foreach ($guards as $guard) {
+                $guardhouse->addGuard($guard->path, $container->get($guard->guardClassName), $guard->methods);
             }
-            return $router;
+            return $guardhouse;
         }]);
     }
 }

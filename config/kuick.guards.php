@@ -8,14 +8,12 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App;
+use Kuick\App\Config\Guard;
+use Kuick\Ops\Security\OpsGuard;
 
-class Middleware
-{
-    public function __construct(
-        public readonly string $middleware,
-        public readonly int $priority = MiddlewarePriority::PRIORITY_NORMAL,
-    ) {
-        new MiddlewareValidator($this);
-    }
-}
+return [
+    // OPS guard protects /api/ops route with OpsGuard 
+    // the token can be defined via environment variable
+    // @see config/di/kuick.di.php
+    new Guard('/api/ops', OpsGuard::class),
+];

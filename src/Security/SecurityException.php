@@ -8,10 +8,10 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\Http\Server;
+namespace Kuick\Security;
 
 use Exception;
 
-class RouterException extends Exception
+class SecurityException extends Exception
 {
 }

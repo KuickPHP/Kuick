@@ -11,10 +11,13 @@
 namespace Kuick\Http\Server;
 
 use Psr\Http\Server\RequestHandlerInterface;
-use Throwable;
+use Exception;
 
-interface ThrowableRequestHandlerInterface extends RequestHandlerInterface
+/**
+ * Exception Request Handler Interface
+ */
+interface ExceptionRequestHandlerInterface extends RequestHandlerInterface
 {
-    public function setThrowable(Throwable $throwable): self;
-    public function getThrowable(): Throwable;
+    public function setException(Exception $exception): self;
+    public function getException(): Exception;
 }

@@ -8,8 +8,8 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-use Kuick\Http\Server\ThrowableJsonRequestHandler;
-use Kuick\Http\Server\ThrowableRequestHandlerInterface;
+use Kuick\Http\Server\ExceptionJsonRequestHandler;
+use Kuick\Http\Server\ExceptionRequestHandlerInterface;
 
 use function DI\autowire;
 use function DI\env;
@@ -28,9 +28,9 @@ return [
         ],
     ],
 
-    //there is no valid token by default, you should provide one through environment variables
+    // there is no valid token by default, you should provide one through environment variables
     'kuick.ops.guard.token' => env('KUICK_OPS_GUARD_TOKEN', ''),
 
-    // Stack Request Handler needs a Throwable handler (choose Json or Html, or provide your own)
-    ThrowableRequestHandlerInterface::class => autowire(ThrowableJsonRequestHandler::class),
+    // Kuick Request Handler needs a Throwable handler (choose Json or Html, or provide your own)
+    ExceptionRequestHandlerInterface::class => autowire(ExceptionJsonRequestHandler::class),
 ];

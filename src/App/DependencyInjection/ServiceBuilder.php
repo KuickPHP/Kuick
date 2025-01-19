@@ -11,7 +11,6 @@
 namespace Kuick\App\DependencyInjection;
 
 use DI\ContainerBuilder;
-use Kuick\App\InvokableArgumentReflector;
 use Kuick\App\Listeners\CommandLaunchingListener;
 use Kuick\App\Listeners\EventLoggingListener;
 use Kuick\App\Listeners\LocalizingListener;
@@ -21,9 +20,10 @@ use Kuick\App\SystemCache;
 use Kuick\App\SystemCacheInterface;
 use Kuick\EventDispatcher\EventDispatcher;
 use Kuick\EventDispatcher\ListenerProvider;
-use Kuick\Http\Server\RoutingMiddleware;
 use Kuick\Ops\Security\OpsGuard;
 use Kuick\Ops\UI\OpsController;
+use Kuick\Routing\RoutingMiddleware;
+use Kuick\Security\SecurityMiddleware;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 
@@ -49,7 +49,7 @@ class ServiceBuilder
             ResponseEmittingListener::class => autowire(),
 
             RoutingMiddleware::class => autowire(),
-            InvokableArgumentReflector::class => autowire(),
+            SecurityMiddleware::class => autowire(),
             OpsGuard::class => autowire(),
             OpsController::class => autowire(),
         ]);

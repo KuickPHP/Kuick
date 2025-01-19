@@ -13,8 +13,8 @@ namespace Kuick\App\DependencyInjection;
 use DI\ContainerBuilder;
 use Kuick\App\Kernel;
 use Kuick\App\SystemCacheInterface;
-use Kuick\Http\Server\StackRequestHandler;
-use Kuick\Http\Server\ThrowableRequestHandlerInterface;
+use Kuick\Http\Server\ExceptionRequestHandlerInterface;
+use Kuick\Http\Server\RequestHandler;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
@@ -32,8 +32,7 @@ class RequestHandlerBuilder
     {
         // default request handler is a Stack Request Handler (by Kuick)
         $this->builder->addDefinitions([RequestHandlerInterface::class => function (ContainerInterface $container, LoggerInterface $logger, SystemCacheInterface $cache): RequestHandlerInterface {
-            $requestHandler = new StackRequestHandler($container->get(ThrowableRequestHandlerInterface::class));
-            $middlewares = [];
+            $requestHandler = new RequestHandler($container->get(ExceptionRequestHandlerInterface::class));
             foreach ((new MiddlewareConfigLoader($cache, $logger))($container->get(Kernel::DI_PROJECT_DIR_KEY)) as $middlewareClassName) {
                 $requestHandler->addMiddleware($container->get($middlewareClassName));
             }

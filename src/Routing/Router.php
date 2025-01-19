@@ -8,7 +8,7 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\Http\Server;
+namespace Kuick\Routing;
 
 use Kuick\Http\MethodNotAllowedException;
 use Kuick\Http\NotFoundException;
@@ -20,57 +20,58 @@ use Psr\Log\LoggerInterface;
  */
 class Router
 {
-    public const MATCH_PATTERN = '#^%s$#';
+    // @TODO: unify with the Http package
+    public const METHOD_GET = 'GET';
+    public const METHOD_HEAD = 'HEAD';
+    public const METHOD_OPTIONS = 'OPTIONS';
+    public const METHOD_POST = 'POST';
+    public const METHOD_PUT = 'PUT';
+    public const METHOD_PATCH = 'PATCH';
+    public const METHOD_DELETE = 'DELETE';
+
+    private const MATCH_PATTERN = '#^%s$#';
+
     private array $routes = [];
 
     public function __construct(private LoggerInterface $logger)
     {
     }
 
-    /**
-     * @param Route[] $routes
-     */
-    public function setRoutes(array $routes): self
+    public function addRoute(string $path, callable $controller, array $methods = [self::METHOD_GET]): self
     {
-        $this->routes = $routes;
+        $this->routes[] = new ExecutableRoute($path, $controller, $methods);
         return $this;
-    }
-
-    /**
-     * @return Route[]
-     */
-    public function getRoutes(): array
-    {
-        return $this->routes;
     }
 
     /**
      * @throws NotFoundException
      * @throws MethodNotAllowedException
      */
-    public function matchRoute(ServerRequestInterface $request): RouteMatch
+    public function matchRoute(ServerRequestInterface $request): ExecutableRoute
     {
         $requestMethod = $request->getMethod();
         $mismatchedMethod = null;
         /**
-         * @var Route $route
+         * @var ExecutableRoute $route
          */
         foreach ($this->routes as $route) {
             //trim right slash
             $requestPath = $request->getUri()->getPath() == '/' ? '/' : rtrim($request->getUri()->getPath(), '/');
-            $this->logger->debug('Trying route: ' . $route->method . ' ' . $route->path);
-            //matching route
+            //adding HEAD if GET is present
+            $routeMethods = in_array(self::METHOD_GET, $route->methods) ? array_merge([self::METHOD_HEAD, $route->methods], $route->methods) : $route->methods;
+            $this->logger->debug('Trying route: ' . $route->path);
+            //matching path
             $results = [];
-            $matchResult = preg_match('#^' . $route->path . '$#', $requestPath, $results);
+            $matchResult = preg_match(sprintf(self::MATCH_PATTERN, $route->path), $requestPath, $results);
             if (!$matchResult) {
                 continue;
             }
-            //methods are matching or HEAD to GET route
-            if ($requestMethod == $route->method || ($requestMethod == Route::METHOD_HEAD && $route->method == Route::METHOD_GET)) {
+            //matching method
+            if (in_array($requestMethod, $routeMethods)) {
                 $this->logger->debug('Matched route: ' . $route->path . ' ' . $route->path);
-                return new RouteMatch($route, $this->parseRouteParams($results));
+                return $route->addParams($this->parseRouteParams($results));
             }
-            //method mismatch
+            // method mismatch
             $this->logger->debug('Method mismatch, but action matching path: ' . $route->path);
             $mismatchedMethod = $route;
         }

@@ -1,7 +1,7 @@
 <?php
 
+use Kuick\App\Config\Route;
 use Kuick\Example\UI\PingController;
-use Kuick\Http\Server\Route;
 
 return [
     //example homepage

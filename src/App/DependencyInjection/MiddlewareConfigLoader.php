@@ -13,8 +13,8 @@ namespace Kuick\App\DependencyInjection;
 use FilesystemIterator;
 use GlobIterator;
 use Kuick\App\AppException;
+use Kuick\App\Config\Middleware;
 use Kuick\App\SystemCacheInterface;
-use Kuick\App\Middleware;
 use Psr\Log\LoggerInterface;
 
 /**

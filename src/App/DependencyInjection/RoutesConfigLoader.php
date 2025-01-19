@@ -13,8 +13,8 @@ namespace Kuick\App\DependencyInjection;
 use FilesystemIterator;
 use GlobIterator;
 use Kuick\App\AppException;
+use Kuick\App\Config\Route;
 use Kuick\App\SystemCacheInterface;
-use Kuick\Http\Server\Route;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -53,7 +53,7 @@ class RoutesConfigLoader
         }
         foreach ($routes as $route) {
             if (!($route instanceof Route)) {
-                throw new AppException('Route must be an instance of ' . Route::class);
+                throw new AppException('Route definition must be an instance of ' . Route::class);
             }
         }
         $this->cache->set(self::CACHE_KEY, $routes);

@@ -10,20 +10,22 @@
 
 namespace Kuick\Http\Server;
 
-use Kuick\Http\Message\Response;
 use Kuick\Http\NotFoundException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Throwable;
+use Exception;
 
-class StackRequestHandler implements RequestHandlerInterface
+/**
+ * Request Handler using middleware stack with Exception handler
+ */
+class RequestHandler implements RequestHandlerInterface
 {
     private array $middlewares = [];
 
     public function __construct(
-        private ThrowableRequestHandlerInterface $throwableRequestHandler,
+        private ExceptionRequestHandlerInterface $exceptionRequestHandler,
     )
     {
     }
@@ -43,9 +45,9 @@ class StackRequestHandler implements RequestHandlerInterface
             }
             $middleware = array_shift($this->middlewares);
             return $middleware->process($request, $this);
-        } catch (Throwable $throwable) {
-            return $this->throwableRequestHandler
-                ->setThrowable($throwable)
+        } catch (Exception $throwable) {
+            return $this->exceptionRequestHandler
+                ->setException($throwable)
                 ->handle($request);
         }
     }

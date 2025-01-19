@@ -11,14 +11,17 @@
 namespace Kuick\Http\Server;
 
 use Kuick\Http\Message\Response;
-use Kuick\Http\Server\ThrowableRequestHandlerInterface;
+use Kuick\Http\Server\ExceptionRequestHandlerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use Throwable;
+use Exception;
 
-class ThrowableHtmlRequestHandler implements ThrowableRequestHandlerInterface
+/**
+ * Exception Handler (rendering HTML)
+ */
+class ExceptionHtmlRequestHandler implements ExceptionRequestHandlerInterface
 {
     private const EXCEPTION_CODE_LOG_LEVEL_MAP = [
         Response::HTTP_NOT_FOUND => LogLevel::NOTICE,
@@ -30,7 +33,7 @@ class ThrowableHtmlRequestHandler implements ThrowableRequestHandlerInterface
         Response::HTTP_NOT_IMPLEMENTED => LogLevel::WARNING,
     ];
 
-    private Throwable $throwable;
+    private Exception $exception;
 
     public function __construct(
         private LoggerInterface $logger
@@ -38,20 +41,20 @@ class ThrowableHtmlRequestHandler implements ThrowableRequestHandlerInterface
     {
     }
 
-    public function setThrowable(Throwable $throwable): self
+    public function setException(Exception $exception): self
     {
-        $this->throwable = $throwable;
+        $this->exception = $exception;
         return $this;
     }
 
-    public function getThrowable(): Throwable
+    public function getException(): Exception
     {
-        return $this->throwable;
+        return $this->exception;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $logLevel = self::EXCEPTION_CODE_LOG_LEVEL_MAP[$this->throwable->getCode()] ?? LogLevel::ERROR;
+        $logLevel = self::EXCEPTION_CODE_LOG_LEVEL_MAP[$this->exception->getCode()] ?? LogLevel::ERROR;
         $this->logger->log(
             $logLevel, 
             $this->getResponseCode() >= Response::HTTP_INTERNAL_SERVER_ERROR ?
@@ -63,22 +66,22 @@ class ThrowableHtmlRequestHandler implements ThrowableRequestHandlerInterface
 
     private function getExceptionMessage(): string
     {
-        return $this->throwable->getMessage();
+        return $this->exception->getMessage();
     }
 
     private function getExceptionDetailedInformation(): string
     {
-        return $this->getExceptionMessage() . ' ' . $this->throwable->getFile() . ' (' . $this->throwable->getLine() . ') ' . $this->throwable->getTraceAsString();
+        return $this->getExceptionMessage() . ' ' . $this->exception->getFile() . ' (' . $this->exception->getLine() . ') ' . $this->exception->getTraceAsString();
     }
 
     private function getResponseCode(): int
     {
-        if (!is_int($this->throwable->getCode())) {
+        if (!is_int($this->exception->getCode())) {
             return Response::HTTP_INTERNAL_SERVER_ERROR;
         }
-        if ($this->throwable->getCode() < Response::HTTP_BAD_REQUEST || $this->throwable->getCode() > Response::HTTP_GATEWAY_TIMEOUT) {
+        if ($this->exception->getCode() < Response::HTTP_BAD_REQUEST || $this->exception->getCode() > Response::HTTP_GATEWAY_TIMEOUT) {
             return Response::HTTP_INTERNAL_SERVER_ERROR;
         }
-        return $this->throwable->getCode();
+        return $this->exception->getCode();
     }
 }

@@ -8,7 +8,7 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\App;
+namespace Kuick\App\Config;
 
 /**
  * Listener validator
@@ -25,15 +25,15 @@ class ListenerValidator
     {
         //callable empty
         if (empty($listener->callable)) {
-            throw new ListenerException('Listener callable is empty');
+            throw new ConfigException('Listener callable is empty');
         }
         //inexistent class
         if (!class_exists($listener->callable)) {
-            throw new ListenerException('Callable: ' . $listener->callable . '" does not exist');
+            throw new ConfigException('Callable: ' . $listener->callable . '" does not exist');
         }
         //inexistent __invoke() method
         if (!method_exists($listener->callable, '__invoke')) {
-            throw new ListenerException('Callable ' . $listener->callable . ' is not invokable');
+            throw new ConfigException('Callable ' . $listener->callable . ' is not invokable');
         }
     }
 
@@ -41,7 +41,7 @@ class ListenerValidator
     {
         //pattern is not a string
         if (empty($listener->pattern)) {
-            throw new ListenerException('Listener pattern is empty');
+            throw new ConfigException('Listener pattern is empty');
         }
     }
 }
