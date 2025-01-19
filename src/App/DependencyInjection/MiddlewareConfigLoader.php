@@ -23,11 +23,7 @@ use Psr\Log\LoggerInterface;
 class MiddlewareConfigLoader
 {
     private const CACHE_KEY = 'kuick-app-middlewares';
-
-    private const MIDDLEWARE_LOCATIONS = [
-        '/vendor/kuick/*/config/*.middlewares.php',
-        '/config/*.middlewares.php',
-    ];
+    private const MIDDLEWARES_CONFIG_LOCATION = '/config/*.middlewares.php';
 
     public function __construct(
         private SystemCacheInterface $cache,
@@ -44,13 +40,11 @@ class MiddlewareConfigLoader
             return $cachedMiddlewares;
         }
         $middlewares = [];
-        foreach (self::MIDDLEWARE_LOCATIONS as $middlewareLocation) {
-            $middlewareIterator = new GlobIterator($projectDir . $middlewareLocation, FilesystemIterator::KEY_AS_FILENAME);
-            foreach ($middlewareIterator as $middlewareFile) {
-                $includedMiddlewares = include $middlewareFile;
-                $this->logger->info('Middleware file added: ' . $middlewareFile . ', containing: ' . count($includedMiddlewares) . ' middlewares');
-                $middlewares = array_merge($middlewares, $includedMiddlewares);
-            }
+        $middlewareIterator = new GlobIterator($projectDir . self::MIDDLEWARES_CONFIG_LOCATION, FilesystemIterator::KEY_AS_FILENAME);
+        foreach ($middlewareIterator as $middlewareFile) {
+            $includedMiddlewares = include $middlewareFile;
+            $this->logger->info('Middleware file added: ' . $middlewareFile . ', containing: ' . count($includedMiddlewares) . ' middlewares');
+            $middlewares = array_merge($middlewares, $includedMiddlewares);
         }
         $orderedMiddlewares = [];
         foreach ($middlewares as $middleware) {

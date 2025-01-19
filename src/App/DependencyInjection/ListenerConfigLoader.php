@@ -23,10 +23,7 @@ use Psr\Log\LoggerInterface;
 class ListenerConfigLoader
 {
     private const CACHE_KEY = 'kuick-app-event-listeners';
-    private const LISTENERS_LOCATIONS = [
-        '/vendor/kuick/*/config/*.listeners.php',
-        '/config/*.listeners.php',
-    ];
+    private const LISTENERS_CONFIG_LOCATION = '/config/*.listeners.php';
 
     public function __construct(
         private SystemCacheInterface $cache,
@@ -42,13 +39,11 @@ class ListenerConfigLoader
             return $cachedListeners;
         }
         $listeners = [];
-        foreach (self::LISTENERS_LOCATIONS as $listenerLocation) {
-            $listenerIterator = new GlobIterator($projectDir . $listenerLocation, FilesystemIterator::KEY_AS_FILENAME);
-            foreach ($listenerIterator as $listenerFile) {
-                $includedListeners = include $listenerFile;
-                $this->logger->info('Listeners file added: ' . $listenerFile . ', containing: ' . count($includedListeners) . ' listeners');
-                $listeners = array_merge($listeners, $includedListeners);
-            }
+        $listenerIterator = new GlobIterator($projectDir . self::LISTENERS_CONFIG_LOCATION, FilesystemIterator::KEY_AS_FILENAME);
+        foreach ($listenerIterator as $listenerFile) {
+            $includedListeners = include $listenerFile;
+            $this->logger->info('Listeners file added: ' . $listenerFile . ', containing: ' . count($includedListeners) . ' listeners');
+            $listeners = array_merge($listeners, $includedListeners);
         }
         foreach ($listeners as $listener) {
             if (!($listener instanceof Listener)) {

@@ -23,11 +23,7 @@ use Psr\Log\LoggerInterface;
 class GuardsConfigLoader
 {
     private const CACHE_KEY = 'kuick-app-guards';
-    private const Guard_LOCATIONS = [
-        //@TODO: remove this (attach files to the distribution)
-        '/vendor/kuick/*/config/*.guards.php',
-        '/config/*.guards.php',
-    ];
+    private const GUARDS_CONFIG_LOCATION = '/config/*.guards.php';
 
     public function __construct(
         private SystemCacheInterface $cache,
@@ -43,13 +39,11 @@ class GuardsConfigLoader
             return $cachedGuards;
         }
         $guards = [];
-        foreach (self::Guard_LOCATIONS as $guardLocation) {
-            $guardIterator = new GlobIterator($projectDir . $guardLocation, FilesystemIterator::KEY_AS_FILENAME);
-            foreach ($guardIterator as $guardFile) {
-                $includedGuards = include $guardFile;
-                $this->logger->info('Guard file added: ' . $guardFile . ', containing: ' . count($includedGuards) . ' guards');
-                $guards = array_merge($guards, $includedGuards);
-            }
+        $guardIterator = new GlobIterator($projectDir . self::GUARDS_CONFIG_LOCATION, FilesystemIterator::KEY_AS_FILENAME);
+        foreach ($guardIterator as $guardFile) {
+            $includedGuards = include $guardFile;
+            $this->logger->info('Guard file added: ' . $guardFile . ', containing: ' . count($includedGuards) . ' guards');
+            $guards = array_merge($guards, $includedGuards);
         }
         foreach ($guards as $guard) {
             if (!($guard instanceof Guard)) {

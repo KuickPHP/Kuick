@@ -23,11 +23,7 @@ use Psr\Log\LoggerInterface;
 class RoutesConfigLoader
 {
     private const CACHE_KEY = 'kuick-app-routes';
-    private const ROUTE_LOCATIONS = [
-        //@TODO: remove this (attach files to the distribution)
-        '/vendor/kuick/*/config/*.routes.php',
-        '/config/*.routes.php',
-    ];
+    private const ROUTES_CONFIG_LOCATION = '/config/*.routes.php';
 
     public function __construct(
         private SystemCacheInterface $cache,
@@ -43,13 +39,11 @@ class RoutesConfigLoader
             return $cachedRoutes;
         }
         $routes = [];
-        foreach (self::ROUTE_LOCATIONS as $routeLocation) {
-            $routeIterator = new GlobIterator($projectDir . $routeLocation, FilesystemIterator::KEY_AS_FILENAME);
-            foreach ($routeIterator as $routeFile) {
-                $includedRoutes = include $routeFile;
-                $this->logger->info('Route file added: ' . $routeFile . ', containing: ' . count($includedRoutes) . ' routes');
-                $routes = array_merge($routes, $includedRoutes);
-            }
+        $routeIterator = new GlobIterator($projectDir . self::ROUTES_CONFIG_LOCATION, FilesystemIterator::KEY_AS_FILENAME);
+        foreach ($routeIterator as $routeFile) {
+            $includedRoutes = include $routeFile;
+            $this->logger->info('Route file added: ' . $routeFile . ', containing: ' . count($includedRoutes) . ' routes');
+            $routes = array_merge($routes, $includedRoutes);
         }
         foreach ($routes as $route) {
             if (!($route instanceof Route)) {
