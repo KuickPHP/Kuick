@@ -29,6 +29,9 @@ class Guardhouse
         return $this;
     }
 
+    /**
+     * @TODO: add support for inline callables
+     */
     public function matchGuards(ServerRequestInterface $request): array
     {
         $requestMethod = $request->getMethod();

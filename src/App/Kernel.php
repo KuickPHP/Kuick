@@ -37,6 +37,7 @@ class Kernel
         $this->container = (new ContainerCreator())($projectDir);
         $this->eventDispatcher = $this->container->get(EventDispatcherInterface::class);
         $listenerProvider = $this->container->get(ListenerProviderInterface::class);
+        //registering listeners "on the fly", as they can be dependent on the EventDispatcher
         foreach ($this->container->get(self::DI_LISTENERS_KEY) as $listener) {
             $listenerProvider->registerListener($listener->pattern, $this->container->get($listener->callable), $listener->priority);
         }

@@ -27,6 +27,7 @@ class DefinitionConfigLoader
 
     public function __invoke(string $projectDir, string $env): void
     {        
+        //adding default definitions
         $this->builder->addDefinitions([
             Kernel::DI_APP_ENV_KEY => $env,
             Kernel::DI_PROJECT_DIR_KEY => $projectDir,

@@ -21,6 +21,7 @@ use Kuick\App\SystemCacheInterface;
 use Kuick\EventDispatcher\EventDispatcher;
 use Kuick\EventDispatcher\ListenerProvider;
 use Kuick\Http\Server\ExceptionHtmlRequestHandler;
+use Kuick\Http\Server\ExceptionJsonRequestHandler;
 use Kuick\Http\Server\ExceptionRequestHandlerInterface;
 use Kuick\Ops\Security\OpsGuard;
 use Kuick\Ops\UI\OpsController;
@@ -39,7 +40,7 @@ class ServiceBuilder
     public function __invoke()
     {
         $this->builder->addDefinitions([
-            ExceptionRequestHandlerInterface::class => autowire(ExceptionHtmlRequestHandler::class),
+            ExceptionRequestHandlerInterface::class => autowire(ExceptionJsonRequestHandler::class),
             ListenerProviderInterface::class => autowire(ListenerProvider::class),
             EventDispatcherInterface::class => autowire(EventDispatcher::class),        
             SystemCacheInterface::class => autowire(SystemCache::class),
@@ -51,6 +52,7 @@ class ServiceBuilder
             RequestHandlingListener::class => autowire(),
             ResponseEmittingListener::class => autowire(),
 
+            ExceptionHtmlRequestHandler::class => autowire(),
             RoutingMiddleware::class => autowire(),
             SecurityMiddleware::class => autowire(),
             OpsGuard::class => autowire(),

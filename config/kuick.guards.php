@@ -9,6 +9,7 @@
  */
 
 use Kuick\App\Config\Guard;
+use Kuick\Http\Message\RequestInterface;
 use Kuick\Ops\Security\OpsGuard;
 
 return [

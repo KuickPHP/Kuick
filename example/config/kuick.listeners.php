@@ -8,11 +8,11 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
+use Kuick\App\Config\Listener;
 use Kuick\App\Events\CommandReceived;
 use Kuick\App\Events\KernelCreated;
 use Kuick\App\Events\RequestReceived;
 use Kuick\App\Events\ResponseCreated;
-use Kuick\App\Listener;
 use Kuick\App\Listeners\CommandLaunchingListener;
 use Kuick\App\Listeners\EventLoggingListener;
 use Kuick\App\Listeners\LocalizingListener;
