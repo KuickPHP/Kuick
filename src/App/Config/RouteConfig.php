@@ -10,12 +10,19 @@
 
 namespace Kuick\App\Config;
 
-class Middleware
+use Kuick\Http\Message\RequestInterface;
+
+/**
+ * Route definition
+ */
+class RouteConfig
 {
     public function __construct(
-        public readonly string $middleware,
-        public readonly int $priority = MiddlewarePriority::PRIORITY_NORMAL,
+        public readonly string $path,
+        public readonly string $controllerClassName,
+        public readonly array $methods = [RequestInterface::METHOD_GET],
     ) {
-        new MiddlewareValidator($this);
+        // validate route
+        new RouteValidator($this);
     }
 }

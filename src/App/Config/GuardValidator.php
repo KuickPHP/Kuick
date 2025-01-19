@@ -18,17 +18,17 @@ use Throwable;
  */
 class GuardValidator
 {
-    public function __construct(Guard $guard)
+    public function __construct(GuardConfig $guardConfig)
     {
-        $this->validatePath($guard);
-        $this->validateMethods($guard);
-        $this->validateController($guard);
+        $this->validatePath($guardConfig);
+        $this->validateMethods($guardConfig);
+        $this->validateController($guardConfig);
     }
 
-    private function validatePath(Guard $guard): void
+    private function validatePath(GuardConfig $guardConfig): void
     {
         //path is not a string
-        if (empty($guard->path)) {
+        if (empty($guardConfig->path)) {
             throw new ConfigException('Guard path is empty');
         }
         try {
@@ -40,9 +40,9 @@ class GuardValidator
         }
     }
 
-    private function validateMethods(Guard $guard): void
+    private function validateMethods(GuardConfig $guardConfig): void
     {
-        foreach ($guard->methods as $method) {
+        foreach ($guardConfig->methods as $method) {
             //method not a standard HTTP method
             if (!in_array($method, [
                 RequestInterface::METHOD_GET,
@@ -52,24 +52,25 @@ class GuardValidator
                 RequestInterface::METHOD_PATCH,
                 RequestInterface::METHOD_DELETE,
             ])) {
-                throw new ConfigException('Guard method invalid, path: ' . $guard->path . ', method: ' . $method);
+                throw new ConfigException('Guard method invalid, path: ' . $guardConfig->path . ', method: ' . $method);
             }
         }
     }
 
-    private function validateController(Guard $guard): void
+    private function validateController(GuardConfig $guardConfig): void
     {
         //action not defined
-        if (empty($guard->guardClassName)) {
-            throw new ConfigException('Guard is missing controller class name, path: ' . $guard->path);
+        if (empty($guardConfig->guardClassName)) {
+            throw new ConfigException('Guard is missing controller class name, path: ' . $guardConfig->path);
         }
         //inexistent class
-        if (!class_exists($guard->guardClassName)) {
-            throw new ConfigException('Guard class: ' . $guard->guardClassName . '" does not exist, path: ' . $guard->path);
+        if (!class_exists($guardConfig->guardClassName)) {
+            throw new ConfigException('Guard class: ' . $guardConfig->guardClassName . '" does not exist, path: ' . $guardConfig->path);
         }
         //inexistent __invoke() method
-        if (!method_exists($guard->guardClassName, '__invoke')) {
-            throw new ConfigException('Guard class: ' . $guard->guardClassName . '" is not invokable, path: ' . $guard->path);
+        if (!method_exists($guardConfig->guardClassName, '__invoke')) {
+            throw new ConfigException('Guard class: ' . $guardConfig->guardClassName . '" is not invokable, path: ' . $guardConfig->path);
         }
+        //@TODO: validate __invoke() method parameters
     }
 }

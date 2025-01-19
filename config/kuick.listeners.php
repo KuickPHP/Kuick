@@ -8,7 +8,7 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-use Kuick\App\Config\Listener;
+use Kuick\App\Config\ListenerConfig;
 use Kuick\App\Events\CommandReceived;
 use Kuick\App\Events\KernelCreated;
 use Kuick\App\Events\RequestReceived;
@@ -22,13 +22,13 @@ use Kuick\EventDispatcher\ListenerPriority;
 
 return [
     // logging all the events
-    new Listener('*', EventLoggingListener::class, ListenerPriority::HIGH),
+    new ListenerConfig('*', EventLoggingListener::class, ListenerPriority::HIGH),
     // setup locale after kernel is created
-    new Listener(KernelCreated::class, LocalizingListener::class),
+    new ListenerConfig(KernelCreated::class, LocalizingListener::class),
     // handle request when received
-    new Listener(RequestReceived::class, RequestHandlingListener::class),
+    new ListenerConfig(RequestReceived::class, RequestHandlingListener::class),
     // emitt response when created
-    new Listener(ResponseCreated::class, ResponseEmittingListener::class),
+    new ListenerConfig(ResponseCreated::class, ResponseEmittingListener::class),
     // execute command when received
-    new Listener(CommandReceived::class, CommandLaunchingListener::class),
+    new ListenerConfig(CommandReceived::class, CommandLaunchingListener::class),
 ];

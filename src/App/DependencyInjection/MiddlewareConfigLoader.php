@@ -13,7 +13,7 @@ namespace Kuick\App\DependencyInjection;
 use FilesystemIterator;
 use GlobIterator;
 use Kuick\App\AppException;
-use Kuick\App\Config\Middleware;
+use Kuick\App\Config\MiddlewareConfig;
 use Kuick\App\SystemCacheInterface;
 use Psr\Log\LoggerInterface;
 
@@ -48,8 +48,8 @@ class MiddlewareConfigLoader
         }
         $orderedMiddlewares = [];
         foreach ($middlewares as $middleware) {
-            if (!($middleware instanceof Middleware)) {
-                throw new AppException('Middleware must be an instance of ' . Middleware::class);
+            if (!($middleware instanceof MiddlewareConfig)) {
+                throw new AppException('Middleware must be an instance of ' . MiddlewareConfig::class);
             }
             $orderedMiddlewares[$middleware->priority] = $middleware->middleware;
         }

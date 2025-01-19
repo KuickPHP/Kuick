@@ -8,13 +8,12 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-use Kuick\App\Config\Guard;
-use Kuick\Http\Message\RequestInterface;
+use Kuick\App\Config\GuardConfig;
 use Kuick\Ops\Security\OpsGuard;
 
 return [
     // OPS guard protects /api/ops route with OpsGuard 
     // the token can be defined via environment variable
     // @see config/di/kuick.di.php and config/di/kuick.di@dev.php
-    new Guard('/api/ops', OpsGuard::class),
+    new GuardConfig('/api/ops', OpsGuard::class),
 ];

@@ -13,7 +13,7 @@ namespace Kuick\App\DependencyInjection;
 use FilesystemIterator;
 use GlobIterator;
 use Kuick\App\AppException;
-use Kuick\App\Config\Guard;
+use Kuick\App\Config\GuardConfig;
 use Kuick\App\SystemCacheInterface;
 use Psr\Log\LoggerInterface;
 
@@ -46,8 +46,8 @@ class GuardsConfigLoader
             $guards = array_merge($guards, $includedGuards);
         }
         foreach ($guards as $guard) {
-            if (!($guard instanceof Guard)) {
-                throw new AppException('Guard must be an instance of ' . Guard::class);
+            if (!($guard instanceof GuardConfig)) {
+                throw new AppException('Guard must be an instance of ' . GuardConfig::class);
             }
         }
         $this->cache->set(self::CACHE_KEY, $guards);

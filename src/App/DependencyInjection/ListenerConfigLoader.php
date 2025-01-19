@@ -13,7 +13,7 @@ namespace Kuick\App\DependencyInjection;
 use FilesystemIterator;
 use GlobIterator;
 use Kuick\App\AppException;
-use Kuick\App\Config\Listener;
+use Kuick\App\Config\ListenerConfig;
 use Kuick\App\SystemCacheInterface;
 use Psr\Log\LoggerInterface;
 
@@ -46,8 +46,8 @@ class ListenerConfigLoader
             $listeners = array_merge($listeners, $includedListeners);
         }
         foreach ($listeners as $listener) {
-            if (!($listener instanceof Listener)) {
-                throw new AppException('Listener must be an instance of ' . Listener::class);
+            if (!($listener instanceof ListenerConfig)) {
+                throw new AppException('Listener must be an instance of ' . ListenerConfig::class);
             }
         }
         $this->cache->set(self::CACHE_KEY, $listeners);

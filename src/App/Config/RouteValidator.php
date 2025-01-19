@@ -20,31 +20,31 @@ class RouteValidator
 {
     private const MATCH_PATTERN = '#^%s$#';
 
-    public function __construct(Route $route)
+    public function __construct(RouteConfig $routeConfig)
     {
-        $this->validatePath($route);
-        $this->validateMethods($route);
-        $this->validateController($route);
+        $this->validatePath($routeConfig);
+        $this->validateMethods($routeConfig);
+        $this->validateController($routeConfig);
     }
 
-    private function validatePath(Route $route): void
+    private function validatePath(RouteConfig $routeConfig): void
     {
         //path is not a string
-        if (empty($route->path)) {
+        if (empty($routeConfig->path)) {
             throw new ConfigException('Route path is empty');
         }
         try {
             //test against empty string
-            preg_match(sprintf(self::MATCH_PATTERN, $route->path), '');
+            preg_match(sprintf(self::MATCH_PATTERN, $routeConfig->path), '');
         } catch (Throwable $error) {
-            throw new ConfigException('Route path invalid: ' . $route->path . ', ' . $error->getMessage());
+            throw new ConfigException('Route path invalid: ' . $routeConfig->path . ', ' . $error->getMessage());
         }
     }
 
-    private function validateMethods(Route $route): void
+    private function validateMethods(RouteConfig $routeConfig): void
     {
         //limited to standard HTTP methods except HEAD and OPTIONS
-        foreach ($route->methods as $method) {
+        foreach ($routeConfig->methods as $method) {
             if (!in_array($method, [
                 RequestInterface::METHOD_GET,
                 RequestInterface::METHOD_POST,
@@ -52,24 +52,24 @@ class RouteValidator
                 RequestInterface::METHOD_PATCH,
                 RequestInterface::METHOD_DELETE,
             ])) {
-                throw new ConfigException('Route method invalid, path: ' . $route->path);
+                throw new ConfigException('Route method invalid, path: ' . $routeConfig->path);
             }
         }
     }
 
-    private function validateController(Route $route): void
+    private function validateController(RouteConfig $routeConfig): void
     {
         //action not defined
-        if (empty($route->controllerClassName)) {
-            throw new ConfigException('Route is missing controller class name, path: ' . $route->path);
+        if (empty($routeConfig->controllerClassName)) {
+            throw new ConfigException('Route is missing controller class name, path: ' . $routeConfig->path);
         }
         //inexistent class
-        if (!class_exists($route->controllerClassName)) {
-            throw new ConfigException('Route controller: ' . $route->controllerClassName . '" does not exist, path: ' . $route->path);
+        if (!class_exists($routeConfig->controllerClassName)) {
+            throw new ConfigException('Route controller: ' . $routeConfig->controllerClassName . '" does not exist, path: ' . $routeConfig->path);
         }
         //inexistent __invoke() method
-        if (!method_exists($route->controllerClassName, '__invoke')) {
-            throw new ConfigException('Route controller: ' . $route->controllerClassName . '" is not invokable, path: ' . $route->path);
+        if (!method_exists($routeConfig->controllerClassName, '__invoke')) {
+            throw new ConfigException('Route controller: ' . $routeConfig->controllerClassName . '" is not invokable, path: ' . $routeConfig->path);
         }
     }
 }
