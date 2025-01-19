@@ -10,6 +10,7 @@
 
 namespace Kuick\Routing;
 
+use Kuick\Http\Message\RequestInterface;
 use Kuick\Http\MethodNotAllowedException;
 use Kuick\Http\NotFoundException;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,15 +21,6 @@ use Psr\Log\LoggerInterface;
  */
 class Router
 {
-    // @TODO: unify with the Http package
-    public const METHOD_GET = 'GET';
-    public const METHOD_HEAD = 'HEAD';
-    public const METHOD_OPTIONS = 'OPTIONS';
-    public const METHOD_POST = 'POST';
-    public const METHOD_PUT = 'PUT';
-    public const METHOD_PATCH = 'PATCH';
-    public const METHOD_DELETE = 'DELETE';
-
     private const MATCH_PATTERN = '#^%s$#';
 
     private array $routes = [];
@@ -37,7 +29,7 @@ class Router
     {
     }
 
-    public function addRoute(string $path, callable $controller, array $methods = [self::METHOD_GET]): self
+    public function addRoute(string $path, callable $controller, array $methods = [RequestInterface::METHOD_GET]): self
     {
         $this->routes[] = new ExecutableRoute($path, $controller, $methods);
         return $this;
@@ -58,7 +50,7 @@ class Router
             //trim right slash
             $requestPath = $request->getUri()->getPath() == '/' ? '/' : rtrim($request->getUri()->getPath(), '/');
             //adding HEAD if GET is present
-            $routeMethods = in_array(self::METHOD_GET, $route->methods) ? array_merge([self::METHOD_HEAD, $route->methods], $route->methods) : $route->methods;
+            $routeMethods = in_array(RequestInterface::METHOD_GET, $route->methods) ? array_merge([RequestInterface::METHOD_HEAD, $route->methods], $route->methods) : $route->methods;
             $this->logger->debug('Trying route: ' . $route->path);
             //matching path
             $results = [];

@@ -10,6 +10,7 @@
 
 namespace Kuick\App\Config;
 
+use Kuick\Http\Message\RequestInterface;
 use Throwable;
 
 /**
@@ -45,11 +46,11 @@ class RouteValidator
         //limited to standard HTTP methods except HEAD and OPTIONS
         foreach ($route->methods as $method) {
             if (!in_array($method, [
-                Route::METHOD_GET,
-                Route::METHOD_POST,
-                Route::METHOD_PUT,
-                Route::METHOD_PATCH,
-                Route::METHOD_DELETE,
+                RequestInterface::METHOD_GET,
+                RequestInterface::METHOD_POST,
+                RequestInterface::METHOD_PUT,
+                RequestInterface::METHOD_PATCH,
+                RequestInterface::METHOD_DELETE,
             ])) {
                 throw new ConfigException('Route method invalid, path: ' . $route->path);
             }

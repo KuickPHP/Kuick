@@ -10,6 +10,7 @@
 
 namespace Kuick\App\Config;
 
+use Kuick\Http\Message\RequestInterface;
 use Throwable;
 
 /**
@@ -44,12 +45,12 @@ class GuardValidator
         foreach ($guard->methods as $method) {
             //method not a standard HTTP method
             if (!in_array($method, [
-                Guard::METHOD_GET,
-                Guard::METHOD_OPTIONS,
-                Guard::METHOD_POST,
-                Guard::METHOD_PUT,
-                Guard::METHOD_PATCH,
-                Guard::METHOD_DELETE,
+                RequestInterface::METHOD_GET,
+                RequestInterface::METHOD_OPTIONS,
+                RequestInterface::METHOD_POST,
+                RequestInterface::METHOD_PUT,
+                RequestInterface::METHOD_PATCH,
+                RequestInterface::METHOD_DELETE,
             ])) {
                 throw new ConfigException('Guard method invalid, path: ' . $guard->path . ', method: ' . $method);
             }

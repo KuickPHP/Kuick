@@ -10,6 +10,7 @@
 
 namespace Kuick\Routing;
 
+use Kuick\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -25,7 +26,7 @@ class ExecutableRoute
     public function __construct(
         public readonly string $path,
         public object $controller,
-        public readonly array $methods = [Router::METHOD_GET],
+        public readonly array $methods = [RequestInterface::METHOD_GET],
     ) {
     }
 
