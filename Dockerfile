@@ -55,6 +55,6 @@ FROM test-runner AS dev-server
 
 COPY ./etc/apache2 /etc/apache2
 
-ENV XDEBUG_ENABLE=0 \
+ENV XDEBUG_ENABLE=1 \
     XDEBUG_MODE=coverage \
-    OPCACHE_VALIDATE_TIMESTAMPS=0
+    OPCACHE_VALIDATE_TIMESTAMPS=1

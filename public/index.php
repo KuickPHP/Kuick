@@ -18,7 +18,7 @@ require $projectDir . '/vendor/autoload.php';
 
 // Using .env loader is not recommended from the performance perspective
 // uncomment the line below if you really want to use it
-// Kuick\Dotenv\DotEnvLoader::fromDirectory($projectDir);
+Kuick\Dotenv\DotEnvLoader::fromDirectory($projectDir);
 
 $psr17Factory = new Psr17Factory();
 
