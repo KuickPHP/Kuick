@@ -14,6 +14,6 @@ use Kuick\Ops\Security\OpsGuard;
 return [
     // OPS guard protects /api/ops route with OpsGuard 
     // the token can be defined via environment variable
-    // @see config/di/kuick.di.php
+    // @see config/di/kuick.di.php and config/di/kuick.di@dev.php
     new Guard('/api/ops', OpsGuard::class),
 ];

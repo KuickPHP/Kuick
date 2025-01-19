@@ -4,7 +4,7 @@
  * Kuick Framework (https://github.com/milejko/kuick)
  *
  * @link       https://github.com/milejko/kuick
- * @copyright  Copyright (c) 2010-2024 Mariusz Miłejko (mariusz@milejko.pl)
+ * @copyright  Copyright (c) 2010-2025 Mariusz Miłejko (mariusz@milejko.pl)
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
@@ -20,6 +20,8 @@ use Kuick\App\SystemCache;
 use Kuick\App\SystemCacheInterface;
 use Kuick\EventDispatcher\EventDispatcher;
 use Kuick\EventDispatcher\ListenerProvider;
+use Kuick\Http\Server\ExceptionHtmlRequestHandler;
+use Kuick\Http\Server\ExceptionRequestHandlerInterface;
 use Kuick\Ops\Security\OpsGuard;
 use Kuick\Ops\UI\OpsController;
 use Kuick\Routing\RoutingMiddleware;
@@ -37,6 +39,7 @@ class ServiceBuilder
     public function __invoke()
     {
         $this->builder->addDefinitions([
+            ExceptionRequestHandlerInterface::class => autowire(ExceptionHtmlRequestHandler::class),
             ListenerProviderInterface::class => autowire(ListenerProvider::class),
             EventDispatcherInterface::class => autowire(EventDispatcher::class),        
             SystemCacheInterface::class => autowire(SystemCache::class),

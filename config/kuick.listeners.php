@@ -25,10 +25,10 @@ return [
     new Listener('*', EventLoggingListener::class, ListenerPriority::HIGH),
     // setup locale after kernel is created
     new Listener(KernelCreated::class, LocalizingListener::class),
-    // handle request when request is received
+    // handle request when received
     new Listener(RequestReceived::class, RequestHandlingListener::class),
-    // emmit response when response is created
+    // emitt response when created
     new Listener(ResponseCreated::class, ResponseEmittingListener::class),
-    // execute command when console command is arrived
+    // execute command when received
     new Listener(CommandReceived::class, CommandLaunchingListener::class),
 ];

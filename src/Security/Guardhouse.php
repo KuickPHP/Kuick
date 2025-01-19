@@ -59,9 +59,22 @@ class Guardhouse
             //matching method
             if (in_array($requestMethod, $guardMethods)) {
                 $this->logger->debug('Matched guard: ' . $guard->path . ' ' . $guard->path);
-                $matchedGuards[] = $guard;
+                $matchedGuards[] = $guard->addParams($this->parseGuardParams($results));
             }
         }
         return $matchedGuards;
+    }
+
+    private function parseGuardParams(array $results): array
+    {
+        $params = [];
+        foreach ($results as $key => $value) {
+            //not a named param
+            if (is_int($key)) {
+                continue;
+            }
+            $params[$key] = $value;
+        }
+        return $params;
     }
 }

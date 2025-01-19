@@ -45,12 +45,13 @@ class GuardValidator
             //method not a standard HTTP method
             if (!in_array($method, [
                 Guard::METHOD_GET,
+                Guard::METHOD_OPTIONS,
                 Guard::METHOD_POST,
                 Guard::METHOD_PUT,
                 Guard::METHOD_PATCH,
                 Guard::METHOD_DELETE,
             ])) {
-                throw new ConfigException('Guard method invalid, path: ' . $guard->path);
+                throw new ConfigException('Guard method invalid, path: ' . $guard->path . ', method: ' . $method);
             }
         }
     }

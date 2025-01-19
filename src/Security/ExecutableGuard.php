@@ -27,15 +27,34 @@ class ExecutableGuard
 
     private const REQUEST_PARAMETER_NAME = 'request';
 
+    private array $params;
+
     public function __construct(
         public readonly string $path,
         public object $guard,
-        public readonly array $methods = [self::METHOD_GET],
+        public readonly array $methods = [
+            self::METHOD_GET,
+            self::METHOD_OPTIONS,
+            self::METHOD_POST,
+            self::METHOD_PUT,
+            self::METHOD_PATCH,
+            self::METHOD_DELETE,
+        ],
     ) {
+    }
+
+    public function addParams(array $params = []): self
+    {
+        $this->params = $params;
+        return $this;
     }
 
     public function execute(ServerRequestInterface $request): void
     {
-        call_user_func_array($this->guard, [self::REQUEST_PARAMETER_NAME => $request]);
+        // adding guard parameters to the request query params
+        call_user_func_array(
+            $this->guard, 
+            [self::REQUEST_PARAMETER_NAME => $request->withQueryParams($this->params)]
+        );
     }
 }

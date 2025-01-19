@@ -4,7 +4,7 @@
  * Kuick Framework (https://github.com/milejko/kuick)
  *
  * @link       https://github.com/milejko/kuick
- * @copyright  Copyright (c) 2010-2024 Mariusz Miłejko (mariusz@milejko.pl)
+ * @copyright  Copyright (c) 2010-2025 Mariusz Miłejko (mariusz@milejko.pl)
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
@@ -61,11 +61,11 @@ class ContainerCreator
     {
         $builder = $this->configureBuilder($projectDir);
 
-        // loading definitions
-        (new DefinitionConfigLoader($builder))($projectDir, $this->appEnv);
-
         // building application services
         (new ServiceBuilder($builder))();
+
+        // loading definitions (can override the default service mappings)
+        (new DefinitionConfigLoader($builder))($projectDir, $this->appEnv);
 
         // building request handler
         (new RequestHandlerBuilder($builder))();

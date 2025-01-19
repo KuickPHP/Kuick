@@ -4,14 +4,10 @@
  * Kuick Framework (https://github.com/milejko/kuick)
  *
  * @link       https://github.com/milejko/kuick
- * @copyright  Copyright (c) 2010-2024 Mariusz Miłejko (mariusz@milejko.pl)
+ * @copyright  Copyright (c) 2010-2025 Mariusz Miłejko (mariusz@milejko.pl)
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-use Kuick\Http\Server\ExceptionJsonRequestHandler;
-use Kuick\Http\Server\ExceptionRequestHandlerInterface;
-
-use function DI\autowire;
 use function DI\env;
 
 return [
@@ -21,7 +17,7 @@ return [
     'kuick.app.timezone'  => env('KUICK_APP_TIMEZONE', 'UTC'),
 
     'kuick.app.monolog.usemicroseconds' => env('KUICK_APP_MONOLOG_USEMICROSECONDS', false),
-    'kuick.app.monolog.level' => env('KUICK_APP_MONOLOG_LEVEL', 'NOTICE'),
+    'kuick.app.monolog.level' => env('KUICK_APP_MONOLOG_LEVEL', 'WARNING'),
     'kuick.app.monolog.handlers' => [
         [
             'type' => 'fingersCrossed',
@@ -30,7 +26,4 @@ return [
 
     // there is no valid token by default, you should provide one through environment variables
     'kuick.ops.guard.token' => env('KUICK_OPS_GUARD_TOKEN', ''),
-
-    // Kuick Request Handler needs a Throwable handler (choose Json or Html, or provide your own)
-    ExceptionRequestHandlerInterface::class => autowire(ExceptionJsonRequestHandler::class),
 ];

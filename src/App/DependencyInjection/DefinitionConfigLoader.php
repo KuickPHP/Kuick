@@ -4,7 +4,7 @@
  * Kuick Framework (https://github.com/milejko/kuick)
  *
  * @link       https://github.com/milejko/kuick
- * @copyright  Copyright (c) 2010-2024 Mariusz Miłejko (mariusz@milejko.pl)
+ * @copyright  Copyright (c) 2010-2025 Mariusz Miłejko (mariusz@milejko.pl)
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
@@ -30,10 +30,22 @@ class DefinitionConfigLoader
     }
 
     public function __invoke(string $projectDir, string $env): void
-    {
+    {        
         $this->builder->addDefinitions([
             Kernel::DI_APP_ENV_KEY => $env,
             Kernel::DI_PROJECT_DIR_KEY => $projectDir,
+            'kuick.app.name' => 'Kuick App',
+            'kuick.app.charset' => 'UTF-8',
+            'kuick.app.locale' => 'en_US.utf-8',
+            'kuick.app.timezone' => 'UTC',
+            'kuick.app.monolog.usemicroseconds' => false,
+            'kuick.app.monolog.level' => 'INFO',
+            'kuick.app.monolog.handlers' => [
+                [
+                    'type' => 'fingersCrossed',
+                ],
+            ],
+            'kuick.ops.guard.token' => '',
         ]);
         //adding global definition files
         foreach (self::DEFINITION_LOCATIONS as $definitionsLocation) {

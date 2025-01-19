@@ -4,7 +4,7 @@
  * Kuick Framework (https://github.com/milejko/kuick)
  *
  * @link       https://github.com/milejko/kuick
- * @copyright  Copyright (c) 2010-2024 Mariusz Miłejko (mariusz@milejko.pl)
+ * @copyright  Copyright (c) 2010-2025 Mariusz Miłejko (mariusz@milejko.pl)
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
@@ -26,7 +26,14 @@ class Guard
     public function __construct(
         public readonly string $path,
         public readonly string $guardClassName,
-        public readonly array $methods = [self::METHOD_GET],
+        public readonly array $methods = [
+            self::METHOD_GET,
+            self::METHOD_OPTIONS,
+            self::METHOD_POST,
+            self::METHOD_PUT,
+            self::METHOD_PATCH,
+            self::METHOD_DELETE,
+        ],
     ) {
         // validate guard
         new GuardValidator($this);
