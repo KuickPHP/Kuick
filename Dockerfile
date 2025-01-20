@@ -21,7 +21,7 @@ COPY --link etc/apache2 /etc/apache2
 COPY --link bin bin
 COPY --link public public
 # example distribution files
-COPY --link example/composer.json composer.json
+COPY --link distribution/composer.json composer.json
 COPY --link config config
 COPY --link version.* public/
 
