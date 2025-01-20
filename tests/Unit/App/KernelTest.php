@@ -18,7 +18,7 @@ class Kernelest extends TestCase
     public static function setUpBeforeClass(): void
     {
         self::$projectDir = realpath(dirname(__DIR__) . '/../Mocks/project-dir');
-        //(new Filesystem())->remove(self::$projectDir . '/var');
+        (new Filesystem())->remove(self::$projectDir . '/var/cache');
     }
 
     /**

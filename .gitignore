@@ -7,5 +7,5 @@ composer.lock
 /var
 version.*
 /.env.local
-/tests/Mocks/MockProjectDir/var*
 clover.xml
+/tests/Mocks/project-dir/var*
