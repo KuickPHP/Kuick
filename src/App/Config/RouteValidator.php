@@ -37,7 +37,7 @@ class RouteValidator
             //test against empty string
             preg_match(sprintf(self::MATCH_PATTERN, $routeConfig->path), '');
         } catch (Throwable $error) {
-            throw new ConfigException('Route path invalid: ' . $routeConfig->path . ', ' . $error->getMessage());
+            throw new ConfigException('Route path should be a valid regex pattern: ' . $routeConfig->path);
         }
     }
 
@@ -54,7 +54,7 @@ class RouteValidator
                 RequestInterface::METHOD_DELETE,
                 ])
             ) {
-                throw new ConfigException('Route method: ' . $method . ' invalid, path: ' . $routeConfig->path);
+                throw new ConfigException('Route method: ' . $method . ' is invalid, path: ' . $routeConfig->path);
             }
         }
     }

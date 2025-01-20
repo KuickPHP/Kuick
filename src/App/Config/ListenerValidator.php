@@ -29,11 +29,11 @@ class ListenerValidator
         }
         //inexistent class
         if (!class_exists($listenerConfig->listenerClassName)) {
-            throw new ConfigException('Listener class name: "' . $listenerConfig->listenerClassName . '" does not exist');
+            throw new ConfigException('Listener class: "' . $listenerConfig->listenerClassName . '" does not exist');
         }
         //inexistent __invoke() method
         if (!method_exists($listenerConfig->listenerClassName, '__invoke')) {
-            throw new ConfigException('Listener class name "' . $listenerConfig->listenerClassName . '" is not invokable');
+            throw new ConfigException('Listener class: "' . $listenerConfig->listenerClassName . '" is not invokable');
         }
     }
 
