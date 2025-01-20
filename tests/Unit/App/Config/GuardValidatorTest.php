@@ -23,7 +23,7 @@ class GuardValidatorTest extends TestCase
     public function testIfEmptyPathRaisesException(): void
     {
         $this->expectException(ConfigException::class);
-        $this->expectExceptionMessage('Guard path can not be empty');
+        $this->expectExceptionMessage('Guard path should not be empty');
         new GuardValidator(new GuardConfig('', MockGuard::class));
     }
 
@@ -37,7 +37,7 @@ class GuardValidatorTest extends TestCase
     public function testIfEmptyGuardClassNameRaisesException(): void
     {
         $this->expectException(ConfigException::class);
-        $this->expectExceptionMessage('Guard controller class name should not be empty, path: /test');
+        $this->expectExceptionMessage('Guard class name should not be empty, path: /test');
         new GuardValidator(new GuardConfig('/test', ''));
     }
 

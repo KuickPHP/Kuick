@@ -11,7 +11,7 @@
 namespace Kuick\App;
 
 use Kuick\App\DependencyInjection\ContainerCreator;
-use Kuick\App\Events\KernelCreated;
+use Kuick\App\Events\KernelCreatedEvent;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
@@ -34,7 +34,7 @@ class Kernel implements KernelInterface
         foreach ($this->container->get(self::DI_LISTENERS_KEY) as $listener) {
             $listenerProvider->registerListener($listener->pattern, $this->container->get($listener->listenerClassName), $listener->priority);
         }
-        $this->eventDispatcher->dispatch(new KernelCreated($this));
+        $this->eventDispatcher->dispatch(new KernelCreatedEvent($this));
     }
 
     public function getContainer(): ContainerInterface

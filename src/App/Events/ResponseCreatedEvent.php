@@ -12,7 +12,7 @@ namespace Kuick\App\Events;
 
 use Psr\Http\Message\ResponseInterface;
 
-final class ResponseCreated
+final class ResponseCreatedEvent
 {
     public function __construct(private ResponseInterface $response)
     {

@@ -10,12 +10,12 @@
 
 namespace Kuick\App\Listeners;
 
-use Kuick\App\Events\ResponseCreated;
+use Kuick\App\Events\ResponseCreatedEvent;
 use Kuick\Http\Server\ResponseEmitter;
 
 final class ResponseEmittingListener
 {
-    public function __invoke(ResponseCreated $event): void
+    public function __invoke(ResponseCreatedEvent $event): void
     {
         // emmit response
         (new ResponseEmitter())($event->getResponse());

@@ -9,10 +9,10 @@
  */
 
 use Kuick\App\Config\ListenerConfig;
-use Kuick\App\Events\CommandReceived;
-use Kuick\App\Events\KernelCreated;
-use Kuick\App\Events\RequestReceived;
-use Kuick\App\Events\ResponseCreated;
+use Kuick\App\Events\CommandReceivedEvent;
+use Kuick\App\Events\KernelCreatedEvent;
+use Kuick\App\Events\RequestReceivedEvent;
+use Kuick\App\Events\ResponseCreatedEvent;
 use Kuick\App\Listeners\CommandLaunchingListener;
 use Kuick\App\Listeners\EventLoggingListener;
 use Kuick\App\Listeners\LocalizingListener;
@@ -24,11 +24,11 @@ return [
     // logging all the events
     new ListenerConfig('*', EventLoggingListener::class, ListenerPriority::HIGH),
     // setup locale after kernel is created
-    new ListenerConfig(KernelCreated::class, LocalizingListener::class),
+    new ListenerConfig(KernelCreatedEvent::class, LocalizingListener::class),
     // handle request when received
-    new ListenerConfig(RequestReceived::class, RequestHandlingListener::class),
+    new ListenerConfig(RequestReceivedEvent::class, RequestHandlingListener::class),
     // emitt response when created
-    new ListenerConfig(ResponseCreated::class, ResponseEmittingListener::class),
+    new ListenerConfig(ResponseCreatedEvent::class, ResponseEmittingListener::class),
     // execute command when received
-    new ListenerConfig(CommandReceived::class, CommandLaunchingListener::class),
+    new ListenerConfig(CommandReceivedEvent::class, CommandLaunchingListener::class),
 ];

@@ -8,7 +8,7 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-use Kuick\App\Events\RequestReceived;
+use Kuick\App\Events\RequestReceivedEvent;
 use Kuick\App\Kernel;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7Server\ServerRequestCreator;
@@ -29,4 +29,4 @@ $request = (new ServerRequestCreator(
     $psr17Factory, // StreamFactory
 ))->fromGlobals();
 
-(new Kernel($projectDir))->getEventDispatcher()->dispatch(new RequestReceived($request));
+(new Kernel($projectDir))->getEventDispatcher()->dispatch(new RequestReceivedEvent($request));

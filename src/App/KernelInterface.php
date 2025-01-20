@@ -21,6 +21,7 @@ interface KernelInterface
     public const APP_ENV = 'KUICK_APP_ENV';
 
     public const DI_APP_ENV_KEY = 'kuick.app.env';
+    public const DI_APP_NAME_KEY = 'kuick.app.name';
     public const DI_PROJECT_DIR_KEY = 'kuick.app.projectDir';
     public const DI_LISTENERS_KEY = 'kuick.app.listeners';
 

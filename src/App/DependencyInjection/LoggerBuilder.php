@@ -13,6 +13,7 @@ namespace Kuick\App\DependencyInjection;
 use DateTimeZone;
 use DI\ContainerBuilder;
 use Kuick\App\AppException;
+use Kuick\App\KernelInterface;
 use Monolog\Handler\FingersCrossedHandler;
 use Monolog\Handler\FirePHPHandler;
 use Monolog\Handler\StreamHandler;
@@ -33,7 +34,7 @@ class LoggerBuilder
     public function __invoke(): void
     {
         $this->builder->addDefinitions([LoggerInterface::class => function (ContainerInterface $container): LoggerInterface {
-            $logger = new Logger($container->get('kuick.app.name'));
+            $logger = new Logger($container->get(KernelInterface::DI_APP_NAME_KEY));
             $logger->useMicrosecondTimestamps((bool) $container->get('kuick.app.monolog.usemicroseconds'));
             $logger->setTimezone(new DateTimeZone($container->get('kuick.app.timezone')));
             $handlers = $container->get('kuick.app.monolog.handlers');

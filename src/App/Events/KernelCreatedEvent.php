@@ -10,16 +10,16 @@
 
 namespace Kuick\App\Events;
 
-use Psr\Http\Message\ServerRequestInterface;
+use Kuick\App\Kernel;
 
-final class RequestReceived
+class KernelCreatedEvent
 {
-    public function __construct(private ServerRequestInterface $request)
+    public function __construct(private Kernel $kernel)
     {
     }
 
-    public function getRequest(): ServerRequestInterface
+    public function getKernel(): Kernel
     {
-        return $this->request;
+        return $this->kernel;
     }
 }

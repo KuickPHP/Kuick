@@ -19,9 +19,7 @@ return [
     'kuick.app.monolog.usemicroseconds' => env('KUICK_APP_MONOLOG_USEMICROSECONDS', false),
     'kuick.app.monolog.level' => env('KUICK_APP_MONOLOG_LEVEL', 'WARNING'),
     'kuick.app.monolog.handlers' => [
-        [
-            'type' => 'fingersCrossed',
-        ],
+        ['type' => 'fingersCrossed'],
     ],
 
     // there is no valid token by default, you should provide one through environment variables

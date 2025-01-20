@@ -11,7 +11,7 @@
 namespace Kuick\App\DependencyInjection;
 
 use DI\ContainerBuilder;
-use Kuick\App\Kernel;
+use Kuick\App\KernelInterface;
 
 /**
  *
@@ -29,9 +29,9 @@ class DefinitionConfigLoader
     {
         //adding default definitions
         $this->builder->addDefinitions([
-            Kernel::DI_APP_ENV_KEY => $env,
-            Kernel::DI_PROJECT_DIR_KEY => $projectDir,
-            'kuick.app.name' => 'Kuick App',
+            KernelInterface::DI_APP_ENV_KEY => $env,
+            KernelInterface::DI_PROJECT_DIR_KEY => $projectDir,
+            KernelInterface::DI_APP_NAME_KEY => 'Kuick App',
             'kuick.app.charset' => 'UTF-8',
             'kuick.app.locale' => 'en_US.utf-8',
             'kuick.app.timezone' => 'UTC',

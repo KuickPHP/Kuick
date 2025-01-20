@@ -10,8 +10,8 @@
 
 namespace Kuick\App\Listeners;
 
-use Kuick\App\Events\RequestReceived;
-use Kuick\App\Events\ResponseCreated;
+use Kuick\App\Events\RequestReceivedEvent;
+use Kuick\App\Events\ResponseCreatedEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
@@ -23,9 +23,9 @@ final class RequestHandlingListener
     ) {
     }
 
-    public function __invoke(RequestReceived $event): void
+    public function __invoke(RequestReceivedEvent $requestReceivedEvent): void
     {
-        $response = $this->requestHandler->handle($event->getRequest());
-        $this->eventDispatcher->dispatch(new ResponseCreated($response));
+        $response = $this->requestHandler->handle($requestReceivedEvent->getRequest());
+        $this->eventDispatcher->dispatch(new ResponseCreatedEvent($response));
     }
 }

@@ -12,20 +12,20 @@ namespace Kuick\App\Listeners;
 
 use FilesystemIterator;
 use GlobIterator;
-use Kuick\App\Events\CommandReceived;
+use Kuick\App\Events\CommandReceivedEvent;
+use Kuick\App\KernelInterface;
 use Symfony\Component\Console\Application;
 
 final class CommandLaunchingListener
 {
-    private const APP_NAME_KEY = 'kuick.app.name';
     private const COMMAND_PATH_PATTERN = '/config/*.commands.php';
 
-    public function __invoke(CommandReceived $commandArriver): void
+    public function __invoke(CommandReceivedEvent $commandReceivedEvent): void
     {
-        $kernel = $commandArriver->getKernel();
+        $kernel = $commandReceivedEvent->getKernel();
         $container = $kernel->getContainer();
         //create a new application
-        $application = new Application($container->get(self::APP_NAME_KEY));
+        $application = new Application($container->get(KernelInterface::DI_APP_NAME_KEY));
         //adding commands
         foreach (new GlobIterator($kernel->projectDir . self::COMMAND_PATH_PATTERN, FilesystemIterator::KEY_AS_FILENAME) as $commandFile) {
             foreach (include $commandFile as $commandClass) {
