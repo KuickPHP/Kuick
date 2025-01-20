@@ -29,7 +29,7 @@ class GuardValidator
     {
         //path is not a string
         if (empty($guardConfig->path)) {
-            throw new ConfigException('Guard path can not be empty');
+            throw new ConfigException('Guard path should not be empty');
         }
         //try {
             //@TODO: test path against the regex pattern
@@ -63,7 +63,7 @@ class GuardValidator
     {
         //action not defined
         if (empty($guardConfig->guardClassName)) {
-            throw new ConfigException('Guard controller class name should not be empty, path: ' . $guardConfig->path);
+            throw new ConfigException('Guard class name should not be empty, path: ' . $guardConfig->path);
         }
         //inexistent class
         if (!class_exists($guardConfig->guardClassName)) {

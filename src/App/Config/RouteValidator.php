@@ -31,7 +31,7 @@ class RouteValidator
     {
         //path is not a string
         if (empty($routeConfig->path)) {
-            throw new ConfigException('Route path is empty');
+            throw new ConfigException('Route path should not be empty');
         }
         try {
             //test against empty string
@@ -54,7 +54,7 @@ class RouteValidator
                 RequestInterface::METHOD_DELETE,
                 ])
             ) {
-                throw new ConfigException('Route method invalid, path: ' . $routeConfig->path);
+                throw new ConfigException('Route method: ' . $method . ' invalid, path: ' . $routeConfig->path);
             }
         }
     }
@@ -63,15 +63,15 @@ class RouteValidator
     {
         //action not defined
         if (empty($routeConfig->controllerClassName)) {
-            throw new ConfigException('Route is missing controller class name, path: ' . $routeConfig->path);
+            throw new ConfigException('Route controller class name should not be empty, path: ' . $routeConfig->path);
         }
         //inexistent class
         if (!class_exists($routeConfig->controllerClassName)) {
-            throw new ConfigException('Route controller: ' . $routeConfig->controllerClassName . '" does not exist, path: ' . $routeConfig->path);
+            throw new ConfigException('Route controller class: "' . $routeConfig->controllerClassName . '" does not exist, path: ' . $routeConfig->path);
         }
         //inexistent __invoke() method
         if (!method_exists($routeConfig->controllerClassName, '__invoke')) {
-            throw new ConfigException('Route controller: ' . $routeConfig->controllerClassName . '" is not invokable, path: ' . $routeConfig->path);
+            throw new ConfigException('Route controller class: "' . $routeConfig->controllerClassName . '" is not invokable, path: ' . $routeConfig->path);
         }
         //@TODO: validate __invoke() method parameters
     }

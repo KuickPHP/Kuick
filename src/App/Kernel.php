@@ -32,7 +32,7 @@ class Kernel implements KernelInterface
         $listenerProvider = $this->container->get(ListenerProviderInterface::class);
         //registering listeners "on the fly", as they can be dependent on the EventDispatcher
         foreach ($this->container->get(self::DI_LISTENERS_KEY) as $listener) {
-            $listenerProvider->registerListener($listener->pattern, $this->container->get($listener->callable), $listener->priority);
+            $listenerProvider->registerListener($listener->pattern, $this->container->get($listener->listenerClassName), $listener->priority);
         }
         $this->eventDispatcher->dispatch(new KernelCreated($this));
     }

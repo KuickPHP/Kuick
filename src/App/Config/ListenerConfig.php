@@ -16,7 +16,7 @@ class ListenerConfig
 {
     public function __construct(
         public readonly string $pattern,
-        public readonly string $callable,
+        public readonly string $listenerClassName,
         public readonly int $priority = ListenerPriority::NORMAL,
     ) {
         new ListenerValidator($this);

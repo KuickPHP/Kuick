@@ -24,16 +24,16 @@ class ListenerValidator
     private function validateCallable(ListenerConfig $listenerConfig): void
     {
         //callable empty
-        if (empty($listenerConfig->callable)) {
-            throw new ConfigException('Listener callable is empty');
+        if (empty($listenerConfig->listenerClassName)) {
+            throw new ConfigException('Listener class name should not be empty');
         }
         //inexistent class
-        if (!class_exists($listenerConfig->callable)) {
-            throw new ConfigException('Callable: ' . $listenerConfig->callable . '" does not exist');
+        if (!class_exists($listenerConfig->listenerClassName)) {
+            throw new ConfigException('Listener class name: "' . $listenerConfig->listenerClassName . '" does not exist');
         }
         //inexistent __invoke() method
-        if (!method_exists($listenerConfig->callable, '__invoke')) {
-            throw new ConfigException('Callable ' . $listenerConfig->callable . ' is not invokable');
+        if (!method_exists($listenerConfig->listenerClassName, '__invoke')) {
+            throw new ConfigException('Listener class name "' . $listenerConfig->listenerClassName . '" is not invokable');
         }
     }
 
@@ -41,7 +41,7 @@ class ListenerValidator
     {
         //pattern is not a string
         if (empty($listenerConfig->pattern)) {
-            throw new ConfigException('Listener pattern is empty');
+            throw new ConfigException('Listener pattern should not be empty');
         }
     }
 }
