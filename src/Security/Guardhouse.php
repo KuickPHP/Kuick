@@ -20,11 +20,22 @@ class Guardhouse
 
     private array $guards = [];
 
-    public function __construct(private LoggerInterface $logger) {
+    public function __construct(private LoggerInterface $logger)
+    {
     }
 
-    public function addGuard(string $path, callable $guard, array $methods = [RequestInterface::METHOD_GET]): self
-    {
+    public function addGuard(
+        string $path,
+        callable $guard,
+        array $methods = [
+            RequestInterface::METHOD_GET,
+            RequestInterface::METHOD_POST,
+            RequestInterface::METHOD_PUT,
+            RequestInterface::METHOD_PATCH,
+            RequestInterface::METHOD_DELETE,
+            RequestInterface::METHOD_OPTIONS,
+        ]
+    ): self {
         $this->guards[] = new ExecutableGuard($path, $guard, $methods);
         return $this;
     }
@@ -46,30 +57,17 @@ class Guardhouse
             $guardMethods = in_array(RequestInterface::METHOD_GET, $guard->methods) ? array_merge([RequestInterface::METHOD_HEAD, $guard->methods], $guard->methods) : $guard->methods;
             $this->logger->debug('Trying guard: ' . $guard->path);
             //matching path
-            $results = [];
-            $matchResult = preg_match(sprintf(self::MATCH_PATTERN, $guard->path), $requestPath, $results);
+            $pathParams = [];
+            $matchResult = preg_match(sprintf(self::MATCH_PATTERN, $guard->path), $requestPath, $pathParams);
             if (!$matchResult) {
                 continue;
             }
             //matching method
             if (in_array($requestMethod, $guardMethods)) {
                 $this->logger->debug('Matched guard: ' . $guard->path . ' ' . $guard->path);
-                $matchedGuards[] = $guard->addParams($this->parseGuardParams($results));
+                $matchedGuards[] = $guard->setParams($pathParams);
             }
         }
         return $matchedGuards;
-    }
-
-    private function parseGuardParams(array $results): array
-    {
-        $params = [];
-        foreach ($results as $key => $value) {
-            //not a named param
-            if (is_int($key)) {
-                continue;
-            }
-            $params[$key] = $value;
-        }
-        return $params;
     }
 }

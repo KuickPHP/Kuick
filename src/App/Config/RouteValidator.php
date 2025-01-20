@@ -45,13 +45,15 @@ class RouteValidator
     {
         //limited to standard HTTP methods except HEAD and OPTIONS
         foreach ($routeConfig->methods as $method) {
-            if (!in_array($method, [
+            if (
+                !in_array($method, [
                 RequestInterface::METHOD_GET,
                 RequestInterface::METHOD_POST,
                 RequestInterface::METHOD_PUT,
                 RequestInterface::METHOD_PATCH,
                 RequestInterface::METHOD_DELETE,
-            ])) {
+                ])
+            ) {
                 throw new ConfigException('Route method invalid, path: ' . $routeConfig->path);
             }
         }
@@ -71,5 +73,6 @@ class RouteValidator
         if (!method_exists($routeConfig->controllerClassName, '__invoke')) {
             throw new ConfigException('Route controller: ' . $routeConfig->controllerClassName . '" is not invokable, path: ' . $routeConfig->path);
         }
+        //@TODO: validate __invoke() method parameters
     }
 }

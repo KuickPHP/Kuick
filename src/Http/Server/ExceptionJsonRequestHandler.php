@@ -34,55 +34,49 @@ class ExceptionJsonRequestHandler implements ExceptionRequestHandlerInterface
         Response::HTTP_NOT_IMPLEMENTED => LogLevel::WARNING,
     ];
 
-    private Exception $Exception;
+    private Exception $exception;
 
-    public function __construct(
-        private LoggerInterface $logger
-    )
+    public function __construct(private LoggerInterface $logger)
     {
+        $this->exception = new Exception('Internal Server Error');
     }
 
-    public function setException(Exception $Exception): self
+    public function setException(Exception $exception): self
     {
-        $this->Exception = $Exception;
+        $this->exception = $exception;
         return $this;
-    }
-
-    public function getException(): Exception
-    {
-        return $this->Exception;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $logLevel = self::EXCEPTION_CODE_LOG_LEVEL_MAP[$this->Exception->getCode()] ?? LogLevel::ERROR;
+        $logLevel = self::EXCEPTION_CODE_LOG_LEVEL_MAP[$this->exception->getCode()] ?? LogLevel::ERROR;
         $this->logger->log(
-            $logLevel, 
+            $logLevel,
             $this->getResponseCode() >= Response::HTTP_INTERNAL_SERVER_ERROR ?
-                $this->getExceptionDetailedInformation() :
-                $this->getExceptionMessage()
+                $this->getExceptionDetailedInformation($request) :
+                $this->getExceptionMessage($request)
         );
-        return new JsonResponse(['error' => $this->Exception->getMessage()], $this->getResponseCode());
+        return new JsonResponse(['error' => $this->exception->getMessage()], $this->getResponseCode());
     }
 
-    private function getExceptionMessage(): string
+    private function getExceptionMessage(ServerRequestInterface $request): string
     {
-        return $this->Exception->getMessage();
+        return $this->exception->getMessage() . ' [' . $request->getUri() . ']';
     }
 
-    private function getExceptionDetailedInformation(): string
+    private function getExceptionDetailedInformation(ServerRequestInterface $request): string
     {
-        return $this->getExceptionMessage() . ' ' . $this->Exception->getFile() . ' (' . $this->Exception->getLine() . ') ' . $this->Exception->getTraceAsString();
+        return $this->getExceptionMessage($request) . ' ' .
+            $this->exception->getFile() .
+            ' (' . $this->exception->getLine() . ') ' .
+            $this->exception->getTraceAsString();
     }
 
     private function getResponseCode(): int
     {
-        if (!is_int($this->Exception->getCode())) {
+        if ($this->exception->getCode() < Response::HTTP_BAD_REQUEST || $this->exception->getCode() > Response::HTTP_GATEWAY_TIMEOUT) {
             return Response::HTTP_INTERNAL_SERVER_ERROR;
         }
-        if ($this->Exception->getCode() < Response::HTTP_BAD_REQUEST || $this->Exception->getCode() > Response::HTTP_GATEWAY_TIMEOUT) {
-            return Response::HTTP_INTERNAL_SERVER_ERROR;
-        }
-        return $this->Exception->getCode();
+        return $this->exception->getCode();
     }
 }

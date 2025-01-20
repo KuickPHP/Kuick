@@ -18,9 +18,7 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class ExecutableGuard
 {
-    private const REQUEST_PARAMETER_NAME = 'request';
-
-    private array $params;
+    private array $params = [];
 
     public function __construct(
         public readonly string $path,
@@ -36,7 +34,7 @@ class ExecutableGuard
     ) {
     }
 
-    public function addParams(array $params = []): self
+    public function setParams(array $params = []): self
     {
         $this->params = $params;
         return $this;
@@ -45,9 +43,6 @@ class ExecutableGuard
     public function execute(ServerRequestInterface $request): void
     {
         // adding guard parameters to the request query params
-        call_user_func_array(
-            $this->guard, 
-            [self::REQUEST_PARAMETER_NAME => $request->withQueryParams($this->params)]
-        );
+        $this->guard->__invoke($request->withQueryParams($this->params));
     }
 }

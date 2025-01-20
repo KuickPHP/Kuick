@@ -10,12 +10,12 @@
 
 namespace Kuick\Http\Message;
 
-use Psr\Http\Message\RequestInterface as MessageRequestInterface;
+use Psr\Http\Message\RequestInterface as PsrRequestInterface;
 
 /**
  * Request interface (currently constants container)
  */
-interface RequestInterface extends MessageRequestInterface
+interface RequestInterface extends PsrRequestInterface
 {
     public const METHOD_HEAD = 'HEAD';
     public const METHOD_GET = 'GET';
@@ -26,5 +26,5 @@ interface RequestInterface extends MessageRequestInterface
     public const METHOD_PURGE = 'PURGE';
     public const METHOD_OPTIONS = 'OPTIONS';
     public const METHOD_TRACE = 'TRACE';
-    public const METHOD_CONNECT = 'CONNECT';    
+    public const METHOD_CONNECT = 'CONNECT';
 }

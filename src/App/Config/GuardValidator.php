@@ -29,29 +29,31 @@ class GuardValidator
     {
         //path is not a string
         if (empty($guardConfig->path)) {
-            throw new ConfigException('Guard path is empty');
+            throw new ConfigException('Guard path can not be empty');
         }
-        try {
+        //try {
             //@TODO: test path against the regex pattern
             //test against empty string
             //preg_match(sprintf(Router::MATCH_PATTERN, $route->path), '');
-        } catch (Throwable $error) {
+        //} catch (Throwable $error) {
             //throw new RouterException('Route path invalid: ' . $route->path . ', ' . $error->getMessage());
-        }
+        //}
     }
 
     private function validateMethods(GuardConfig $guardConfig): void
     {
         foreach ($guardConfig->methods as $method) {
             //method not a standard HTTP method
-            if (!in_array($method, [
+            if (
+                !in_array($method, [
                 RequestInterface::METHOD_GET,
                 RequestInterface::METHOD_OPTIONS,
                 RequestInterface::METHOD_POST,
                 RequestInterface::METHOD_PUT,
                 RequestInterface::METHOD_PATCH,
                 RequestInterface::METHOD_DELETE,
-            ])) {
+                ])
+            ) {
                 throw new ConfigException('Guard method invalid, path: ' . $guardConfig->path . ', method: ' . $method);
             }
         }
@@ -61,15 +63,15 @@ class GuardValidator
     {
         //action not defined
         if (empty($guardConfig->guardClassName)) {
-            throw new ConfigException('Guard is missing controller class name, path: ' . $guardConfig->path);
+            throw new ConfigException('Guard controller class name should not be empty, path: ' . $guardConfig->path);
         }
         //inexistent class
         if (!class_exists($guardConfig->guardClassName)) {
-            throw new ConfigException('Guard class: ' . $guardConfig->guardClassName . '" does not exist, path: ' . $guardConfig->path);
+            throw new ConfigException('Guard class: "' . $guardConfig->guardClassName . '" does not exist, path: ' . $guardConfig->path);
         }
         //inexistent __invoke() method
         if (!method_exists($guardConfig->guardClassName, '__invoke')) {
-            throw new ConfigException('Guard class: ' . $guardConfig->guardClassName . '" is not invokable, path: ' . $guardConfig->path);
+            throw new ConfigException('Guard class: "' . $guardConfig->guardClassName . '" is not invokable, path: ' . $guardConfig->path);
         }
         //@TODO: validate __invoke() method parameters
     }

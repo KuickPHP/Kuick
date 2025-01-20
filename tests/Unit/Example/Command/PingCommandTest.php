@@ -7,8 +7,6 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
-use function PHPUnit\Framework\assertEquals;
-
 /**
  * @covers \Kuick\Example\Console\PingCommand
  */
@@ -23,6 +21,6 @@ class PingCommandTest extends TestCase
             './bin/console',
             'hello',
         ]), $output);
-        assertEquals("Kuick says: Hello hello!\n", $output->fetch());
+        $this->assertEquals("Kuick says: Hello hello!\n", $output->fetch());
     }
 }

@@ -25,9 +25,8 @@ class RequestHandler implements RequestHandlerInterface
     private array $middlewares = [];
 
     public function __construct(
-        private ExceptionRequestHandlerInterface $exceptionRequestHandler,
-    )
-    {
+        private ExceptionRequestHandlerInterface $exceptionHandler,
+    ) {
     }
 
     public function addMiddleware(MiddlewareInterface $middleware): self
@@ -46,7 +45,7 @@ class RequestHandler implements RequestHandlerInterface
             $middleware = array_shift($this->middlewares);
             return $middleware->process($request, $this);
         } catch (Exception $throwable) {
-            return $this->exceptionRequestHandler
+            return $this->exceptionHandler
                 ->setException($throwable)
                 ->handle($request);
         }

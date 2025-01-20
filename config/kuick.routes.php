@@ -10,8 +10,8 @@
 
 use Kuick\App\Config\RouteConfig;
 use Kuick\Example\UI\PingController;
-use Kuick\Ops\UI\DocHtmlController;
-use Kuick\Ops\UI\DocJsonController;
+use Kuick\Doc\UI\DocHtmlController;
+use Kuick\Doc\UI\DocJsonController;
 use Kuick\Ops\UI\OpsController;
 
 return [

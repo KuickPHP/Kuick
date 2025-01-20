@@ -28,8 +28,7 @@ class MiddlewareConfigLoader
     public function __construct(
         private SystemCacheInterface $cache,
         private LoggerInterface $logger
-    )
-    {
+    ) {
     }
 
     public function __invoke(string $projectDir): array

@@ -14,15 +14,16 @@ use Psr\Http\Server\MiddlewareInterface;
 
 class MiddlewareValidator
 {
-    public function __construct(MiddlewareConfig $middlewareConfigConfig) {
-        if (!class_exists($middlewareConfigConfig->middleware)) {
-            throw new ConfigException('Middleware "' . $middlewareConfigConfig->middleware . '" does not exist.');
+    public function __construct(MiddlewareConfig $middlewareConfig)
+    {
+        if (!class_exists($middlewareConfig->middleware)) {
+            throw new ConfigException('Middleware "' . $middlewareConfig->middleware . '" does not exist.');
         }
-        foreach (class_implements($middlewareConfigConfig->middleware) as $interface) {
+        foreach (class_implements($middlewareConfig->middleware) as $interface) {
             if ($interface === MiddlewareInterface::class) {
                 return;
             }
         }
-        throw new ConfigException('Middleware "' . $middlewareConfigConfig->middleware . '" must implement MiddlewareInterface.');
+        throw new ConfigException('Middleware "' . $middlewareConfig->middleware . '" must implement MiddlewareInterface.');
     }
 }

@@ -10,7 +10,7 @@
 
 use Kuick\App\Config\MiddlewareConfig;
 use Kuick\App\Config\MiddlewarePriority;
-use Kuick\Http\Server\OptionsSendingMiddleware;
+use Kuick\App\Middlewares\OptionsSendingMiddleware;
 use Kuick\Routing\RoutingMiddleware;
 use Kuick\Security\SecurityMiddleware;
 

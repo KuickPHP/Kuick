@@ -11,8 +11,6 @@
 namespace Kuick\Routing;
 
 use Kuick\Http\Message\RequestInterface;
-use Kuick\Http\MethodNotAllowedException;
-use Kuick\Http\NotFoundException;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 
@@ -29,6 +27,9 @@ class Router
     {
     }
 
+    /**
+     * @TODO: add support for inline callables
+     */
     public function addRoute(string $path, callable $controller, array $methods = [RequestInterface::METHOD_GET]): self
     {
         $this->routes[] = new ExecutableRoute($path, $controller, $methods);
@@ -36,10 +37,9 @@ class Router
     }
 
     /**
-     * @throws NotFoundException
-     * @throws MethodNotAllowedException
+     * @throws MethodMismatchedException
      */
-    public function matchRoute(ServerRequestInterface $request): ExecutableRoute
+    public function matchRoute(ServerRequestInterface $request): ?ExecutableRoute
     {
         $requestMethod = $request->getMethod();
         $mismatchedMethod = null;
@@ -53,36 +53,22 @@ class Router
             $routeMethods = in_array(RequestInterface::METHOD_GET, $route->methods) ? array_merge([RequestInterface::METHOD_HEAD, $route->methods], $route->methods) : $route->methods;
             $this->logger->debug('Trying route: ' . $route->path);
             //matching path
-            $results = [];
-            $matchResult = preg_match(sprintf(self::MATCH_PATTERN, $route->path), $requestPath, $results);
+            $pathParams = [];
+            $matchResult = preg_match(sprintf(self::MATCH_PATTERN, $route->path), $requestPath, $pathParams);
             if (!$matchResult) {
                 continue;
             }
             //matching method
             if (in_array($requestMethod, $routeMethods)) {
                 $this->logger->debug('Matched route: ' . $route->path . ' ' . $route->path);
-                return $route->addParams($this->parseRouteParams($results));
+                return $route->setParams($pathParams);
             }
             // method mismatch
-            $this->logger->debug('Method mismatch, but action matching path: ' . $route->path);
             $mismatchedMethod = $route;
         }
         if (null !== $mismatchedMethod) {
-            throw new MethodNotAllowedException($requestMethod . ' method is not allowed for path: ' . $mismatchedMethod->path);
+            throw new MethodMismatchedException('Method not allowed: ' . $requestMethod . ' for path: ' . $mismatchedMethod->path);
         }
-        throw new NotFoundException('Not found');
-    }
-
-    private function parseRouteParams(array $results): array
-    {
-        $params = [];
-        foreach ($results as $key => $value) {
-            //not a named param
-            if (is_int($key)) {
-                continue;
-            }
-            $params[$key] = $value;
-        }
-        return $params;
+        return null;
     }
 }

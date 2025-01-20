@@ -19,5 +19,4 @@ use Exception;
 interface ExceptionRequestHandlerInterface extends RequestHandlerInterface
 {
     public function setException(Exception $exception): self;
-    public function getException(): Exception;
 }

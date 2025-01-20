@@ -8,10 +8,10 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\Security;
+namespace Kuick\Routing;
 
 use Exception;
 
-class SecurityException extends Exception
+class MethodMismatchedException extends Exception
 {
 }

@@ -18,7 +18,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
 /**
- *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class ContainerCreator
 {
@@ -62,7 +62,7 @@ class ContainerCreator
         $builder = $this->configureBuilder($projectDir);
 
         // building application services
-        (new ServiceBuilder($builder))();
+        (new ServiceImplementationMapper($builder))();
 
         // loading definitions (can override the default service mappings)
         (new DefinitionConfigLoader($builder))($projectDir, $this->appEnv);
@@ -81,6 +81,9 @@ class ContainerCreator
 
         // creating guardhouse
         (new GuardhouseBuilder($builder))();
+
+        //performance optimization (direct autowires)
+        (new OptionalAutowires($builder))();
 
         return $builder->build();
     }

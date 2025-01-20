@@ -21,8 +21,7 @@ class SecurityMiddleware implements MiddlewareInterface
     public function __construct(
         private Guardhouse $guardhouse,
         private LoggerInterface $logger,
-    )
-    {
+    ) {
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -35,7 +34,7 @@ class SecurityMiddleware implements MiddlewareInterface
     private function executeGuards(ServerRequestInterface $request): void
     {
         // execute guards
-        foreach($this->guardhouse->matchGuards($request) as $executableGuard) {
+        foreach ($this->guardhouse->matchGuards($request) as $executableGuard) {
             $guardClass = get_class($executableGuard->guard);
             //this should throw an exception if guard fails
             $executableGuard->execute($request);
