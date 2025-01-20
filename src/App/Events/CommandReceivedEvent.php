@@ -12,7 +12,7 @@ namespace Kuick\App\Events;
 
 use Kuick\App\Kernel;
 
-final class CommandReceived
+final class CommandReceivedEvent
 {
     public function __construct(private Kernel $kernel)
     {
