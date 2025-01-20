@@ -61,5 +61,4 @@ class RouteValidatorTest extends TestCase
         $this->expectExceptionMessage('Route method: INVALID is invalid, path: /test');
         new RouteValidator(new RouteConfig('/test', MockRoute::class, ['INVALID']));
     }
-
 }
