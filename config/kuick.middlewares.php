@@ -8,17 +8,15 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-use Kuick\App\Config\MiddlewareConfig;
-use Kuick\App\Config\MiddlewarePriority;
 use Kuick\App\Middlewares\OptionsSendingMiddleware;
 use Kuick\Routing\RoutingMiddleware;
 use Kuick\Security\SecurityMiddleware;
 
 return [
     // default 204 for OPTIONS    
-    new MiddlewareConfig(OptionsSendingMiddleware::class, MiddlewarePriority::PRIORITY_HIGHEST),
+    OptionsSendingMiddleware::class,
     // security middleware
-    new MiddlewareConfig(SecurityMiddleware::class, MiddlewarePriority::PRIORITY_HIGHER),
+    SecurityMiddleware::class,
     // routing middleware
-    new MiddlewareConfig(RoutingMiddleware::class, MiddlewarePriority::PRIORITY_LOWEST),
+    RoutingMiddleware::class,
 ];

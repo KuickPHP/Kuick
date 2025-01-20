@@ -60,7 +60,7 @@ class Router
             }
             //matching method
             if (in_array($requestMethod, $routeMethods)) {
-                $this->logger->debug('Matched route: ' . $route->path . ' ' . $route->path);
+                $this->logger->debug('Matched route: ' . $requestMethod . ':' . $route->path);
                 return $route->setParams($pathParams);
             }
             // method mismatch

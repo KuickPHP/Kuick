@@ -13,8 +13,10 @@ namespace Kuick\App\DependencyInjection;
 use FilesystemIterator;
 use GlobIterator;
 use Kuick\App\AppException;
+use Kuick\App\Config\ConfigException;
 use Kuick\App\Config\MiddlewareConfig;
 use Kuick\App\SystemCacheInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -45,16 +47,20 @@ class MiddlewareConfigLoader
             $this->logger->info('Middleware file added: ' . $middlewareFile . ', containing: ' . count($includedMiddlewares) . ' middlewares');
             $middlewares = array_merge($middlewares, $includedMiddlewares);
         }
-        $orderedMiddlewares = [];
-        foreach ($middlewares as $middleware) {
-            if (!($middleware instanceof MiddlewareConfig)) {
-                throw new AppException('Middleware must be an instance of ' . MiddlewareConfig::class);
+        // check if middlewares are valid
+        foreach ($middlewares as $middlewareClassName) {
+            if (!is_string($middlewareClassName)) {
+                throw new ConfigException('Middleware must be a string');
             }
-            $orderedMiddlewares[$middleware->priority] = $middleware->middleware;
+            if (!class_exists($middlewareClassName)) {
+                throw new ConfigException('Middleware class does not exist: ' . $middlewareClassName);
+            }
+            if (!in_array(MiddlewareInterface::class, class_implements($middlewareClassName))) {
+                throw new ConfigException('Middleware must implement: ' . MiddlewareInterface::class);
+            }
         }
-        krsort($orderedMiddlewares);
-        $this->cache->set(self::CACHE_KEY, $orderedMiddlewares);
-        $this->logger->notice('Middlewares parsed (' . count($orderedMiddlewares) . '), cache written');
-        return $orderedMiddlewares;
+        $this->cache->set(self::CACHE_KEY, $middlewares);
+        $this->logger->notice('Middlewares parsed (' . count($middlewares) . '), cache written');
+        return $middlewares;
     }
 }

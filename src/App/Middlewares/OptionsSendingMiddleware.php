@@ -19,7 +19,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 /**
  * Options Sending Middleware
  */
-class OptionsSendingMiddleware implements MiddlewareInterface
+final class OptionsSendingMiddleware implements MiddlewareInterface
 {
     private const OPTIONS_METHOD = 'OPTIONS';
 

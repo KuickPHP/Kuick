@@ -19,15 +19,8 @@ use Psr\EventDispatcher\ListenerProviderInterface;
 /**
  * Application Kernel
  */
-class Kernel
+class Kernel implements KernelInterface
 {
-    public const APP_ENV = 'KUICK_APP_ENV';
-    public const DI_APP_ENV_KEY = 'kuick.app.env';
-    public const DI_PROJECT_DIR_KEY = 'kuick.app.projectDir';
-    public const DI_LISTENERS_KEY = 'kuick.app.listeners';
-    public const ENV_DEV = 'dev';
-    public const ENV_PROD = 'prod';
-
     private ContainerInterface $container;
     private EventDispatcherInterface $eventDispatcher;
 
