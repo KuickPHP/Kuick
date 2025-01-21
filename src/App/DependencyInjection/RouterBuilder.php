@@ -42,6 +42,7 @@ class RouterBuilder
                         throw new ConfigException('Route config must be an instance of' . RouteConfig::class);
                     }
                     $logger->info('Adding route: ' . $route->path);
+                    // @TODO: add support for inline callables
                     $router->addRoute($route->path, $container->get($route->controllerClassName), $route->methods);
                 }
             }

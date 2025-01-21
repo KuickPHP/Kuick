@@ -17,7 +17,7 @@ use Psr\Log\NullLogger;
  */
 class LoggerBuilderTest extends TestCase
 {
-    public function testBuildingRequestHandler(): void
+    public function testLoggerIsBuilt(): void
     {
         $builder = new ContainerBuilder();
         $builder->addDefinitions([

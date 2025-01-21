@@ -27,9 +27,6 @@ class Router
     {
     }
 
-    /**
-     * @TODO: add support for inline callables
-     */
     public function addRoute(string $path, callable $controller, array $methods = [RequestInterface::METHOD_GET]): self
     {
         $this->routes[] = new ExecutableRoute($path, $controller, $methods);

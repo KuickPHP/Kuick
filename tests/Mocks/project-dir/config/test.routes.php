@@ -1,26 +1,10 @@
 <?php
 
-/**
- * Kuick Framework (https://github.com/milejko/kuick)
- *
- * @link       https://github.com/milejko/kuick
- * @copyright  Copyright (c) 2010-2025 Mariusz Miłejko (mariusz@milejko.pl)
- * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
- */
-
+use Kuick\App\Config\RouteConfig;
 use Kuick\Tests\Mocks\MockController;
-use Kuick\Tests\Mocks\RequestDependentControllerMock;
-use Kuick\Tests\Mocks\RequestDependentGuardMock;
+use Kuick\Tests\Mocks\MockGuard;
 
 return [
-    [
-        'path' => '/hello/(?<userId>[0-9]{1,12})',
-        'controller' => MockController::class,
-    ],
-    [
-        'path' => '/',
-        'method' => 'POST',
-        'controller' => RequestDependentControllerMock::class,
-        'guards' => [RequestDependentGuardMock::class],
-    ],
+    new RouteConfig('/hello/(?<userId>[0-9]{1,12})', MockController::class),
+    new RouteConfig('/', MockController::class, ['POST'], [MockGuard::class]),
 ];

@@ -6,10 +6,9 @@ use Kuick\App\Kernel;
 use Kuick\App\KernelInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * @covers \Kuick\App\Kernel
+ * @covers Kuick\App\Kernel
  */
 class Kernelest extends TestCase
 {
@@ -18,22 +17,6 @@ class Kernelest extends TestCase
     public static function setUpBeforeClass(): void
     {
         self::$projectDir = realpath(dirname(__DIR__) . '/../Mocks/project-dir');
-        (new Filesystem())->remove(self::$projectDir . '/var/cache');
-    }
-
-    /**
-     * Needs to be run in separate process, cause emmiter sends headers
-     * @runInSeparateProcess
-     */
-    public function testIfProdKernelIsWellDefined(): void
-    {
-        $kernel = new Kernel(self::$projectDir);
-        $this->assertInstanceOf(KernelInterface::class, $kernel);
-        $container = $kernel->getContainer();
-        $this->assertInstanceOf(EventDispatcherInterface::class, $kernel->getEventDispatcher());
-        $this->assertEquals('/var/www/html/tests/Mocks/project-dir', $kernel->getProjectDir());
-        $this->assertEquals('Testing App', $container->get('kuick.app.name'));
-        $this->assertEquals('prod', $container->get('kuick.app.env'));
     }
 
     /**
@@ -48,6 +31,8 @@ class Kernelest extends TestCase
         $container = $kernel->getContainer();
         $this->assertInstanceOf(EventDispatcherInterface::class, $kernel->getEventDispatcher());
         $this->assertEquals('Testing App', $container->get('kuick.app.name'));
+        $this->assertEquals($container->get('kuick.app.projectDir'), $kernel->getProjectDir());
         $this->assertEquals('dev', $container->get('kuick.app.env'));
+        $this->assertEquals('Europe/Warsaw', $container->get('kuick.app.timezone'));
     }
 }

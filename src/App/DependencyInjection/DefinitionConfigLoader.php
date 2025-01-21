@@ -11,10 +11,9 @@
 namespace Kuick\App\DependencyInjection;
 
 use DI\ContainerBuilder;
-use Kuick\App\KernelInterface;
 
 /**
- *
+ * DI Definition Loader
  */
 class DefinitionConfigLoader
 {
@@ -28,11 +27,6 @@ class DefinitionConfigLoader
 
     public function __invoke(string $projectDir, string $env): void
     {
-        //adding default definitions
-        $this->builder->addDefinitions([
-            KernelInterface::DI_APP_ENV_KEY => $env,
-            KernelInterface::DI_PROJECT_DIR_KEY => $projectDir,
-        ]);
         //adding vendor definition files
         foreach (glob($projectDir . self::KUICK_VENDORS_DEFINITION_LOCATION) as $definitionFile) {
             $this->builder->addDefinitions($definitionFile);

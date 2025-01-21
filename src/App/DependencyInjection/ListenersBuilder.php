@@ -18,7 +18,7 @@ use Kuick\App\SystemCacheInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
-class EventDispatcherBuilder
+class ListenersBuilder
 {
     public const CONFIG_SUFFIX = 'listeners';
 
@@ -30,7 +30,7 @@ class EventDispatcherBuilder
     {
         $this->builder->addDefinitions([Kernel::DI_LISTENERS_KEY => function (ContainerInterface $container, LoggerInterface $logger, SystemCacheInterface $cache) {
             $validatedListeners = [];
-            foreach ((new ConfigIndexer($cache, $logger))->getConfigFiles($container->get(Kernel::DI_PROJECT_DIR_KEY), EventDispatcherBuilder::CONFIG_SUFFIX) as $listenersFile) {
+            foreach ((new ConfigIndexer($cache, $logger))->getConfigFiles($container->get(Kernel::DI_PROJECT_DIR_KEY), ListenersBuilder::CONFIG_SUFFIX) as $listenersFile) {
                 $listeners = include $listenersFile;
                 foreach ($listeners as $listener) {
                     if (!($listener instanceof ListenerConfig)) {
