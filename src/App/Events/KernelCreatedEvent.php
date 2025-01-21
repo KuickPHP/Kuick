@@ -10,15 +10,15 @@
 
 namespace Kuick\App\Events;
 
-use Kuick\App\Kernel;
+use Kuick\App\KernelInterface;
 
 class KernelCreatedEvent
 {
-    public function __construct(private Kernel $kernel)
+    public function __construct(private KernelInterface $kernel)
     {
     }
 
-    public function getKernel(): Kernel
+    public function getKernel(): KernelInterface
     {
         return $this->kernel;
     }
