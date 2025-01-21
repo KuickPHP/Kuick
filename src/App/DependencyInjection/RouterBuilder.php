@@ -24,6 +24,8 @@ use Psr\Log\LoggerInterface;
  */
 class RouterBuilder
 {
+    public const CONFIG_SUFFIX = 'routes';
+
     public function __construct(private ContainerBuilder $builder)
     {
     }
@@ -33,11 +35,11 @@ class RouterBuilder
         $this->builder->addDefinitions([Router::class => function (ContainerInterface $container, LoggerInterface $logger, SystemCacheInterface $cache): Router {
             $router = new Router($logger);
             $logger = $container->get(LoggerInterface::class);
-            foreach ((new ConfigIndexer($cache, $logger))->getConfigFiles($container->get(Kernel::DI_PROJECT_DIR_KEY), 'routes') as $routeFile) {
+            foreach ((new ConfigIndexer($cache, $logger))->getConfigFiles($container->get(Kernel::DI_PROJECT_DIR_KEY), RouterBuilder::CONFIG_SUFFIX) as $routeFile) {
                 $routes = include $routeFile;
                 foreach ($routes as $route) {
                     if (!$route instanceof RouteConfig) {
-                        throw new ConfigException('Invalid route config');
+                        throw new ConfigException('Route config must be an instance of' . RouteConfig::class);
                     }
                     $logger->info('Adding route: ' . $route->path);
                     $router->addRoute($route->path, $container->get($route->controllerClassName), $route->methods);

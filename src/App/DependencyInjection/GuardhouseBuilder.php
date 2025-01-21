@@ -11,6 +11,8 @@
 namespace Kuick\App\DependencyInjection;
 
 use DI\ContainerBuilder;
+use Kuick\App\Config\ConfigException;
+use Kuick\App\Config\GuardConfig;
 use Kuick\App\Kernel;
 use Kuick\App\SystemCacheInterface;
 use Kuick\Routing\Router;
@@ -23,6 +25,8 @@ use Psr\Log\LoggerInterface;
  */
 class GuardhouseBuilder
 {
+    public const CONFIG_SUFFIX = 'guards';
+
     public function __construct(private ContainerBuilder $builder)
     {
     }
@@ -31,9 +35,12 @@ class GuardhouseBuilder
     {
         $this->builder->addDefinitions([Guardhouse::class => function (ContainerInterface $container, LoggerInterface $logger, SystemCacheInterface $cache): Guardhouse {
             $guardhouse = new Guardhouse($logger);
-            foreach ((new ConfigIndexer($cache, $logger))->getConfigFiles($container->get(Kernel::DI_PROJECT_DIR_KEY), 'guards') as $guardsFile) {
+            foreach ((new ConfigIndexer($cache, $logger))->getConfigFiles($container->get(Kernel::DI_PROJECT_DIR_KEY), GuardhouseBuilder::CONFIG_SUFFIX) as $guardsFile) {
                 $guards = include $guardsFile;
                 foreach ($guards as $guard) {
+                    if (!($guard instanceof GuardConfig)) {
+                        throw new ConfigException('Guard config must be an instance of ' . GuardConfig::class);
+                    }
                     $logger->info('Adding guard: ' . $guard->path);
                     $guardhouse->addGuard($guard->path, $container->get($guard->guardClassName), $guard->methods);
                 }

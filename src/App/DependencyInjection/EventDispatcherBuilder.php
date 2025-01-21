@@ -20,6 +20,8 @@ use Psr\Log\LoggerInterface;
 
 class EventDispatcherBuilder
 {
+    public const CONFIG_SUFFIX = 'listeners';
+
     public function __construct(private ContainerBuilder $builder)
     {
     }
@@ -28,11 +30,11 @@ class EventDispatcherBuilder
     {
         $this->builder->addDefinitions([Kernel::DI_LISTENERS_KEY => function (ContainerInterface $container, LoggerInterface $logger, SystemCacheInterface $cache) {
             $validatedListeners = [];
-            foreach ((new ConfigIndexer($cache, $logger))->getConfigFiles($container->get(Kernel::DI_PROJECT_DIR_KEY), 'listeners') as $listenersFile) {
+            foreach ((new ConfigIndexer($cache, $logger))->getConfigFiles($container->get(Kernel::DI_PROJECT_DIR_KEY), EventDispatcherBuilder::CONFIG_SUFFIX) as $listenersFile) {
                 $listeners = include $listenersFile;
                 foreach ($listeners as $listener) {
                     if (!($listener instanceof ListenerConfig)) {
-                        throw new ConfigException('Listener must be an instance of ' . ListenerConfig::class);
+                        throw new ConfigException('Listener config must be an instance of ' . ListenerConfig::class);
                     }
                     $validatedListeners[] = $listener;
                 }

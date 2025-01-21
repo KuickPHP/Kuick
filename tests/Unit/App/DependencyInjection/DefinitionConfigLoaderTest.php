@@ -18,7 +18,7 @@ class DefinitionConfigLoaderTest extends TestCase
         self::$projectDir = realpath(dirname(__DIR__) . '/../../Mocks/project-dir');
     }
 
-    public function testLoadConfig()
+    public function testLoadConfig(): void
     {
         $builder = new ContainerBuilder();
 
