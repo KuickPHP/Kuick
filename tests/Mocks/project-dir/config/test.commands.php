@@ -1,7 +1,7 @@
 <?php
 
-use Kuick\Tests\Mocks\CommandMock;
+use Kuick\Tests\Mocks\MockCommand;
 
 return [
-    CommandMock::class,
+    MockCommand::class,
 ];

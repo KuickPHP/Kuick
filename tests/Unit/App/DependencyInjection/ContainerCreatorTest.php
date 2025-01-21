@@ -15,14 +15,35 @@ class ContainerCreatorTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$projectDir = realpath(dirname(__DIR__) . '/../Mocks/project-dir');
+        self::$projectDir = realpath(dirname(__DIR__) . '/../../Mocks/project-dir');
         (new Filesystem())->remove(self::$projectDir . '/var/cache');
     }
 
-    public function testIfContainerCreatorIsWellDefined(): void
+    // public function testIfDevContainerCreatorIsWellDefined(): void
+    // {
+    //     putenv('KUICK_APP_ENV=dev');
+    //     $containerCreator = new ContainerCreator();
+    //     $container = $containerCreator(self::$projectDir);
+    //     $this->assertEquals('Testing App', $container->get('kuick.app.name'));
+    //     $this->assertEquals('dev', $container->get('kuick.app.env'));
+    //     $this->assertEquals(self::$projectDir, $container->get('kuick.app.projectDir'));
+    //     $this->assertIsArray($container->get('kuick.app.listeners'));
+    // }
+
+    public function testIfProdContainerIsBuiltForProd(): void
     {
+        putenv('KUICK_APP_ENV=prod');
         $containerCreator = new ContainerCreator();
-        $containerCreator(self::$projectDir);
-        $this->assertInstanceOf(ContainerCreator::class, $containerCreator);
+
+        $uncachedContainer = $containerCreator(self::$projectDir);
+        $this->assertEquals('Testing App', $uncachedContainer->get('kuick.app.name'));
+    }
+
+    public function testIfProdContainerIsCachedForProd(): void
+    {
+        putenv('KUICK_APP_ENV=prod');
+        $containerCreator = new ContainerCreator();
+        $cachedContainer = $containerCreator(self::$projectDir);
+        $this->assertEquals('Testing App', $cachedContainer->get('kuick.app.name'));
     }
 }
