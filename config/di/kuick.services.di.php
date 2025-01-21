@@ -1,12 +1,12 @@
 <?php
 
-use Kuick\App\Listeners\CommandLaunchingListener;
-use Kuick\App\Listeners\EventLoggingListener;
-use Kuick\App\Listeners\LocalizingListener;
-use Kuick\App\Listeners\RequestHandlingListener;
-use Kuick\App\Listeners\ResponseEmittingListener;
-use Kuick\App\SystemCache;
-use Kuick\App\SystemCacheInterface;
+use Kuick\Framework\Listeners\CommandLaunchingListener;
+use Kuick\Framework\Listeners\EventLoggingListener;
+use Kuick\Framework\Listeners\LocalizingListener;
+use Kuick\Framework\Listeners\RequestHandlingListener;
+use Kuick\Framework\Listeners\ResponseEmittingListener;
+use Kuick\Framework\SystemCache;
+use Kuick\Framework\SystemCacheInterface;
 use Kuick\EventDispatcher\EventDispatcher;
 use Kuick\EventDispatcher\ListenerProvider;
 use Kuick\Example\Console\PingCommand;

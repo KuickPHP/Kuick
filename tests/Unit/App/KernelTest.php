@@ -1,14 +1,14 @@
 <?php
 
-namespace Kuick\Tests\App;
+namespace Tests\Kuick\Unit\Framework;
 
-use Kuick\App\Kernel;
-use Kuick\App\KernelInterface;
+use Kuick\Framework\Kernel;
+use Kuick\Framework\KernelInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**
- * @covers Kuick\App\Kernel
+ * @covers Kuick\Framework\Kernel
  */
 class Kernelest extends TestCase
 {
@@ -16,7 +16,7 @@ class Kernelest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$projectDir = realpath(dirname(__DIR__) . '/../Mocks/project-dir');
+        self::$projectDir = realpath(dirname(__DIR__) . '/Mocks/project-dir');
     }
 
     /**

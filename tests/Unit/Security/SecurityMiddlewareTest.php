@@ -1,11 +1,11 @@
 <?php
 
-namespace Kuick\Tests\Unit\Security;
+namespace Tests\Kuick\Unit\Security;
 
 use Kuick\Http\MethodNotAllowedException;
 use Kuick\Security\Guardhouse;
 use Kuick\Security\SecurityMiddleware;
-use Kuick\Tests\Mocks\MockRequestHandler;
+use Tests\Kuick\Unit\Mocks\MockRequestHandler;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Kuick\Tests\Example\UI;
+namespace Tests\Kuick\Unit\Example\UI;
 
 use Kuick\Example\UI\PingController;
 use Nyholm\Psr7\Request;

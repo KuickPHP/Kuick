@@ -1,14 +1,14 @@
 <?php
 
-namespace Kuick\Tests\App\Listeners;
+namespace Tests\Kuick\Unit\Framework\Listeners;
 
-use Kuick\App\Listeners\LocalizingListener;
+use Kuick\Framework\Listeners\LocalizingListener;
 use PHPUnit\Framework\TestCase;
 
 use function PHPUnit\Framework\assertEquals;
 
 /**
- * @covers \Kuick\App\Listeners\LocalizingListener
+ * @covers \Kuick\Framework\Listeners\LocalizingListener
  */
 class LocalizingListenerTest extends TestCase
 {

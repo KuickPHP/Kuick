@@ -1,13 +1,13 @@
 <?php
 
-namespace Kuick\Tests\App\Events;
+namespace Tests\Kuick\Unit\Framework\Events;
 
-use Kuick\App\Events\RequestReceivedEvent;
+use Kuick\Framework\Events\RequestReceivedEvent;
 use Monolog\Test\TestCase;
 use Nyholm\Psr7\ServerRequest;
 
 /**
- * @covers \Kuick\App\Events\RequestReceivedEvent
+ * @covers \Kuick\Framework\Events\RequestReceivedEvent
  */
 class RequestReceivedEventTest extends TestCase
 {

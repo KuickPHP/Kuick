@@ -1,13 +1,13 @@
 <?php
 
-namespace Kuick\Tests\App\Events;
+namespace Tests\Kuick\Unit\Framework\Events;
 
-use Kuick\App\Events\CommandReceivedEvent;
-use Kuick\Tests\Mocks\MockKernel;
+use Kuick\Framework\Events\CommandReceivedEvent;
+use Tests\Kuick\Unit\Mocks\MockKernel;
 use Monolog\Test\TestCase;
 
 /**
- * @covers \Kuick\App\Events\CommandReceivedEvent
+ * @covers \Kuick\Framework\Events\CommandReceivedEvent
  */
 class CommandReceivedEventTest extends TestCase
 {

@@ -3,11 +3,11 @@
 namespace Kuick\Tests\App\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
-use Kuick\App\DependencyInjection\ContainerCreator;
+use Kuick\Framework\DependencyInjection\ContainerCreator;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * @covers \Kuick\App\DependencyInjection\ContainerCreator
+ * @covers \Kuick\Framework\DependencyInjection\ContainerCreator
  */
 class ContainerCreatorTest extends TestCase
 {
@@ -15,7 +15,7 @@ class ContainerCreatorTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$projectDir = realpath(dirname(__DIR__) . '/../../Mocks/project-dir');
+        self::$projectDir = realpath(dirname(__DIR__) . '/../Mocks/project-dir');
     }
 
     /**

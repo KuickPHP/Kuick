@@ -1,6 +1,6 @@
 <?php
 
-namespace Kuick\Tests\Http\Message;
+namespace Tests\Kuick\Unit\Http\Message;
 
 use Kuick\Http\Message\JsonResponse;
 use Kuick\Http\Message\Response;

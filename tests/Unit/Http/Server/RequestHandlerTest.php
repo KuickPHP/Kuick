@@ -1,10 +1,10 @@
 <?php
 
-namespace Kuick\Tests\Http;
+namespace Tests\Kuick\Unit\Http;
 
 use Kuick\Http\Server\ExceptionJsonRequestHandler;
 use Kuick\Http\Server\RequestHandler;
-use Kuick\Tests\Mocks\MockHttpMiddleware;
+use Tests\Kuick\Unit\Mocks\MockHttpMiddleware;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;

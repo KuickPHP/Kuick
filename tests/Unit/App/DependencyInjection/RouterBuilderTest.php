@@ -3,10 +3,10 @@
 namespace Tests\Unit\App\DependencyInjection;
 
 use DI\ContainerBuilder;
-use Kuick\App\Config\ConfigException;
-use Kuick\App\DependencyInjection\RouterBuilder;
-use Kuick\App\SystemCache;
-use Kuick\App\SystemCacheInterface;
+use Kuick\Framework\Config\ConfigException;
+use Kuick\Framework\DependencyInjection\RouterBuilder;
+use Kuick\Framework\SystemCache;
+use Kuick\Framework\SystemCacheInterface;
 use Kuick\Routing\ExecutableRoute;
 use Kuick\Routing\Router;
 use Nyholm\Psr7\ServerRequest;
@@ -15,7 +15,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 /**
- * @covers \Kuick\App\DependencyInjection\RouterBuilder
+ * @covers \Kuick\Framework\DependencyInjection\RouterBuilder
  */
 class RouterBuilderTest extends TestCase
 {
@@ -24,8 +24,8 @@ class RouterBuilderTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$projectDir = realpath(dirname(__DIR__) . '/../../Mocks/project-dir');
-        self::$invalidProjectDir = realpath(dirname(__DIR__) . '/../../Mocks/invalid-project-dir');
+        self::$projectDir = realpath(dirname(__DIR__) . '/../Mocks/project-dir');
+        self::$invalidProjectDir = realpath(dirname(__DIR__) . '/../Mocks/invalid-project-dir');
     }
 
     public function testIfRouterIsBuilt(): void

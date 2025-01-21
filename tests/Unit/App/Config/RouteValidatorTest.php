@@ -1,15 +1,15 @@
 <?php
 
-namespace Kuick\Tests\App\Config;
+namespace Tests\Kuick\Unit\Framework\Config;
 
-use Kuick\App\Config\ConfigException;
-use Kuick\App\Config\RouteConfig;
-use Kuick\App\Config\RouteValidator;
-use Kuick\Tests\Mocks\MockRoute;
+use Kuick\Framework\Config\ConfigException;
+use Kuick\Framework\Config\RouteConfig;
+use Kuick\Framework\Config\RouteValidator;
+use Tests\Kuick\Unit\Mocks\MockRoute;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Kuick\App\Config\RouteValidator
+ * @covers \Kuick\Framework\Config\RouteValidator
  */
 class RouteValidatorTest extends TestCase
 {

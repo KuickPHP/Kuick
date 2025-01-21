@@ -1,15 +1,15 @@
 <?php
 
-namespace Kuick\Tests\App\Config;
+namespace Tests\Kuick\Unit\Framework\Config;
 
-use Kuick\App\Config\ConfigException;
-use Kuick\App\Config\GuardConfig;
-use Kuick\App\Config\GuardValidator;
-use Kuick\Tests\Mocks\MockGuard;
+use Kuick\Framework\Config\ConfigException;
+use Kuick\Framework\Config\GuardConfig;
+use Kuick\Framework\Config\GuardValidator;
+use Tests\Kuick\Unit\Mocks\MockGuard;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Kuick\App\Config\GuardValidator
+ * @covers \Kuick\Framework\Config\GuardValidator
  */
 class GuardValidatorTest extends TestCase
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Kuick\Tests\App\Events;
+namespace Tests\Kuick\Unit\Framework\Events;
 
-use Kuick\App\Events\KernelCreatedEvent;
-use Kuick\Tests\Mocks\MockKernel;
+use Kuick\Framework\Events\KernelCreatedEvent;
+use Tests\Kuick\Unit\Mocks\MockKernel;
 use Monolog\Test\TestCase;
 
 /**
- * @covers \Kuick\App\Events\KernelCreatedEvent
+ * @covers \Kuick\Framework\Events\KernelCreatedEvent
  */
 class KernelCreatedEventTest extends TestCase
 {

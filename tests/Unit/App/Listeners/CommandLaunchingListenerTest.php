@@ -1,15 +1,15 @@
 <?php
 
-namespace Kuick\Tests\App\Listeners;
+namespace Tests\Kuick\Unit\Framework\Listeners;
 
-use Kuick\App\Events\CommandReceivedEvent;
-use Kuick\App\KernelInterface;
-use Kuick\App\Listeners\CommandLaunchingListener;
-use Kuick\Tests\Mocks\MockKernel;
+use Kuick\Framework\Events\CommandReceivedEvent;
+use Kuick\Framework\KernelInterface;
+use Kuick\Framework\Listeners\CommandLaunchingListener;
+use Tests\Kuick\Unit\Mocks\MockKernel;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Kuick\App\Listeners\CommandLaunchingListener
+ * @covers \Kuick\Framework\Listeners\CommandLaunchingListener
  */
 class CommandLaunchingListenerTest extends TestCase
 {

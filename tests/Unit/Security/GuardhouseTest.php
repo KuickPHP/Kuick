@@ -1,6 +1,6 @@
 <?php
 
-namespace Kuick\Tests\Unit\Security;
+namespace Tests\Kuick\Unit\Security;
 
 use Kuick\Security\Guardhouse;
 use Kuick\Security\ExecutableGuard;

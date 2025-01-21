@@ -8,16 +8,16 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-use Kuick\App\Config\ListenerConfig;
-use Kuick\App\Events\CommandReceivedEvent;
-use Kuick\App\Events\KernelCreatedEvent;
-use Kuick\App\Events\RequestReceivedEvent;
-use Kuick\App\Events\ResponseCreatedEvent;
-use Kuick\App\Listeners\CommandLaunchingListener;
-use Kuick\App\Listeners\EventLoggingListener;
-use Kuick\App\Listeners\LocalizingListener;
-use Kuick\App\Listeners\RequestHandlingListener;
-use Kuick\App\Listeners\ResponseEmittingListener;
+use Kuick\Framework\Config\ListenerConfig;
+use Kuick\Framework\Events\CommandReceivedEvent;
+use Kuick\Framework\Events\KernelCreatedEvent;
+use Kuick\Framework\Events\RequestReceivedEvent;
+use Kuick\Framework\Events\ResponseCreatedEvent;
+use Kuick\Framework\Listeners\CommandLaunchingListener;
+use Kuick\Framework\Listeners\EventLoggingListener;
+use Kuick\Framework\Listeners\LocalizingListener;
+use Kuick\Framework\Listeners\RequestHandlingListener;
+use Kuick\Framework\Listeners\ResponseEmittingListener;
 use Kuick\EventDispatcher\ListenerPriority;
 
 return [

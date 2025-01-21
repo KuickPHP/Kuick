@@ -1,6 +1,6 @@
 <?php
 
-namespace Kuick\Tests\Unit\Routing;
+namespace Tests\Kuick\Unit\Routing;
 
 use Kuick\Http\Message\Response;
 use PHPUnit\Framework\TestCase;

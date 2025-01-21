@@ -3,13 +3,13 @@
 namespace Tests\Unit\App\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
-use Kuick\App\DependencyInjection\ConfigIndexer;
-use Kuick\App\SystemCache;
+use Kuick\Framework\DependencyInjection\ConfigIndexer;
+use Kuick\Framework\SystemCache;
 use Kuick\Cache\InMemoryCache;
 use Psr\Log\NullLogger;
 
 /**
- * @covers Kuick\App\DependencyInjection\ConfigIndexer
+ * @covers Kuick\Framework\DependencyInjection\ConfigIndexer
  */
 class ConfigIndexerTest extends TestCase
 {
@@ -17,7 +17,7 @@ class ConfigIndexerTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$projectDir = realpath(dirname(__DIR__) . '/../../Mocks/project-dir');
+        self::$projectDir = realpath(dirname(__DIR__) . '/../Mocks/project-dir');
     }
 
     public function testIndexingRouteConfig(): void

@@ -1,15 +1,15 @@
 <?php
 
-namespace Kuick\Tests\App\Config;
+namespace Tests\Kuick\Unit\Framework\Config;
 
-use Kuick\App\Config\ConfigException;
-use Kuick\App\Config\ListenerConfig;
-use Kuick\App\Config\ListenerValidator;
-use Kuick\Tests\Mocks\MockListener;
+use Kuick\Framework\Config\ConfigException;
+use Kuick\Framework\Config\ListenerConfig;
+use Kuick\Framework\Config\ListenerValidator;
+use Tests\Kuick\Unit\Mocks\MockListener;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Kuick\App\Config\ListenerValidator
+ * @covers \Kuick\Framework\Config\ListenerValidator
  */
 class ListenerValidatorTest extends TestCase
 {

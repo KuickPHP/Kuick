@@ -1,18 +1,18 @@
 <?php
 
-namespace Kuick\Tests\App\Listeners;
+namespace Tests\Kuick\Unit\Framework\Listeners;
 
-use Kuick\App\Events\RequestReceivedEvent;
-use Kuick\App\Events\ResponseCreatedEvent;
-use Kuick\App\Listeners\RequestHandlingListener;
+use Kuick\Framework\Events\RequestReceivedEvent;
+use Kuick\Framework\Events\ResponseCreatedEvent;
+use Kuick\Framework\Listeners\RequestHandlingListener;
 use Kuick\EventDispatcher\EventDispatcher;
 use Kuick\EventDispatcher\ListenerProvider;
-use Kuick\Tests\Mocks\MockRequestHandler;
+use Tests\Kuick\Unit\Mocks\MockRequestHandler;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Kuick\App\Listeners\RequestHandlingListener
+ * @covers \Kuick\Framework\Listeners\RequestHandlingListener
  */
 class RequestHandlingListenerTest extends TestCase
 {

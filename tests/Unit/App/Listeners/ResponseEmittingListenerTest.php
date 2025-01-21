@@ -1,14 +1,14 @@
 <?php
 
-namespace Kuick\Tests\App\Listeners;
+namespace Tests\Kuick\Unit\Framework\Listeners;
 
-use Kuick\App\Events\ResponseCreatedEvent;
-use Kuick\App\Listeners\ResponseEmittingListener;
+use Kuick\Framework\Events\ResponseCreatedEvent;
+use Kuick\Framework\Listeners\ResponseEmittingListener;
 use Kuick\Http\Message\Response;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Kuick\App\Listeners\ResponseEmittingListener
+ * @covers \Kuick\Framework\Listeners\ResponseEmittingListener
  */
 class ResponseEmittingTest extends TestCase
 {

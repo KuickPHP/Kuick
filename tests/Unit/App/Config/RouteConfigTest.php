@@ -1,14 +1,14 @@
 <?php
 
-namespace Kuick\Tests\App\Config;
+namespace Tests\Kuick\Unit\Framework\Config;
 
-use Kuick\App\Config\RouteConfig;
+use Kuick\Framework\Config\RouteConfig;
 use Kuick\EventDispatcher\RoutePriority;
-use Kuick\Tests\Mocks\MockRoute;
+use Tests\Kuick\Unit\Mocks\MockRoute;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Kuick\App\Config\RouteConfig
+ * @covers \Kuick\Framework\Config\RouteConfig
  */
 class RouteConfigTest extends TestCase
 {

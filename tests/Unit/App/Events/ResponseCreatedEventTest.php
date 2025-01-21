@@ -1,14 +1,14 @@
 <?php
 
-namespace Kuick\Tests\App\Events;
+namespace Tests\Kuick\Unit\Framework\Events;
 
-use Kuick\App\Events\ResponseCreatedEvent;
+use Kuick\Framework\Events\ResponseCreatedEvent;
 use Kuick\Http\Message\Response;
 use Monolog\Test\TestCase;
 use Nyholm\Psr7\ServerRequest;
 
 /**
- * @covers \Kuick\App\Events\ResponseCreatedEvent
+ * @covers \Kuick\Framework\Events\ResponseCreatedEvent
  */
 class ResponseCreatedEventTest extends TestCase
 {

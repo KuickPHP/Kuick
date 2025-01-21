@@ -1,6 +1,6 @@
 <?php
 
-namespace Kuick\Tests\Doc\UI;
+namespace Tests\Kuick\Unit\Doc\UI;
 
 use Kuick\Doc\UI\DocHtmlController;
 use PHPUnit\Framework\TestCase;

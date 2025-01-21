@@ -1,14 +1,14 @@
 <?php
 
-namespace Kuick\Tests\App\Config;
+namespace Tests\Kuick\Unit\Framework\Config;
 
-use Kuick\App\Config\ListenerConfig;
+use Kuick\Framework\Config\ListenerConfig;
 use Kuick\EventDispatcher\ListenerPriority;
-use Kuick\Tests\Mocks\MockListener;
+use Tests\Kuick\Unit\Mocks\MockListener;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Kuick\App\Config\ListenerConfig
+ * @covers \Kuick\Framework\Config\ListenerConfig
  */
 class ListenerConfigTest extends TestCase
 {

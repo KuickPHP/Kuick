@@ -8,7 +8,7 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-use Kuick\App\Middlewares\OptionsSendingMiddleware;
+use Kuick\Framework\Middlewares\OptionsSendingMiddleware;
 use Kuick\Routing\RoutingMiddleware;
 use Kuick\Security\SecurityMiddleware;
 

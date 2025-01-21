@@ -1,12 +1,12 @@
 <?php
 
-namespace Kuick\Tests\Unit\Routing;
+namespace Tests\Kuick\Unit\Routing;
 
 use Kuick\Http\Message\Response;
 use Kuick\Http\MethodNotAllowedException;
 use Kuick\Routing\Router;
 use Kuick\Routing\RoutingMiddleware;
-use Kuick\Tests\Mocks\MockRequestHandler;
+use Tests\Kuick\Unit\Mocks\MockRequestHandler;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;

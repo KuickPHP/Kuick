@@ -3,10 +3,10 @@
 namespace Tests\Unit\App\DependencyInjection;
 
 use DI\ContainerBuilder;
-use Kuick\App\Config\ConfigException;
-use Kuick\App\DependencyInjection\RequestHandlerBuilder;
-use Kuick\App\SystemCache;
-use Kuick\App\SystemCacheInterface;
+use Kuick\Framework\Config\ConfigException;
+use Kuick\Framework\DependencyInjection\RequestHandlerBuilder;
+use Kuick\Framework\SystemCache;
+use Kuick\Framework\SystemCacheInterface;
 use Kuick\Http\Server\ExceptionHtmlRequestHandler;
 use Kuick\Http\Server\ExceptionRequestHandlerInterface;
 use PHPUnit\Framework\TestCase;
@@ -15,7 +15,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 /**
- * @covers \Kuick\App\DependencyInjection\RequestHandlerBuilder
+ * @covers \Kuick\Framework\DependencyInjection\RequestHandlerBuilder
  */
 class RequestHandlerBuilderTest extends TestCase
 {
@@ -26,10 +26,10 @@ class RequestHandlerBuilderTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$projectDir = realpath(dirname(__DIR__) . '/../../Mocks/project-dir');
-        self::$invalidProjectDir = realpath(dirname(__DIR__) . '/../../Mocks/invalid-project-dir');
-        self::$invalidProjectDir2 = realpath(dirname(__DIR__) . '/../../Mocks/invalid-project-dir-2');
-        self::$invalidProjectDir3 = realpath(dirname(__DIR__) . '/../../Mocks/invalid-project-dir-3');
+        self::$projectDir = realpath(dirname(__DIR__) . '/../Mocks/project-dir');
+        self::$invalidProjectDir = realpath(dirname(__DIR__) . '/../Mocks/invalid-project-dir');
+        self::$invalidProjectDir2 = realpath(dirname(__DIR__) . '/../Mocks/invalid-project-dir-2');
+        self::$invalidProjectDir3 = realpath(dirname(__DIR__) . '/../Mocks/invalid-project-dir-3');
     }
 
     public function testIfRequestHandlerIsBuilt(): void

@@ -3,17 +3,17 @@
 namespace Tests\Unit\App\DependencyInjection;
 
 use DI\ContainerBuilder;
-use Kuick\App\Config\ConfigException;
-use Kuick\App\DependencyInjection\GuardhouseBuilder;
-use Kuick\App\SystemCache;
-use Kuick\App\SystemCacheInterface;
+use Kuick\Framework\Config\ConfigException;
+use Kuick\Framework\DependencyInjection\GuardhouseBuilder;
+use Kuick\Framework\SystemCache;
+use Kuick\Framework\SystemCacheInterface;
 use Kuick\Security\Guardhouse;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 /**
- * @covers \Kuick\App\DependencyInjection\GuardhouseBuilder
+ * @covers \Kuick\Framework\DependencyInjection\GuardhouseBuilder
  */
 class GuardhouseBuilderTest extends TestCase
 {
@@ -22,8 +22,8 @@ class GuardhouseBuilderTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$projectDir = realpath(dirname(__DIR__) . '/../../Mocks/project-dir');
-        self::$invalidProjectDir = realpath(dirname(__DIR__) . '/../../Mocks/invalid-project-dir');
+        self::$projectDir = realpath(dirname(__DIR__) . '/../Mocks/project-dir');
+        self::$invalidProjectDir = realpath(dirname(__DIR__) . '/../Mocks/invalid-project-dir');
     }
 
     public function testIfGuardhouseIsBuilt(): void

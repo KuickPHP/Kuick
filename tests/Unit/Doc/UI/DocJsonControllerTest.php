@@ -1,6 +1,6 @@
 <?php
 
-namespace Kuick\Tests\Doc\UI;
+namespace Tests\Kuick\Unit\Doc\UI;
 
 use Kuick\Doc\UI\DocJsonController;
 use PHPUnit\Framework\TestCase;

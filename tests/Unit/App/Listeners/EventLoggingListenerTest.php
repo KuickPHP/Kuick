@@ -1,14 +1,14 @@
 <?php
 
-namespace Kuick\Tests\App\Listeners;
+namespace Tests\Kuick\Unit\Framework\Listeners;
 
-use Kuick\App\Listeners\EventLoggingListener;
+use Kuick\Framework\Listeners\EventLoggingListener;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
 use stdClass;
 
 /**
- * @covers \Kuick\App\Listeners\EventLoggingListener
+ * @covers \Kuick\Framework\Listeners\EventLoggingListener
  */
 class EventLoggingListenerTest extends TestCase
 {

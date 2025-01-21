@@ -1,14 +1,14 @@
 <?php
 
-namespace Kuick\Tests\App\Middlewares;
+namespace Tests\Kuick\Unit\Framework\Middlewares;
 
-use Kuick\App\Middlewares\OptionsSendingMiddleware;
-use Kuick\Tests\Mocks\MockRequestHandler;
+use Kuick\Framework\Middlewares\OptionsSendingMiddleware;
+use Tests\Kuick\Unit\Mocks\MockRequestHandler;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Kuick\App\Middlewares\OptionsSendingMiddleware
+ * @covers \Kuick\Framework\Middlewares\OptionsSendingMiddleware
  */
 class OptionsSendingMiddlewareTest extends TestCase
 {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Kuick\Tests\App\Config;
+namespace Tests\Kuick\Unit\Framework\Config;
 
-use Kuick\App\Config\GuardConfig;
-use Kuick\Tests\Mocks\MockGuard;
+use Kuick\Framework\Config\GuardConfig;
+use Tests\Kuick\Unit\Mocks\MockGuard;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \Kuick\App\Config\GuardConfig
+ * @covers \Kuick\Framework\Config\GuardConfig
  */
 class GuardConfigTest extends TestCase
 {

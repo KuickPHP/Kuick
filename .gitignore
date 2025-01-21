@@ -8,4 +8,4 @@ composer.lock
 version.*
 /.env.local
 clover.xml
-/tests/Mocks/project-dir/var*
+/tests/Unit/Mocks/project-dir/var*

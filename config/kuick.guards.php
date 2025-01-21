@@ -8,7 +8,7 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-use Kuick\App\Config\GuardConfig;
+use Kuick\Framework\Config\GuardConfig;
 use Kuick\Ops\Security\OpsGuard;
 
 return [

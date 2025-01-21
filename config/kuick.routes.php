@@ -8,7 +8,7 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-use Kuick\App\Config\RouteConfig;
+use Kuick\Framework\Config\RouteConfig;
 use Kuick\Example\UI\PingController;
 use Kuick\Doc\UI\DocHtmlController;
 use Kuick\Doc\UI\DocJsonController;

@@ -4,10 +4,10 @@ namespace Tests\Unit\App\DependencyInjection;
 
 use DI\ContainerBuilder;
 use PHPUnit\Framework\TestCase;
-use Kuick\App\DependencyInjection\DefinitionConfigLoader;
+use Kuick\Framework\DependencyInjection\DefinitionConfigLoader;
 
 /**
- * @covers \Kuick\App\DependencyInjection\DefinitionConfigLoader
+ * @covers \Kuick\Framework\DependencyInjection\DefinitionConfigLoader
  */
 class DefinitionConfigLoaderTest extends TestCase
 {
@@ -15,7 +15,7 @@ class DefinitionConfigLoaderTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$projectDir = realpath(dirname(__DIR__) . '/../../Mocks/project-dir');
+        self::$projectDir = realpath(dirname(__DIR__) . '/../Mocks/project-dir');
     }
 
     public function testLoadConfig(): void
