@@ -11,6 +11,8 @@
 namespace Kuick\App\DependencyInjection;
 
 use DI\ContainerBuilder;
+use Kuick\App\Config\ConfigException;
+use Kuick\App\Config\RouteConfig;
 use Kuick\App\Kernel;
 use Kuick\App\SystemCacheInterface;
 use Kuick\Routing\Router;
@@ -30,8 +32,16 @@ class RouterBuilder
     {
         $this->builder->addDefinitions([Router::class => function (ContainerInterface $container, LoggerInterface $logger, SystemCacheInterface $cache): Router {
             $router = new Router($logger);
-            foreach ((new RoutesConfigLoader($cache, $logger))($container->get(Kernel::DI_PROJECT_DIR_KEY)) as $route) {
-                $router->addRoute($route->path, $container->get($route->controllerClassName), $route->methods);
+            $logger = $container->get(LoggerInterface::class);
+            foreach ((new ConfigIndexer($cache, $logger))->getConfigFiles($container->get(Kernel::DI_PROJECT_DIR_KEY), 'routes') as $routeFile) {
+                $routes = include $routeFile;
+                foreach ($routes as $route) {
+                    if (!$route instanceof RouteConfig) {
+                        throw new ConfigException('Invalid route config');
+                    }
+                    $logger->info('Adding route: ' . $route->path);
+                    $router->addRoute($route->path, $container->get($route->controllerClassName), $route->methods);
+                }
             }
             return $router;
         }]);

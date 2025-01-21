@@ -11,6 +11,8 @@
 namespace Kuick\App\DependencyInjection;
 
 use DI\ContainerBuilder;
+use Kuick\App\Config\ConfigException;
+use Kuick\App\Config\ListenerConfig;
 use Kuick\App\Kernel;
 use Kuick\App\SystemCacheInterface;
 use Psr\Container\ContainerInterface;
@@ -25,7 +27,17 @@ class EventDispatcherBuilder
     public function __invoke(): void
     {
         $this->builder->addDefinitions([Kernel::DI_LISTENERS_KEY => function (ContainerInterface $container, LoggerInterface $logger, SystemCacheInterface $cache) {
-            return (new ListenerConfigLoader($cache, $logger))($container->get(Kernel::DI_PROJECT_DIR_KEY));
+            $validatedListeners = [];
+            foreach ((new ConfigIndexer($cache, $logger))->getConfigFiles($container->get(Kernel::DI_PROJECT_DIR_KEY), 'listeners') as $listenersFile) {
+                $listeners = include $listenersFile;
+                foreach ($listeners as $listener) {
+                    if (!($listener instanceof ListenerConfig)) {
+                        throw new ConfigException('Listener must be an instance of ' . ListenerConfig::class);
+                    }
+                    $validatedListeners[] = $listener;
+                }
+            }
+            return $validatedListeners;
         }]);
     }
 }

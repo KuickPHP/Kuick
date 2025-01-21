@@ -30,10 +30,13 @@ class GuardhouseBuilder
     public function __invoke(): void
     {
         $this->builder->addDefinitions([Guardhouse::class => function (ContainerInterface $container, LoggerInterface $logger, SystemCacheInterface $cache): Guardhouse {
-            $guards = (new GuardsConfigLoader($cache, $logger))($container->get(Kernel::DI_PROJECT_DIR_KEY));
             $guardhouse = new Guardhouse($logger);
-            foreach ($guards as $guard) {
-                $guardhouse->addGuard($guard->path, $container->get($guard->guardClassName), $guard->methods);
+            foreach ((new ConfigIndexer($cache, $logger))->getConfigFiles($container->get(Kernel::DI_PROJECT_DIR_KEY), 'guards') as $guardsFile) {
+                $guards = include $guardsFile;
+                foreach ($guards as $guard) {
+                    $logger->info('Adding guard: ' . $guard->path);
+                    $guardhouse->addGuard($guard->path, $container->get($guard->guardClassName), $guard->methods);
+                }
             }
             return $guardhouse;
         }]);

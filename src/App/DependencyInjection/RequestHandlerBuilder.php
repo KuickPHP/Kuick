@@ -11,11 +11,13 @@
 namespace Kuick\App\DependencyInjection;
 
 use DI\ContainerBuilder;
+use Kuick\App\Config\ConfigException;
 use Kuick\App\Kernel;
 use Kuick\App\SystemCacheInterface;
 use Kuick\Http\Server\ExceptionRequestHandlerInterface;
 use Kuick\Http\Server\RequestHandler;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 
@@ -33,8 +35,21 @@ class RequestHandlerBuilder
         // default request handler is a Stack Request Handler (by Kuick)
         $this->builder->addDefinitions([RequestHandlerInterface::class => function (ContainerInterface $container, LoggerInterface $logger, SystemCacheInterface $cache): RequestHandlerInterface {
             $requestHandler = new RequestHandler($container->get(ExceptionRequestHandlerInterface::class));
-            foreach ((new MiddlewareConfigLoader($cache, $logger))($container->get(Kernel::DI_PROJECT_DIR_KEY)) as $middlewareClassName) {
-                $requestHandler->addMiddleware($container->get($middlewareClassName));
+            foreach ((new ConfigIndexer($cache, $logger))->getConfigFiles($container->get(Kernel::DI_PROJECT_DIR_KEY), 'middlewares') as $middlewareFile) {
+                $middlewareClassNames = include $middlewareFile;
+                foreach ($middlewareClassNames as $middlewareClassName) {
+                    if (!is_string($middlewareClassName)) {
+                        throw new ConfigException('Middleware must be a string');
+                    }
+                    if (!class_exists($middlewareClassName)) {
+                        throw new ConfigException('Middleware class does not exist: ' . $middlewareClassName);
+                    }
+                    if (!in_array(MiddlewareInterface::class, class_implements($middlewareClassName))) {
+                        throw new ConfigException('Middleware must implement: ' . MiddlewareInterface::class);
+                    }
+                    $logger->info('Adding middleware: ' . $middlewareClassName);
+                    $requestHandler->addMiddleware($container->get($middlewareClassName));
+                }
             }
             return $requestHandler;
         }]);
