@@ -23,8 +23,6 @@ class ContainerCreatorTest extends TestCase
     {
         $containerCreator = new ContainerCreator();
         $containerCreator(self::$projectDir);
-
-
         $this->assertInstanceOf(ContainerCreator::class, $containerCreator);
     }
 }

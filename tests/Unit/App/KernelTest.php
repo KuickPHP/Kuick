@@ -31,6 +31,7 @@ class Kernelest extends TestCase
         $this->assertInstanceOf(KernelInterface::class, $kernel);
         $container = $kernel->getContainer();
         $this->assertInstanceOf(EventDispatcherInterface::class, $kernel->getEventDispatcher());
+        $this->assertEquals('/var/www/html/tests/Mocks/project-dir', $kernel->getProjectDir());
         $this->assertEquals('Testing App', $container->get('kuick.app.name'));
         $this->assertEquals('prod', $container->get('kuick.app.env'));
     }

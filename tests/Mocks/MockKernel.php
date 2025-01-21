@@ -13,7 +13,7 @@ class MockKernel implements KernelInterface
     private ContainerInterface $container;
     private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(public readonly string $projectDir = '/tmp')
+    public function __construct(private string $projectDir = '/tmp')
     {
         $this->container = new MockContainer();
         $this->eventDispatcher = new EventDispatcher(new ListenerProvider());
@@ -27,5 +27,10 @@ class MockKernel implements KernelInterface
     public function getEventDispatcher(): EventDispatcherInterface
     {
         return $this->eventDispatcher;
+    }
+
+    public function getProjectDir(): string
+    {
+        return $this->projectDir;
     }
 }

@@ -24,17 +24,22 @@ class Kernel implements KernelInterface
     private ContainerInterface $container;
     private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(public readonly string $projectDir)
+    public function __construct(private string $projectDir)
     {
-        //building DI container
+        // building DI container
         $this->container = (new ContainerCreator())($projectDir);
         $this->eventDispatcher = $this->container->get(EventDispatcherInterface::class);
         $listenerProvider = $this->container->get(ListenerProviderInterface::class);
-        //registering listeners "on the fly", as they can be dependent on the EventDispatcher
+        // registering listeners "on the fly", as they can depend on EventDispatcher
         foreach ($this->container->get(self::DI_LISTENERS_KEY) as $listener) {
             $listenerProvider->registerListener($listener->pattern, $this->container->get($listener->listenerClassName), $listener->priority);
         }
         $this->eventDispatcher->dispatch(new KernelCreatedEvent($this));
+    }
+
+    public function getProjectDir(): string
+    {
+        return $this->projectDir;
     }
 
     public function getContainer(): ContainerInterface

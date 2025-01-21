@@ -30,4 +30,5 @@ interface KernelInterface
 
     public function getContainer(): ContainerInterface;
     public function getEventDispatcher(): EventDispatcherInterface;
+    public function getProjectDir(): string;
 }

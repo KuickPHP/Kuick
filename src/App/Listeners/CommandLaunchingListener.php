@@ -27,7 +27,7 @@ final class CommandLaunchingListener
         //create a new application
         $application = new Application($container->get(KernelInterface::DI_APP_NAME_KEY));
         //adding commands
-        foreach (new GlobIterator($kernel->projectDir . self::COMMAND_PATH_PATTERN, FilesystemIterator::KEY_AS_FILENAME) as $commandFile) {
+        foreach (new GlobIterator($kernel->getProjectDir() . self::COMMAND_PATH_PATTERN, FilesystemIterator::KEY_AS_FILENAME) as $commandFile) {
             foreach (include $commandFile as $commandClass) {
                 $application->add($container->get($commandClass));
             }
