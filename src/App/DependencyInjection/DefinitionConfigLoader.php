@@ -19,6 +19,7 @@ use Kuick\App\KernelInterface;
 class DefinitionConfigLoader
 {
     private const DEFINITION_LOCATION = '/config/di/*.di.php';
+    private const KUICK_VENDORS_DEFINITION_LOCATION = '/vendor/kuick/*/config/di/*.di.php';
     private const ENV_SPECIFIC_DEFINITION_LOCATION_TEMPLATE = '/config/di/*.di@%s.php';
 
     public function __construct(private ContainerBuilder $builder)
@@ -31,20 +32,12 @@ class DefinitionConfigLoader
         $this->builder->addDefinitions([
             KernelInterface::DI_APP_ENV_KEY => $env,
             KernelInterface::DI_PROJECT_DIR_KEY => $projectDir,
-            KernelInterface::DI_APP_NAME_KEY => 'Kuick App',
-            'kuick.app.charset' => 'UTF-8',
-            'kuick.app.locale' => 'en_US.utf-8',
-            'kuick.app.timezone' => 'UTC',
-            'kuick.app.monolog.usemicroseconds' => false,
-            'kuick.app.monolog.level' => 'INFO',
-            'kuick.app.monolog.handlers' => [
-                [
-                    'type' => 'fingersCrossed',
-                ],
-            ],
-            'kuick.ops.guard.token' => '',
         ]);
-        //adding global definition files
+        //adding vendor definition files
+        foreach (glob($projectDir . self::KUICK_VENDORS_DEFINITION_LOCATION) as $definitionFile) {
+            $this->builder->addDefinitions($definitionFile);
+        }
+        //adding project definition files
         foreach (glob($projectDir . self::DEFINITION_LOCATION) as $definitionFile) {
             $this->builder->addDefinitions($definitionFile);
         }

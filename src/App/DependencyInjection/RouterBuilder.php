@@ -29,9 +29,8 @@ class RouterBuilder
     public function __invoke(): void
     {
         $this->builder->addDefinitions([Router::class => function (ContainerInterface $container, LoggerInterface $logger, SystemCacheInterface $cache): Router {
-            $routes = (new RoutesConfigLoader($cache, $logger))($container->get(Kernel::DI_PROJECT_DIR_KEY));
             $router = new Router($logger);
-            foreach ($routes as $route) {
+            foreach ((new RoutesConfigLoader($cache, $logger))($container->get(Kernel::DI_PROJECT_DIR_KEY)) as $route) {
                 $router->addRoute($route->path, $container->get($route->controllerClassName), $route->methods);
             }
             return $router;

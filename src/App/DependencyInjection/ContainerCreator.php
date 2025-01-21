@@ -17,9 +17,6 @@ use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
-/**
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
- */
 class ContainerCreator
 {
     private const CACHE_PATH =  '/var/cache';
@@ -63,12 +60,6 @@ class ContainerCreator
     {
         $builder = $this->configureBuilder($projectDir);
 
-        // building application services
-        (new ServiceImplementationMapper($builder))();
-
-        // loading definitions (can override the default service mappings)
-        (new DefinitionConfigLoader($builder))($projectDir, $this->appEnv);
-
         // building request handler
         (new RequestHandlerBuilder($builder))();
 
@@ -84,8 +75,8 @@ class ContainerCreator
         // creating guardhouse
         (new GuardhouseBuilder($builder))();
 
-        //performance optimization (direct autowires)
-        (new OptionalAutowires($builder))();
+        // loading definitions (can override everything else)
+        (new DefinitionConfigLoader($builder))($projectDir, $this->appEnv);
 
         return $builder->build();
     }
