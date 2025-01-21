@@ -18,7 +18,7 @@ class CommandLaunchingListenerTest extends TestCase
      * @runInSeparateProcess
      */
     public function testIfCommandIsLaunched(): void
-    {        
+    {
         $kernel = new MockKernel();
         $kernel->getContainer()->set(KernelInterface::DI_APP_NAME_KEY, 'TestApp');
         $event = new CommandReceivedEvent($kernel);

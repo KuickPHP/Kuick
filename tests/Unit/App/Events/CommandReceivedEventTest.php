@@ -5,7 +5,6 @@ namespace Kuick\Tests\App\Events;
 use Kuick\App\Events\CommandReceivedEvent;
 use Kuick\Tests\Mocks\MockKernel;
 use Monolog\Test\TestCase;
-use Nyholm\Psr7\ServerRequest;
 
 /**
  * @covers \Kuick\App\Events\CommandReceivedEvent
