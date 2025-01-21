@@ -19,17 +19,25 @@ class ContainerCreatorTest extends TestCase
         (new Filesystem())->remove(self::$projectDir . '/var/cache');
     }
 
-    // public function testIfDevContainerCreatorIsWellDefined(): void
-    // {
-    //     putenv('KUICK_APP_ENV=dev');
-    //     $containerCreator = new ContainerCreator();
-    //     $container = $containerCreator(self::$projectDir);
-    //     $this->assertEquals('Testing App', $container->get('kuick.app.name'));
-    //     $this->assertEquals('dev', $container->get('kuick.app.env'));
-    //     $this->assertEquals(self::$projectDir, $container->get('kuick.app.projectDir'));
-    //     $this->assertIsArray($container->get('kuick.app.listeners'));
-    // }
+    /**
+     * Needs to be run in separate process
+     * @runInSeparateProcess
+     */
+    public function testIfDevContainerCreatorIsWellDefined(): void
+    {
+        putenv('KUICK_APP_ENV=dev');
+        $containerCreator = new ContainerCreator();
+        $container = $containerCreator(self::$projectDir);
+        $this->assertEquals('Testing App', $container->get('kuick.app.name'));
+        $this->assertEquals('dev', $container->get('kuick.app.env'));
+        $this->assertEquals(self::$projectDir, $container->get('kuick.app.projectDir'));
+        $this->assertIsArray($container->get('kuick.app.listeners'));
+    }
 
+    /**
+     * Needs to be run in separate process
+     * @runInSeparateProcess
+     */
     public function testIfProdContainerIsBuiltForProd(): void
     {
         putenv('KUICK_APP_ENV=prod');
@@ -39,10 +47,17 @@ class ContainerCreatorTest extends TestCase
         $this->assertEquals('Testing App', $uncachedContainer->get('kuick.app.name'));
     }
 
+    /**
+     * Needs to be run in separate process
+     * @runInSeparateProcess
+     * @depends testIfProdContainerIsBuiltForProd
+     */
     public function testIfProdContainerIsCachedForProd(): void
     {
         putenv('KUICK_APP_ENV=prod');
         $containerCreator = new ContainerCreator();
+        $uncachedContainer = $containerCreator(self::$projectDir);
+        $this->assertEquals('Testing App', $uncachedContainer->get('kuick.app.name'));
         $cachedContainer = $containerCreator(self::$projectDir);
         $this->assertEquals('Testing App', $cachedContainer->get('kuick.app.name'));
     }

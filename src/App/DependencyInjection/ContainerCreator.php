@@ -33,12 +33,14 @@ class ContainerCreator
         $this->appEnv = getenv(Kernel::APP_ENV);
 
         //remove container if not in production mode
-        $this->appEnv !== Kernel::ENV_PROD && $this->removeContainer($projectDir);
+        if (Kernel::ENV_DEV === $this->appEnv) {
+            $this->removeContainer($projectDir);
+        }
 
         //build or load from cache
         $container = $this->configureBuilder($projectDir)->build();
 
-        //for production mode, check if container is already built and return it if so
+        //for production, return cached container if exists
         if ($container->has(Kernel::DI_PROJECT_DIR_KEY)) {
             $logger = $container->get(LoggerInterface::class);
             $logger->info('Application is running in ' . $this->appEnv . ' mode');
