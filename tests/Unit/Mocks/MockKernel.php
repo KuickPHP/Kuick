@@ -5,12 +5,11 @@ namespace Tests\Kuick\Unit\Mocks;
 use Kuick\Framework\KernelInterface;
 use Kuick\EventDispatcher\EventDispatcher;
 use Kuick\EventDispatcher\ListenerProvider;
-use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 
 class MockKernel implements KernelInterface
 {
-    private ContainerInterface $container;
+    private MockContainer $container;
     private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(private string $projectDir = '/tmp')

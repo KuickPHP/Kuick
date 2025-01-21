@@ -11,6 +11,6 @@ class MockRequestHandler implements RequestHandlerInterface
 {
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return new Response(200, [], 'OK');
+        return new Response(200, ['X-request-body' => $request->getBody()->getContents()], 'OK');
     }
 }
