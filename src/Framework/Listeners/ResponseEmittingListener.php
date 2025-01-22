@@ -34,7 +34,7 @@ final class ResponseEmittingListener
         ]);
         // emmit response
         (new ResponseEmitter())->emitResponse($response);
-        $this->logger->info('Response emitted succesfuly');
+        $this->logger->info('Response emitted succesfully');
         $this->eventDispatcher->dispatch(new ResponseEmittedEvent($response));
     }
 }
