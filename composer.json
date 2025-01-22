@@ -17,6 +17,10 @@
         "ext-mbstring": "*",
         "ext-reflection": "*",
         "ext-spl": "*",
+        "kuick/cache": "^1.4",
+        "kuick/dotenv": "^1.0",
+        "kuick/event-dispatcher": "^1.1",
+        "kuick/http": "^1.0",
         "monolog/monolog": "^3.0",
         "nyholm/psr7": "^1.8",
         "nyholm/psr7-server": "^1.1",
@@ -46,7 +50,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Kuick\\Tests\\": "tests"
+            "Tests\\Kuick\\": "tests"
         }
     },
     "require-dev": {

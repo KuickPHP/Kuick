@@ -4,9 +4,8 @@ composer.lock
 /.php*
 /vendor/
 .DS_Store
-/public/build*
 /var
 version.*
 /.env.local
-/tests/Mocks/MockProjectDir/var*
 clover.xml
+/tests/Unit/Mocks/project-dir/var*
