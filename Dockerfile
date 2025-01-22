@@ -18,11 +18,7 @@ ENV KUICK_APP_NAME=Kuick@Docker \
     OPCACHE_VALIDATE_TIMESTAMPS=0
 
 COPY --link etc/apache2 /etc/apache2
-COPY --link bin bin
-COPY --link public public
-# example distribution files
-COPY --link distribution/composer.json composer.json
-COPY --link config config
+COPY --link distribution .
 COPY --link version.* public/
 
 RUN set -eux; \
