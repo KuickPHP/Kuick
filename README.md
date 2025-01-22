@@ -1,13 +1,21 @@
 # Kuick PHP framework
-[![Latest Version](https://img.shields.io/github/release/milejko/kuick.svg?cacheSeconds=14400)](https://github.com/milejko/kuick/releases)
+[![Latest Version](https://img.shields.io/github/release/milejko/kuick-framework.svg?cacheSeconds=14400)](https://github.com/milejko/kuick-framework-framework/releases)
 [![PHP](https://img.shields.io/badge/PHP-8.2%20|%208.3%20|%208.4-blue?logo=php&cacheSeconds=3600)](https://www.php.net)
 [![Total Downloads](https://img.shields.io/packagist/dt/kuick/framework.svg?cacheSeconds=14400)](https://packagist.org/packages/kuick/framework)
-[![GitHub Actions CI](https://github.com/milejko/kuick/actions/workflows/ci.yml/badge.svg)](https://github.com/milejko/kuick/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/milejko/kuick/graph/badge.svg?token=80QEBDHGPH)](https://codecov.io/gh/milejko/kuick)
+[![GitHub Actions CI](https://github.com/milejko/kuick-framework-framework/actions/workflows/ci.yml/badge.svg)](https://github.com/milejko/kuick-framework-framework/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/milejko/kuick-framework/graph/badge.svg?token=80QEBDHGPH)](https://codecov.io/gh/milejko/kuick-framework)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?cacheSeconds=14400)](LICENSE)
 
-Kuick is an extremely low footprint PHP application framework, based on Symfony components, suitable for high workloads
+Kuick is an extremely low footprint PHP application framework.
 Designed for developers seeking speed, efficiency, and flexibility in web application development.
+
+## Key features
+1. Logging realized with PSR-3 Logger Interface implementation
+2. Integrated PSR-7 HTTP message interface
+3. PSR-11 Container
+4. Implemented Event Dispatcher compatible with [PSR-14](https://github.com/milejko/kuick-event-dispatcher)
+4. Request handling compatible with [PSR-15](https://github.com/milejko/kuick-http)
+5. [PSR-16 Caching](https://github.com/milejko/kuick-cache)
 
 ## Usage (Docker)
 Ready to deploy images you can find here: https://hub.docker.com/r/kuickphp/kuick/tags
