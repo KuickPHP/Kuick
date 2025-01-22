@@ -34,6 +34,7 @@ class ContainerCreatorTest extends TestCase
         $this->assertIsArray($container->get('kuick.app.listeners'));
         $this->assertEquals('Testing App', $container->get('kuick.app.name'));
         $this->assertEquals('Europe/Warsaw', $container->get('kuick.app.timezone'));
+        (new Filesystem())->remove(self::$projectDir . '/var/cache');
     }
 
     /**
@@ -62,5 +63,6 @@ class ContainerCreatorTest extends TestCase
         $containerCreator = new ContainerCreator();
         $uncachedContainer = $containerCreator(self::$projectDir);
         $this->assertEquals('Testing App', $uncachedContainer->get('kuick.app.name'));
+        (new Filesystem())->remove(self::$projectDir . '/var/cache');
     }
 }

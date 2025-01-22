@@ -16,7 +16,9 @@ use Nyholm\Psr7Server\ServerRequestCreator;
 $projectDir = dirname(__DIR__);
 require $projectDir . '/vendor/autoload.php';
 
-Kuick\Dotenv\DotEnvLoader::fromDirectory($projectDir);
+// Using .env loader is not recommended from the performance perspective
+// uncomment the line below if you really want to use it
+// Kuick\Dotenv\DotEnvLoader::fromDirectory($projectDir);
 
 $psr17Factory = new Psr17Factory();
 

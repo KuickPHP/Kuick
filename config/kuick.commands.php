@@ -8,11 +8,8 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-namespace Kuick\Http;
+use Kuick\Example\Console\PingCommand;
 
-use Kuick\Http\Message\Response;
-
-class MethodNotAllowedException extends ResponseException
-{
-    protected $code = Response::HTTP_METHOD_NOT_ALLOWED;
-}
+return [
+    PingCommand::class,
+];

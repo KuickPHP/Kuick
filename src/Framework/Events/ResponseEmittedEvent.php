@@ -10,6 +10,16 @@
 
 namespace Kuick\Framework\Events;
 
-final class CommandReceivedEvent
+use Psr\Http\Message\ResponseInterface;
+
+final class ResponseEmittedEvent
 {
+    public function __construct(private ResponseInterface $response)
+    {
+    }
+
+    public function getResponse(): ResponseInterface
+    {
+        return $this->response;
+    }
 }

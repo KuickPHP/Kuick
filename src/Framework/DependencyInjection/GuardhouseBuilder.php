@@ -15,13 +15,12 @@ use Kuick\Framework\Config\ConfigException;
 use Kuick\Framework\Config\GuardConfig;
 use Kuick\Framework\Kernel;
 use Kuick\Framework\SystemCacheInterface;
-use Kuick\Routing\Router;
 use Kuick\Security\Guardhouse;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
 /**
- *
+ * Guardhouse Builder
  */
 class GuardhouseBuilder
 {

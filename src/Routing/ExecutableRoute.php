@@ -13,7 +13,6 @@ namespace Kuick\Routing;
 use Kuick\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use ReflectionMethod;
 
 /**
  * Executable route

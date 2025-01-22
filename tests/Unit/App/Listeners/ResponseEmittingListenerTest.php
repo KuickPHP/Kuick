@@ -2,10 +2,13 @@
 
 namespace Tests\Kuick\Unit\Framework\Listeners;
 
+use Kuick\EventDispatcher\EventDispatcher;
+use Kuick\EventDispatcher\ListenerProvider;
 use Kuick\Framework\Events\ResponseCreatedEvent;
 use Kuick\Framework\Listeners\ResponseEmittingListener;
 use Kuick\Http\Message\Response;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 /**
  * @covers \Kuick\Framework\Listeners\ResponseEmittingListener
@@ -20,7 +23,9 @@ class ResponseEmittingTest extends TestCase
     {
         $responseCreatedEvent = new ResponseCreatedEvent(new Response(200, [], 'Hello world!'));
         ob_start();
-        (new ResponseEmittingListener())($responseCreatedEvent);
+        $listenerProvider = new ListenerProvider();
+        $eventDispatcher = new EventDispatcher($listenerProvider);
+        (new ResponseEmittingListener($eventDispatcher, new NullLogger()))($responseCreatedEvent);
         $this->assertEquals('Hello world!', ob_get_clean());
     }
 }

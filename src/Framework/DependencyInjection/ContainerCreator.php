@@ -74,6 +74,9 @@ class ContainerCreator
         // creating guardhouse
         (new GuardhouseBuilder($builder))();
 
+        // creating console application
+        (new ConsoleApplicationBuilder($builder))();
+
         // loading definitions (can override everything else)
         (new DefinitionConfigLoader($builder))($projectDir, $appEnv);
 
@@ -86,7 +89,7 @@ class ContainerCreator
             ->useAttributes(true)
             ->enableCompilation($projectDir . self::CACHE_PATH . DIRECTORY_SEPARATOR . $appEnv);
         //apcu cache for definitions
-        if ($appEnv == Kernel::ENV_PROD && $this->apcuEnabled()) {
+        if ($this->apcuEnabled($appEnv)) {
             $builder->enableDefinitionCache($projectDir . $appEnv);
         }
         return $builder;
@@ -95,17 +98,11 @@ class ContainerCreator
     private function removeContainer(string $projectDir, string $appEnv): void
     {
         array_map('unlink', glob($projectDir . self::CACHE_PATH . DIRECTORY_SEPARATOR . $appEnv . DIRECTORY_SEPARATOR . self::COMPILED_FILENAME));
-        if ($this->apcuEnabled()) {
-            $apcuIterator = new APCUIterator('$php-di.definitions.' . $projectDir . $appEnv . '$');
-            //DI definition apcu cache cleanup
-            foreach ($apcuIterator as $key) {
-                apcu_delete($key['key']);
-            }
-        }
+        $this->apcuEnabled($appEnv) && apcu_clear_cache();
     }
 
-    private function apcuEnabled(): bool
+    private function apcuEnabled(string $appEnv): bool
     {
-        return function_exists('apcu_enabled') && apcu_enabled();
+        return $appEnv == Kernel::ENV_PROD && function_exists('apcu_enabled') && apcu_enabled();
     }
 }

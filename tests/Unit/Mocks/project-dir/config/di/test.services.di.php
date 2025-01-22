@@ -1,6 +1,5 @@
 <?php
 
-use Kuick\Framework\Listeners\CommandLaunchingListener;
 use Kuick\Framework\Listeners\EventLoggingListener;
 use Kuick\Framework\Listeners\LocalizingListener;
 use Kuick\Framework\Listeners\RequestHandlingListener;
@@ -31,7 +30,6 @@ return [
     SystemCacheInterface::class => autowire(SystemCache::class),
 
     // performance optimization: autowiring
-    CommandLaunchingListener::class => autowire(),
     LocalizingListener::class => autowire(),
     EventLoggingListener::class => autowire(),
     RequestHandlingListener::class => autowire(),

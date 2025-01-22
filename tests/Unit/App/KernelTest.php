@@ -6,6 +6,7 @@ use Kuick\Framework\Kernel;
 use Kuick\Framework\KernelInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @covers Kuick\Framework\Kernel
@@ -34,5 +35,6 @@ class Kernelest extends TestCase
         $this->assertEquals($container->get('kuick.app.projectDir'), $kernel->getProjectDir());
         $this->assertEquals('dev', $container->get('kuick.app.env'));
         $this->assertEquals('Europe/Warsaw', $container->get('kuick.app.timezone'));
+        (new Filesystem())->remove(self::$projectDir . '/var/cache');
     }
 }
