@@ -1,7 +1,7 @@
 <?php
 
 use Kuick\Framework\Config\GuardConfig;
-use Tests\Kuick\Unit\Mocks\MockGuard;
+use Tests\Unit\Kuick\Framework\Mocks\MockGuard;
 
 return [
     new GuardConfig('/api', MockGuard::class),

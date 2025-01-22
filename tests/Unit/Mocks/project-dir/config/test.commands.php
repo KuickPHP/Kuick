@@ -1,6 +1,6 @@
 <?php
 
-use Tests\Kuick\Unit\Mocks\MockCommand;
+use Tests\Unit\Kuick\Framework\Mocks\MockCommand;
 
 return [
     MockCommand::class,

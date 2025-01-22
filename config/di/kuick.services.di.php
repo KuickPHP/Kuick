@@ -8,13 +8,11 @@ use Kuick\Framework\SystemCache;
 use Kuick\Framework\SystemCacheInterface;
 use Kuick\EventDispatcher\EventDispatcher;
 use Kuick\EventDispatcher\ListenerProvider;
-use Kuick\Example\Console\PingCommand;
-use Kuick\Example\UI\PingController;
+use Kuick\Framework\Api\Security\OpsGuard;
+use Kuick\Framework\Api\UI\OpsController;
 use Kuick\Http\Server\ExceptionHtmlRequestHandler;
 use Kuick\Http\Server\ExceptionJsonRequestHandler;
 use Kuick\Http\Server\ExceptionRequestHandlerInterface;
-use Kuick\Ops\Security\OpsGuard;
-use Kuick\Ops\UI\OpsController;
 use Kuick\Routing\RoutingMiddleware;
 use Kuick\Security\SecurityMiddleware;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -38,8 +36,6 @@ return [
     ExceptionHtmlRequestHandler::class => autowire(),
     RoutingMiddleware::class => autowire(),
     SecurityMiddleware::class => autowire(),
-    PingCommand::class => autowire(),
-    PingController::class => autowire(),
     OpsGuard::class => autowire(),
     OpsController::class => autowire(),
 ];

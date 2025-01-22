@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Kuick\Unit\Mocks;
+namespace Tests\Unit\Kuick\Framework\Mocks;
 
 use Kuick\Http\Message\Response;
 use Psr\Http\Message\ResponseInterface;

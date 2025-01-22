@@ -8,21 +8,15 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
+use Kuick\Framework\Api\UI\DocHtmlController;
+use Kuick\Framework\Api\UI\DocJsonController;
 use Kuick\Framework\Config\RouteConfig;
-use Kuick\Example\UI\PingController;
-use Kuick\Doc\UI\DocHtmlController;
-use Kuick\Doc\UI\DocJsonController;
-use Kuick\Ops\UI\OpsController;
+use Kuick\Framework\Api\UI\OpsController;
 
 return [
-    //homepage
-    new RouteConfig('/', PingController::class),
-    // hello route (with named parameter)
-    new RouteConfig('/hello/(?<name>[a-zA-Z0-9-]{1,40})', PingController::class),
-
     // OPS route gives some insight of server environment
     new RouteConfig('/api/ops', OpsController::class),
-    //OpenAPI / Swagger HTML documentation
+    // OpenAPI documentation
     new RouteConfig('/api/doc.json', DocJsonController::class),
     new RouteConfig('/api/doc', DocHtmlController::class),
 ];

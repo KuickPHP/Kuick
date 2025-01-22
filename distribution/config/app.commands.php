@@ -8,8 +8,5 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
-use Kuick\Example\Console\PingCommand;
-
 return [
-    PingCommand::class,
 ];

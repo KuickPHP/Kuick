@@ -1,7 +1,7 @@
 <?php
 
 use Kuick\Framework\Config\ListenerConfig;
-use Tests\Kuick\Unit\Mocks\MockListener;
+use Tests\Unit\Kuick\Framework\Mocks\MockListener;
 
 return [
     // logging all the events

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Kuick\Unit\Mocks;
+namespace Tests\Unit\Kuick\Framework\Mocks;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

@@ -8,8 +8,8 @@
  * @license    https://en.wikipedia.org/wiki/BSD_licenses New BSD License
  */
 
+use Kuick\Framework\Api\Security\OpsGuard;
 use Kuick\Framework\Config\GuardConfig;
-use Kuick\Ops\Security\OpsGuard;
 
 return [
     // OPS guard protects /api/ops route with OpsGuard 
