@@ -36,6 +36,6 @@ class ExecutableRoute
 
     public function execute(ServerRequestInterface $request): ResponseInterface
     {
-        return $this->controller->__invoke($request->withQueryParams($this->params));
+        return $this->controller->__invoke($request->withQueryParams(array_merge($this->params, $request->getQueryParams())));
     }
 }

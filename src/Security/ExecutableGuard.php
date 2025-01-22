@@ -43,6 +43,6 @@ class ExecutableGuard
     public function execute(ServerRequestInterface $request): void
     {
         // adding guard parameters to the request query params
-        $this->guard->__invoke($request->withQueryParams($this->params));
+        $this->guard->__invoke($request->withQueryParams(array_merge($this->params, $request->getQueryParams())));
     }
 }
