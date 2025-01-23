@@ -18,7 +18,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
  */
 interface KernelInterface
 {
-    public const APP_ENV = 'KUICK_APP_ENV';
+    public const APP_ENV = 'APP_ENV';
 
     public const DI_APP_ENV_KEY = 'kuick.app.env';
     public const DI_APP_NAME_KEY = 'kuick.app.name';

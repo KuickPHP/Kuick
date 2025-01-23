@@ -24,7 +24,7 @@ class SystemCache extends LayeredCache implements SystemCacheInterface
         #[Inject('kuick.app.env')] string $env,
     ) {
         // in non-prod env we use NullCache only
-        if ($env !== Kernel::ENV_PROD) {
+        if (Kernel::ENV_DEV === $env) {
             parent::__construct([new NullCache()]);
             return;
         }
@@ -32,7 +32,7 @@ class SystemCache extends LayeredCache implements SystemCacheInterface
         $prodCacheStack = [
             new InMemoryCache(),
         ];
-        // if apcu cache is available - we use it
+        // adding apcu cache layer if apcu extension is enabled
         if (function_exists('apcu_enabled') && apcu_enabled()) {
             $prodCacheStack[] = new ApcuCache();
         }

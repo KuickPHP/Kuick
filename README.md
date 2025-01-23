@@ -45,7 +45,7 @@ curl http://localhost:8080/hello/John
 - custom OPS API token
 ```
 docker run -p 8080:80 \
-    -e KUICK_APP_ENV=dev \
+    -e APP_ENV=dev \
     -e KUICK_APP_NAME=ExampleApp \
     -e KUICK_APP_CHARSET=UTF-8 \
     -e KUICK_APP_LOCALE=pl_PL.utf-8 \

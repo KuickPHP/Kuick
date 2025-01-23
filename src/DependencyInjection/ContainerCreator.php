@@ -10,9 +10,7 @@
 
 namespace Kuick\Framework\DependencyInjection;
 
-use APCUIterator;
 use DI\ContainerBuilder;
-use Kuick\Framework\Kernel;
 use Kuick\Framework\KernelInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -24,36 +22,36 @@ class ContainerCreator
 
     public function __invoke(string $projectDir): ContainerInterface
     {
-        //setting default env
-        (false === getenv(Kernel::APP_ENV)) && putenv(Kernel::APP_ENV . '=' . Kernel::ENV_PROD);
-        $appEnv = getenv(Kernel::APP_ENV);
-
-        //remove container if not in production mode
-        if (Kernel::ENV_DEV === $appEnv) {
-            $this->removeContainer($projectDir, $appEnv);
+        // setting the default env if not set
+        if (false === getenv(KernelInterface::APP_ENV)) {
+            putenv(KernelInterface::APP_ENV . '=' . KernelInterface::ENV_PROD);
         }
+        $appEnv = getenv(KernelInterface::APP_ENV);
 
-        //build or load from cache
+        // build or load from cache
         $container = $this->configureBuilder($projectDir, $appEnv)->build();
 
-        //for production, return cached container if exists
-        if ($container->has(Kernel::DI_PROJECT_DIR_KEY)) {
-            $container->get(LoggerInterface::class)->info('Application is running in "' . $appEnv . '" mode, container loaded from cache');
+        // check if container is already cached
+        if ($container->has(KernelInterface::DI_PROJECT_DIR_KEY)) {
+            $container->get(LoggerInterface::class)->info('Application is running in "' . $appEnv . '" mode, DI container loaded from cache');
             return $container;
         }
-        //rebuilding if validation failed
-        $this->removeContainer($projectDir, $appEnv);
+
         $container = $this->rebuildContainer($projectDir, $appEnv);
         $logger = $container->get(LoggerInterface::class);
-        $logger->warning('DI container rebuilt, cache written, application is running in "' . $appEnv . '" mode');
+        $logger->warning('Application is running in "' . $appEnv . '" mode, DI container rebuilt');
         return $container;
     }
 
     private function rebuildContainer(string $projectDir, string $appEnv): ContainerInterface
     {
+        // removing previous container if exists
+        $this->removeContainer($projectDir, $appEnv);
+
+        // creating new builder
         $builder = $this->configureBuilder($projectDir, $appEnv);
 
-        //adding default definitions
+        // adding default definitions
         $builder->addDefinitions([
             KernelInterface::DI_APP_ENV_KEY => $appEnv,
             KernelInterface::DI_PROJECT_DIR_KEY => $projectDir,
@@ -85,12 +83,12 @@ class ContainerCreator
 
     private function configureBuilder(string $projectDir, string $appEnv): ContainerBuilder
     {
-        $builder = (new ContainerBuilder())
-            ->useAttributes(true)
-            ->enableCompilation($projectDir . self::CACHE_PATH . DIRECTORY_SEPARATOR . $appEnv);
-        //apcu cache for definitions
-        if ($this->apcuEnabled($appEnv)) {
-            $builder->enableDefinitionCache($projectDir . $appEnv);
+        $builder = (new ContainerBuilder())->useAttributes(true);
+        // enable compilation for production
+        if (($appEnv !== KernelInterface::ENV_DEV)) {
+            $builder->enableCompilation($projectDir . self::CACHE_PATH . DIRECTORY_SEPARATOR . $appEnv);
+            // optional apcu definition cache
+            $this->isApcuAvailable() && $builder->enableDefinitionCache($projectDir . $appEnv);
         }
         return $builder;
     }
@@ -98,11 +96,14 @@ class ContainerCreator
     private function removeContainer(string $projectDir, string $appEnv): void
     {
         array_map('unlink', glob($projectDir . self::CACHE_PATH . DIRECTORY_SEPARATOR . $appEnv . DIRECTORY_SEPARATOR . self::COMPILED_FILENAME));
-        $this->apcuEnabled($appEnv) && apcu_clear_cache();
+        // clear potential apcu cache
+        if (($appEnv !== KernelInterface::ENV_DEV) && $this->isApcuAvailable()) {
+            apcu_clear_cache();
+        }
     }
 
-    private function apcuEnabled(string $appEnv): bool
+    private function isApcuAvailable(): bool
     {
-        return $appEnv == Kernel::ENV_PROD && function_exists('apcu_enabled') && apcu_enabled();
+        return function_exists('apcu_enabled') && apcu_enabled();
     }
 }

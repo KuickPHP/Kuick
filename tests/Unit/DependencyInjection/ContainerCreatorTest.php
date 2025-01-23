@@ -24,8 +24,7 @@ class ContainerCreatorTest extends TestCase
      */
     public function testIfDevContainerIsBuiltForDev(): void
     {
-        putenv('KUICK_APP_ENV=dev');
-        (new Filesystem())->remove(self::$projectDir . '/var/cache');
+        putenv('APP_ENV=dev');
         $containerCreator = new ContainerCreator();
         $container = $containerCreator(self::$projectDir);
         $this->assertEquals('Testing App', $container->get('kuick.app.name'));
@@ -34,7 +33,6 @@ class ContainerCreatorTest extends TestCase
         $this->assertIsArray($container->get('kuick.app.listeners'));
         $this->assertEquals('Testing App', $container->get('kuick.app.name'));
         $this->assertEquals('Europe/Warsaw', $container->get('kuick.app.timezone'));
-        (new Filesystem())->remove(self::$projectDir . '/var/cache');
     }
 
     /**
@@ -43,7 +41,7 @@ class ContainerCreatorTest extends TestCase
      */
     public function testIfProdContainerIsBuiltForProd(): void
     {
-        putenv('KUICK_APP_ENV=prod');
+        // prod should be set by default
         (new Filesystem())->remove(self::$projectDir . '/var/cache');
         $containerCreator = new ContainerCreator();
 
@@ -59,7 +57,7 @@ class ContainerCreatorTest extends TestCase
      */
     public function testIfProdContainerIsCachedForProd(): void
     {
-        putenv('KUICK_APP_ENV=prod');
+        putenv('APP_ENV=prod');
         $containerCreator = new ContainerCreator();
         $uncachedContainer = $containerCreator(self::$projectDir);
         $this->assertEquals('Testing App', $uncachedContainer->get('kuick.app.name'));
