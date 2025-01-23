@@ -10,7 +10,7 @@ on:
 
 jobs:
   Testing:
-    uses: milejko/kuick/.github/workflows/ci.yml@main
+    uses: milejko/kuick-framework/.github/workflows/ci.yml@main
 
   Deployment:
     needs: Testing
