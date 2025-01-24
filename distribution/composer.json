@@ -1,7 +1,0 @@
-{
-    "name": "kuick/example-app",
-    "license": "MIT",
-    "require": {
-        "kuick/framework": "^2.0"
-    }
-}

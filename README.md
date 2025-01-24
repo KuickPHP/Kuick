@@ -17,7 +17,22 @@ Designed for developers seeking speed, efficiency, and flexibility in web applic
 4. Request handling compatible with [PSR-15](https://github.com/milejko/kuick-http)
 5. [PSR-16 Caching](https://github.com/milejko/kuick-cache)
 
-## Usage (Docker)
+## Basic Usage
+1. Make sure you have PHP >= 8.2 and Composer
+2. Require the framework to your project
+```
+composer require kuick/framework
+```
+3. Run the installer
+```
+composer run kuick-installer
+```
+
+## Creating Kuick project
+Convenient way to develop projects based on Kuick is to create a kuick/project with Composer.
+1. Follow those instructions: [kuick/project](https://github.com/milejko/kuick-project?tab=readme-ov-file)
+
+## Docker Demo
 Ready to deploy images you can find here: https://hub.docker.com/r/kuickphp/kuick/tags
 
 1. Run using Docker
