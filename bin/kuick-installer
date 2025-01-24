@@ -9,20 +9,29 @@
  * @license    https://github.com/milejko/kuick-framework?tab=MIT-1-ov-file#readme New BSD License
  */
 
-$index = file_get_contents('https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/public/index.php');
-$console = file_get_contents('https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/bin/console');
-$listenersConfig = file_get_contents('https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/app.listeners.php');
-$middlewaresConfig = file_get_contents('https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/app.middlewares.php');
-$appDi = file_get_contents('https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/di/app.di.php');
-$appDiDev = file_get_contents('https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/di/app.di@dev.php');
+namespace Kuick\Framework\Installer;
 
-mkdir('public', 0777, true);
-mkdir('bin', 0777, true);
-mkdir('config/di', 0777, true);
+$fileMap = [
+    'public/index.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/public/index.php',
+    'bin/console' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/bin/console',
+    'config/kuick.listeners.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/kuick.listeners.php',
+    'config/kuick.middlewares.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/kuick.middlewares.php',
+    'config/kuick.routes.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/kuick.routes.php',
+    'config/di/kuick.di.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/di/kuick.di.php',
+    'config/di/app.di@dev.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/di/kuick.di@dev.php',
+];
 
-file_put_contents('public/index.php', $index);
-file_put_contents('bin/console', $console);
-file_put_contents('config/app.listeners.php', $listenersConfig);
-file_put_contents('config/app.middlewares.php', $middlewaresConfig);
-file_put_contents('config/di/app.di.php', $appDi);
-file_put_contents('config/di/app.di@dev.php', $appDiDev);
+foreach (array_keys($fileMap) as $file) {
+    if (file_exists($file)) {
+        echo 'Skipping install: ' . $file . ' - file already exists' . PHP_EOL;
+        exit;
+    }
+}
+foreach ($fileMap as $file => $url) {
+    $dir = dirname($file);
+    if (!is_dir($dir)) {
+        mkdir($dir, 0777, true);
+    }
+    file_put_contents($file, file_get_contents($url));
+    echo 'Installed: ' . $file . PHP_EOL;
+}
