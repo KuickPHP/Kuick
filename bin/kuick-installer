@@ -9,12 +9,6 @@
  * @license    https://github.com/milejko/kuick-framework?tab=MIT-1-ov-file#readme New BSD License
  */
 
-use Symfony\Component\Filesystem\Filesystem;
-
-include $_composer_autoload_path;
-
-$filesystem = new Filesystem();
-
 $index = file_get_contents('https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/public/index.php');
 $console = file_get_contents('https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/bin/console');
 $listenersConfig = file_get_contents('https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/app.listeners.php');
@@ -22,9 +16,13 @@ $middlewaresConfig = file_get_contents('https://raw.githubusercontent.com/milejk
 $appDi = file_get_contents('https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/di/app.di.php');
 $appDiDev = file_get_contents('https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/di/app.di@dev.php');
 
-$filesystem->dumpFile('public/index.php', $indexFile);
-$filesystem->dumpFile('bin/console', $consoleFile);
-$filesystem->dumpFile('config/app.listeners.php', $listenersConfig);
-$filesystem->dumpFile('config/app.middlewares.php', $middlewaresConfig);
-$filesystem->dumpFile('config/di/app.di.php', $appDi);
-$filesystem->dumpFile('config/di/app.di@dev.php', $appDiDev);
+mkdir('public', 0777, true);
+mkdir('bin', 0777, true);
+mkdir('config/di', 0777, true);
+
+file_put_contents('public/index.php', $index);
+file_put_contents('bin/console', $console);
+file_put_contents('config/app.listeners.php', $listenersConfig);
+file_put_contents('config/app.middlewares.php', $middlewaresConfig);
+file_put_contents('config/di/app.di.php', $appDi);
+file_put_contents('config/di/app.di@dev.php', $appDiDev);
