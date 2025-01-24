@@ -25,7 +25,7 @@ composer require kuick/framework
 ```
 3. Run the installer
 ```
-composer run kuick-installer
+./vendor/bin/kuick-installer
 ```
 
 ## Creating Kuick project
