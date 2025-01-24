@@ -11,6 +11,7 @@
 namespace Kuick\Framework\Listeners;
 
 use DI\Attribute\Inject;
+use Psr\Log\LoggerInterface;
 
 final class LocalizingListener
 {
@@ -20,6 +21,7 @@ final class LocalizingListener
         #[Inject('kuick.app.locale')] private string $locale,
         #[Inject('kuick.app.timezone')] private string $timezone,
         #[Inject('kuick.app.charset')] private string $charset,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -32,5 +34,10 @@ final class LocalizingListener
         setlocale(LC_ALL, $this->locale);
         //numbers are always localized to en_US.utf-8'
         setlocale(LC_NUMERIC, self::DEFAULT_LOCALE);
+        $this->logger->info('Locale setup', [
+            'locale' => $this->locale,
+            'timezone' => $this->timezone,
+            'charset' => $this->charset,
+        ]);
     }
 }
