@@ -20,6 +20,8 @@ class ContainerCreator
     private const CACHE_PATH =  '/var/cache';
     private const COMPILED_FILENAME = 'CompiledContainer.php';
 
+    private array $loadedDefinitions = [];
+
     public function __invoke(string $projectDir): ContainerInterface
     {
         // setting the default env if not set
@@ -40,6 +42,10 @@ class ContainerCreator
         $container = $this->rebuildContainer($projectDir, $appEnv);
         $logger = $container->get(LoggerInterface::class);
         $logger->warning('Application is running in "' . $appEnv . '" mode, DI container rebuilt');
+        // log loaded definitions
+        foreach ($this->loadedDefinitions as $definition) {
+            $logger->debug('Loaded DI definition: ' . $definition);
+        }
         return $container;
     }
 
@@ -76,7 +82,7 @@ class ContainerCreator
         (new ConsoleApplicationBuilder($builder))();
 
         // loading definitions (can override everything else)
-        (new DefinitionConfigLoader($builder))($projectDir, $appEnv);
+        $this->loadedDefinitions = (new DefinitionConfigLoader($builder))($projectDir, $appEnv);
 
         return $builder->build();
     }

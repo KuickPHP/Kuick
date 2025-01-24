@@ -48,7 +48,7 @@ class ConsoleApplicationBuilder
                     if (!($command instanceof Command)) {
                         throw new ConfigException('Command must implement: ' . Command::class);
                     }
-                    $logger->info('Adding command: ' . $commandClassName);
+                    $logger->debug('Adding command: ' . $commandClassName);
                     $consoleApplication->add($command);
                 }
             }

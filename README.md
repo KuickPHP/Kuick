@@ -18,7 +18,7 @@ Designed for developers seeking speed, efficiency, and flexibility in web applic
 5. [PSR-16 Caching](https://github.com/milejko/kuick-cache)
 
 ## Basic Usage
-1. Make sure you have PHP >= 8.2 and Composer
+1. Make sure you have PHP >= 8.2 and Composer installed on your system
 2. Require the framework to your project
 ```
 composer require kuick/framework
@@ -74,6 +74,3 @@ OPS endpoint:
 ```
 curl -H "Authorization: Bearer secret-token" http://localhost:8080/api/ops
 ```
-## Usage (Standalone)
-1. Install PHP>8.2 + Composer
-@TODO: finish this chapter

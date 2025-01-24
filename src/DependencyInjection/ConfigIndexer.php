@@ -32,12 +32,12 @@ class ConfigIndexer
         $cacheKey = sprintf(self::CACHE_KEY_TEMPLATE, $type);
         $cachedFiles = $this->cache->get($cacheKey);
         if (null !== $cachedFiles) {
-            $this->logger->info('Config index of "' . $type . '" loaded from cache: (' . count($cachedFiles) . ')');
+            $this->logger->debug('Config index of "' . $type . '" loaded from cache: (' . count($cachedFiles) . ')');
             return $cachedFiles;
         }
         $files = [];
         foreach (glob($projectDir . sprintf(self::ROUTES_CONFIG_LOCATION_TEMPLATE, $type)) as $routeFile) {
-            $this->logger->info('Indexing ' . $type . ' file: ' . $routeFile);
+            $this->logger->debug('Indexing ' . $type . ' file: ' . $routeFile);
             $files[] = $routeFile;
         }
         $this->cache->set($cacheKey, $files);

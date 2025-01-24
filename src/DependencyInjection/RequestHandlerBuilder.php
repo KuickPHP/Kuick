@@ -47,7 +47,7 @@ class RequestHandlerBuilder
                     if (!in_array(MiddlewareInterface::class, class_implements($middlewareClassName))) {
                         throw new ConfigException('Middleware must implement: ' . MiddlewareInterface::class);
                     }
-                    $logger->info('Adding middleware: ' . $middlewareClassName);
+                    $logger->debug('Adding middleware: ' . $middlewareClassName);
                     $requestHandler->addMiddleware($container->get($middlewareClassName));
                 }
             }

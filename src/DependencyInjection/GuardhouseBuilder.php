@@ -40,7 +40,7 @@ class GuardhouseBuilder
                     if (!($guard instanceof GuardConfig)) {
                         throw new ConfigException('Guard config must be an instance of ' . GuardConfig::class);
                     }
-                    $logger->info('Adding guard: ' . $guard->path);
+                    $logger->debug('Adding guard: ' . $guard->path);
                     // @TODO: add support for inline callables
                     $guardhouse->addGuard($guard->path, $container->get($guard->guardClassName), $guard->methods);
                 }

@@ -25,19 +25,24 @@ class DefinitionConfigLoader
     {
     }
 
-    public function __invoke(string $projectDir, string $env): void
+    public function __invoke(string $projectDir, string $env): array
     {
+        $loadedDefinitions = [];
         //adding vendor definition files
         foreach (glob($projectDir . self::KUICK_VENDORS_DEFINITION_LOCATION) as $definitionFile) {
             $this->builder->addDefinitions($definitionFile);
+            $loadedDefinitions[] = $definitionFile;
         }
         //adding project definition files
         foreach (glob($projectDir . self::DEFINITION_LOCATION) as $definitionFile) {
             $this->builder->addDefinitions($definitionFile);
+            $loadedDefinitions[] = $definitionFile;
         }
         //adding env specific definition files
         foreach (glob(sprintf($projectDir . self::ENV_SPECIFIC_DEFINITION_LOCATION_TEMPLATE, $env)) as $definitionFile) {
             $this->builder->addDefinitions($definitionFile);
+            $loadedDefinitions[] = $definitionFile;
         }
+        return $loadedDefinitions;
     }
 }

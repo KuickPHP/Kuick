@@ -1,13 +1,12 @@
 # syntax=docker/dockerfile:1.6
 
 ARG PHP_VERSION=8.3 \
-    SERVER_VARIANT=apache \
     OS_VARIANT=jammy
 
 ###################
 # Base PHP target #
 ###################
-FROM milejko/php:${PHP_VERSION}-${SERVER_VARIANT}-${OS_VARIANT} AS base
+FROM milejko/php:${PHP_VERSION}-${OS_VARIANT} AS base
 
 ######################
 # Test runner target #

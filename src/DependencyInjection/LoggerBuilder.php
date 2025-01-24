@@ -12,7 +12,7 @@ namespace Kuick\Framework\DependencyInjection;
 
 use DateTimeZone;
 use DI\ContainerBuilder;
-use Kuick\Framework\AppException;
+use Kuick\Framework\Config\ConfigException;
 use Kuick\Framework\KernelInterface;
 use Monolog\Handler\FingersCrossedHandler;
 use Monolog\Handler\FirePHPHandler;
@@ -44,9 +44,9 @@ class LoggerBuilder
             $logger->setTimezone(new DateTimeZone($container->get('kuick.app.timezone')));
             $handlers = $container->get('kuick.app.monolog.handlers');
             $defaultLevel = $container->get('kuick.app.monolog.level') ?? LogLevel::WARNING;
-            !is_array($handlers) && throw new AppException('Logger handlers are invalid, should be an array');
+            !is_array($handlers) && throw new ConfigException('Logger handlers are invalid, should be an array');
             foreach ($handlers as $handler) {
-                $type = $handler['type'] ?? throw new AppException('Logger handler type not defined');
+                $type = $handler['type'] ?? throw new ConfigException('Logger handler type not defined');
                 $level = $handler['level'] ?? $defaultLevel;
                 //@TODO: extract handler factory to the different class and add missing types
                 switch ($type) {
@@ -62,7 +62,7 @@ class LoggerBuilder
                         $logger->pushHandler((new StreamHandler($handler['path'] ?? 'php://stdout', $level)));
                         break;
                     default:
-                        throw new AppException('Unknown Monolog handler: ' . $type);
+                        throw new ConfigException('Unknown Monolog handler: ' . $type);
                 }
             }
             return $logger;
