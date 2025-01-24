@@ -10,6 +10,7 @@
             "email": "mariusz@milejko.pl"
         }
     ],
+    "bin": ["bin/kuick-installer"],
     "require": {
         "php": ">=8.2.0",
         "ext-date": "*",
