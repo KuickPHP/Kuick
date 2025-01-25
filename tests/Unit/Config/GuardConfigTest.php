@@ -15,7 +15,7 @@ class GuardConfigTest extends TestCase
     {
         $guardConfig = new GuardConfig('/test', MockGuard::class);
         $this->assertEquals('/test', $guardConfig->path);
-        $this->assertEquals(MockGuard::class, $guardConfig->guardClassName);
+        $this->assertEquals(MockGuard::class, $guardConfig->guard);
         $this->assertEquals([
             'GET',
             'OPTIONS',

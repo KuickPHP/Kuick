@@ -16,7 +16,7 @@ class RouteConfigTest extends TestCase
     {
         $routeConfig = new RouteConfig('/test', MockRoute::class);
         $this->assertEquals('/test', $routeConfig->path);
-        $this->assertEquals(MockRoute::class, $routeConfig->controllerClassName);
+        $this->assertEquals(MockRoute::class, $routeConfig->controller);
         $this->assertEquals(['GET'], $routeConfig->methods);
         $anotherConfig = new RouteConfig('/test', MockRoute::class, ['GET', 'PUT']);
         $this->assertEquals(['GET', 'PUT'], $anotherConfig->methods);

@@ -10,6 +10,7 @@
 
 namespace Kuick\Framework\DependencyInjection;
 
+use Closure;
 use DI\ContainerBuilder;
 use Kuick\Framework\Config\ConfigException;
 use Kuick\Framework\Config\RouteConfig;
@@ -42,8 +43,11 @@ class RouterBuilder
                         throw new ConfigException('Route config must be an instance of' . RouteConfig::class);
                     }
                     $logger->debug('Adding route: ' . $route->path);
-                    // @TODO: add support for inline callables
-                    $router->addRoute($route->path, $container->get($route->controllerClassName), $route->methods);
+                    // getting from container if controller is a string
+                    $callable = $route->controller instanceof Closure ?
+                        $route->controller :
+                        $container->get($route->controller);
+                    $router->addRoute($route->path, $callable, $route->methods);
                 }
             }
             return $router;

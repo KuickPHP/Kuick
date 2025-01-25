@@ -10,6 +10,7 @@
 
 namespace Kuick\Framework\DependencyInjection;
 
+use Closure;
 use DI\ContainerBuilder;
 use Kuick\Framework\Config\ConfigException;
 use Kuick\Framework\Config\GuardConfig;
@@ -41,8 +42,11 @@ class GuardhouseBuilder
                         throw new ConfigException('Guard config must be an instance of ' . GuardConfig::class);
                     }
                     $logger->debug('Adding guard: ' . $guard->path);
-                    // @TODO: add support for inline callables
-                    $guardhouse->addGuard($guard->path, $container->get($guard->guardClassName), $guard->methods);
+                    // getting from container if guard is a string
+                    $callable = $guard->guard instanceof Closure ?
+                    $guard->guard :
+                    $container->get($guard->guard);
+                    $guardhouse->addGuard($guard->path, $callable, $guard->methods);
                 }
             }
             return $guardhouse;

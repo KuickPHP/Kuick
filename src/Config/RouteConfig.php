@@ -10,6 +10,7 @@
 
 namespace Kuick\Framework\Config;
 
+use Closure;
 use Kuick\Http\Message\RequestInterface;
 
 /**
@@ -19,7 +20,7 @@ class RouteConfig
 {
     public function __construct(
         public readonly string $path,
-        public readonly string $controllerClassName,
+        public readonly string|Closure $controller,
         public readonly array $methods = [RequestInterface::METHOD_GET],
     ) {
         // validate route
