@@ -54,4 +54,11 @@ class GuardValidatorTest extends TestCase
         $this->expectExceptionMessage('Guard class: "stdClass" is not invokable, path: /test');
         new GuardValidator(new GuardConfig('/test', 'stdClass'));
     }
+
+    public function testIfInvalidPatternRaisesException(): void
+    {
+        $this->expectException(ConfigException::class);
+        $this->expectExceptionMessage('Route path should be a valid regex pattern');
+        new GuardValidator(new GuardConfig('([a-z][[a-z]', MockGuard::class));
+    }
 }

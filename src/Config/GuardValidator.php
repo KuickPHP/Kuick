@@ -18,6 +18,8 @@ use Throwable;
  */
 class GuardValidator
 {
+    private const MATCH_PATTERN = '#^%s$#';
+
     public function __construct(GuardConfig $guardConfig)
     {
         $this->validatePath($guardConfig);
@@ -31,13 +33,12 @@ class GuardValidator
         if (empty($guardConfig->path)) {
             throw new ConfigException('Guard path should not be empty');
         }
-        //try {
-            //@TODO: test path against the regex pattern
+        try {
             //test against empty string
-            //preg_match(sprintf(Router::MATCH_PATTERN, $route->path), '');
-        //} catch (Throwable $error) {
-            //throw new RouterException('Route path invalid: ' . $route->path . ', ' . $error->getMessage());
-        //}
+            preg_match(sprintf(self::MATCH_PATTERN, $guardConfig->path), '');
+        } catch (Throwable) {
+            throw new ConfigException('Guard path should be a valid regex pattern: ' . $guardConfig->path);
+        }
     }
 
     private function validateMethods(GuardConfig $guardConfig): void

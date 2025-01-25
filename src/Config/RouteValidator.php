@@ -36,7 +36,7 @@ class RouteValidator
         try {
             //test against empty string
             preg_match(sprintf(self::MATCH_PATTERN, $routeConfig->path), '');
-        } catch (Throwable $error) {
+        } catch (Throwable) {
             throw new ConfigException('Route path should be a valid regex pattern: ' . $routeConfig->path);
         }
     }
