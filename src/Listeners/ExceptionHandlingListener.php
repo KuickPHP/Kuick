@@ -13,9 +13,7 @@ namespace Kuick\Framework\Listeners;
 use Kuick\EventDispatcher\EventDispatcher;
 use Kuick\Framework\Events\ExceptionRaisedEvent;
 use Kuick\Framework\Events\ResponseCreatedEvent;
-use Kuick\Http\Message\Response;
 use Kuick\Http\Server\FallbackRequestHandlerInterface;
-use Nyholm\Psr7\ServerRequest;
 use Psr\Log\LoggerInterface;
 
 final class ExceptionHandlingListener
@@ -29,12 +27,10 @@ final class ExceptionHandlingListener
 
     public function __invoke(ExceptionRaisedEvent $exceptionRaisedEvent): void
     {
-        $errorResponse = $this->fallbackHandler->handle(new ServerRequest('GET', '/'))
-            ->withStatus(Response::HTTP_INTERNAL_SERVER_ERROR);
-        $this->eventDispatcher->dispatch(new ResponseCreatedEvent($errorResponse));
-        $this->logger->error(
-            $exceptionRaisedEvent->getException()->getMessage(),
-            $exceptionRaisedEvent->getException()->getTrace()
-        );
+        $exception = $exceptionRaisedEvent->getException();
+        $this->eventDispatcher->dispatch(new ResponseCreatedEvent(
+            $this->fallbackHandler->handleError($exception)
+        ));
+        $this->logger->error($exception->getMessage(), $exception->getTrace());
     }
 }
