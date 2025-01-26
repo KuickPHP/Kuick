@@ -35,6 +35,6 @@ class ExceptionHandlingListenerTest extends TestCase
         );
 
         $listener(new ExceptionRaisedEvent(new Exception('test')));
-        $this->assertEquals(404, $responseCreated->getStatusCode());
+        $this->assertEquals(500, $responseCreated->getStatusCode());
     }
 }
