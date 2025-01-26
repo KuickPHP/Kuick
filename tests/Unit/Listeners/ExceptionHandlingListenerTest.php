@@ -2,8 +2,10 @@
 
 namespace Tests\Unit\Kuick\Framework\Listeners;
 
+use Exception;
 use Kuick\EventDispatcher\EventDispatcher;
 use Kuick\EventDispatcher\ListenerProvider;
+use Kuick\Framework\Events\ExceptionRaisedEvent;
 use Kuick\Framework\Events\ResponseCreatedEvent;
 use Kuick\Framework\Listeners\ExceptionHandlingListener;
 use Kuick\Http\Server\JsonNotFoundRequestHandler;
@@ -27,7 +29,8 @@ class ExceptionHandlingListenerTest extends TestCase
         });
         $listener = new ExceptionHandlingListener(new EventDispatcher($listenerProvider), new JsonNotFoundRequestHandler());
 
-        $listener(new stdClass());
+        $this->expectException(Exception::class);
+        $listener(new ExceptionRaisedEvent(new Exception('test')));
         $this->assertEquals(404, $responseCreated->getStatusCode());
     }
 }

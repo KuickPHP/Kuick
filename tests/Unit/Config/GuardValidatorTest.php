@@ -20,6 +20,14 @@ class GuardValidatorTest extends TestCase
         $this->assertTrue(true);
     }
 
+    public function testIfClosureAsGuardValidates(): void
+    {
+        $guardConfig = new GuardConfig('/test', function () {
+        });
+        new GuardValidator($guardConfig);
+        $this->assertTrue(true);
+    }
+
     public function testIfEmptyPathRaisesException(): void
     {
         $this->expectException(ConfigException::class);

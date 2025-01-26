@@ -10,15 +10,15 @@
 
 namespace Kuick\Framework\Events;
 
-use Exception;
+use Throwable;
 
 final class ExceptionRaisedEvent
 {
-    public function __construct(private Exception $exception)
+    public function __construct(private Throwable $exception)
     {
     }
 
-    public function getException(): Exception
+    public function getException(): Throwable
     {
         return $this->exception;
     }

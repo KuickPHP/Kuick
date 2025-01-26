@@ -11,6 +11,7 @@
 namespace Kuick\Framework\Listeners;
 
 use Kuick\EventDispatcher\EventDispatcher;
+use Kuick\Framework\Events\ExceptionRaisedEvent;
 use Kuick\Framework\Events\ResponseCreatedEvent;
 use Kuick\Http\Server\FallbackRequestHandlerInterface;
 use Nyholm\Psr7\ServerRequest;
@@ -19,15 +20,16 @@ final class ExceptionHandlingListener
 {
     public function __construct(
         private EventDispatcher $eventDispatcher,
-        private FallbackRequestHandlerInterface $fallbackRequestHandlerInterface
-    )
-    {
+        private FallbackRequestHandlerInterface $fallbackHandler
+    ) {
     }
 
-    public function __invoke(): void
+    public function __invoke(ExceptionRaisedEvent $exceptionRaisedEvent): void
     {
         $this->eventDispatcher->dispatch(new ResponseCreatedEvent(
-            $this->fallbackRequestHandlerInterface->handle(new ServerRequest('GET', '/')))
-        );
+            $this->fallbackHandler->handle(new ServerRequest('GET', '/'))
+        ));
+        //re-throw the original exception
+        throw $exceptionRaisedEvent->getException();
     }
 }

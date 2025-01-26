@@ -20,6 +20,14 @@ class RouteValidatorTest extends TestCase
         $this->assertTrue(true);
     }
 
+    public function testIfClosureAsRouteValidates(): void
+    {
+        $guardConfig = new RouteConfig('/test', function () {
+        });
+        new RouteValidator($guardConfig);
+        $this->assertTrue(true);
+    }
+
     public function testIfEmptyPathRaisesException(): void
     {
         $this->expectException(ConfigException::class);

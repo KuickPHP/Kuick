@@ -14,24 +14,24 @@ use Exception;
 use Kuick\Framework\Events\ExceptionRaisedEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 final class RegisteringErrorHandlerListener
 {
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,
         private LoggerInterface $logger
-    )
-    {
+    ) {
     }
 
     public function __invoke(): void
     {
         //error handler
         set_error_handler(function ($errno, $errstr, $errfile, $errline): void {
-            throw new Exception($errstr . ' [' . $errline. '] ' , $errfile . ' ' . $errno);
+            throw new Exception($errstr . ' [' . $errline . '] ' . $errfile . ' ' . $errno);
         });
-        set_exception_handler(function (Exception $exception): void {
-            $this->eventDispatcher->dispatch(new ExceptionRaisedEvent($exception));
+        set_exception_handler(function (Throwable $throwable): void {
+            $this->eventDispatcher->dispatch(new ExceptionRaisedEvent($throwable));
         });
         $this->logger->info('Error handler registered');
     }
