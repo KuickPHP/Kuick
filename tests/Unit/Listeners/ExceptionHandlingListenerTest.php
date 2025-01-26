@@ -10,6 +10,7 @@ use Kuick\Framework\Events\ResponseCreatedEvent;
 use Kuick\Framework\Listeners\ExceptionHandlingListener;
 use Kuick\Http\Server\JsonNotFoundRequestHandler;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 use stdClass;
 
 /**
@@ -27,9 +28,12 @@ class ExceptionHandlingListenerTest extends TestCase
         $listenerProvider->registerListener(ResponseCreatedEvent::class, function (ResponseCreatedEvent $event) use (&$responseCreated) {
             $responseCreated = $event->getResponse();
         });
-        $listener = new ExceptionHandlingListener(new EventDispatcher($listenerProvider), new JsonNotFoundRequestHandler());
+        $listener = new ExceptionHandlingListener(
+            new EventDispatcher($listenerProvider),
+            new JsonNotFoundRequestHandler(),
+            new NullLogger()
+        );
 
-        $this->expectException(Exception::class);
         $listener(new ExceptionRaisedEvent(new Exception('test')));
         $this->assertEquals(404, $responseCreated->getStatusCode());
     }

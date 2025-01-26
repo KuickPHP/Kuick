@@ -15,12 +15,14 @@ use Kuick\Framework\Events\ExceptionRaisedEvent;
 use Kuick\Framework\Events\ResponseCreatedEvent;
 use Kuick\Http\Server\FallbackRequestHandlerInterface;
 use Nyholm\Psr7\ServerRequest;
+use Psr\Log\LoggerInterface;
 
 final class ExceptionHandlingListener
 {
     public function __construct(
         private EventDispatcher $eventDispatcher,
-        private FallbackRequestHandlerInterface $fallbackHandler
+        private FallbackRequestHandlerInterface $fallbackHandler,
+        private LoggerInterface $logger
     ) {
     }
 
@@ -29,7 +31,9 @@ final class ExceptionHandlingListener
         $this->eventDispatcher->dispatch(new ResponseCreatedEvent(
             $this->fallbackHandler->handle(new ServerRequest('GET', '/'))
         ));
-        //re-throw the original exception
-        throw $exceptionRaisedEvent->getException();
+        $this->logger->error(
+            $exceptionRaisedEvent->getException()->getMessage(),
+            $exceptionRaisedEvent->getException()->getTrace()
+        );
     }
 }
