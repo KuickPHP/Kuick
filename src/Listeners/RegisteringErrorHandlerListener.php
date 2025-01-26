@@ -10,7 +10,7 @@
 
 namespace Kuick\Framework\Listeners;
 
-use Exception;
+use ErrorException;
 use Kuick\Framework\Events\ExceptionRaisedEvent;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
@@ -28,11 +28,11 @@ final class RegisteringErrorHandlerListener
     {
         //error handler
         set_error_handler(function ($errno, $errstr, $errfile, $errline): void {
-            throw new Exception($errstr . ' [' . $errline . '] ' . $errfile . ' ' . $errno);
+            throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
         });
         set_exception_handler(function (Throwable $throwable): void {
             $this->eventDispatcher->dispatch(new ExceptionRaisedEvent($throwable));
         });
-        $this->logger->info('Error handler registered');
+        $this->logger->info('PHP Error and Exception handler registered');
     }
 }
