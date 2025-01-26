@@ -8,7 +8,8 @@ use Kuick\Framework\DependencyInjection\RequestHandlerBuilder;
 use Kuick\Framework\SystemCache;
 use Kuick\Framework\SystemCacheInterface;
 use Kuick\Http\Server\ExceptionHtmlRequestHandler;
-use Kuick\Http\Server\ExceptionRequestHandlerInterface;
+use Kuick\Http\Server\FallbackRequestHandlerInterface;
+use Kuick\Http\Server\JsonNotFoundRequestHandler;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
@@ -38,7 +39,7 @@ class RequestHandlerBuilderTest extends TestCase
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$projectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
-            ExceptionRequestHandlerInterface::class => new ExceptionHtmlRequestHandler(new NullLogger()),
+            FallbackRequestHandlerInterface::class => new JsonNotFoundRequestHandler(),
             'kuick.app.projectDir' => self::$projectDir,
         ]);
         (new RequestHandlerBuilder($builder))();
@@ -52,7 +53,7 @@ class RequestHandlerBuilderTest extends TestCase
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$invalidProjectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
-            ExceptionRequestHandlerInterface::class => new ExceptionHtmlRequestHandler(new NullLogger()),
+            FallbackRequestHandlerInterface::class => new JsonNotFoundRequestHandler(),
             'kuick.app.projectDir' => self::$invalidProjectDir,
         ]);
         $this->expectException(ConfigException::class);
@@ -67,7 +68,7 @@ class RequestHandlerBuilderTest extends TestCase
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$invalidProjectDir2, 'dev'),
             LoggerInterface::class => new NullLogger(),
-            ExceptionRequestHandlerInterface::class => new ExceptionHtmlRequestHandler(new NullLogger()),
+            FallbackRequestHandlerInterface::class => new JsonNotFoundRequestHandler(),
             'kuick.app.projectDir' => self::$invalidProjectDir2,
         ]);
         $this->expectException(ConfigException::class);
@@ -82,7 +83,7 @@ class RequestHandlerBuilderTest extends TestCase
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$invalidProjectDir3, 'dev'),
             LoggerInterface::class => new NullLogger(),
-            ExceptionRequestHandlerInterface::class => new ExceptionHtmlRequestHandler(new NullLogger()),
+            FallbackRequestHandlerInterface::class => new JsonNotFoundRequestHandler(),
             'kuick.app.projectDir' => self::$invalidProjectDir3,
         ]);
         $this->expectException(ConfigException::class);
