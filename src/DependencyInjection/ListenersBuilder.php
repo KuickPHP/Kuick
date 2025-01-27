@@ -36,6 +36,7 @@ class ListenersBuilder
                     if (!($listener instanceof ListenerConfig)) {
                         throw new ConfigException('Listener config must be an instance of ' . ListenerConfig::class);
                     }
+                    $logger->debug('Adding listener: ' . $listener->listenerClassName . ' for ' . $listener->pattern);
                     $validatedListeners[] = $listener;
                 }
             }
