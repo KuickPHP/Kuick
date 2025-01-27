@@ -12,6 +12,8 @@ use Kuick\Framework\Api\UI\DocHtmlController;
 use Kuick\Framework\Api\UI\DocJsonController;
 use Kuick\Framework\Config\RouteConfig;
 use Kuick\Framework\Api\UI\OpsController;
+use Kuick\Http\Message\RequestInterface;
+use Kuick\Http\Message\Response;
 
 return [
     // OPS route gives some insight of server environment
@@ -19,13 +21,22 @@ return [
         '/api/ops',
         OpsController::class
     ),
-    // OpenAPI documentation
+    // OpenAPI JSON documentation
     new RouteConfig(
         '/api/doc.json',
         DocJsonController::class
     ),
+    // OpenAPI HTML documentation
     new RouteConfig(
         '/api/doc',
         DocHtmlController::class
+    ),
+    // catching all paths OPTIONS route
+    new RouteConfig(
+        '.+',
+        function (): Response {
+            return new Response(Response::HTTP_NO_CONTENT);
+        },
+        [RequestInterface::METHOD_OPTIONS]
     ),
 ];
