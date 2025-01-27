@@ -12,15 +12,15 @@
 namespace Kuick\Framework\Installer;
 
 $fileMap = [
-    'public/index.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/public/index.php',
-    'bin/console' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/bin/console',
-    'config/di/app.di.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/di/app.di.php',
-    'config/di/app.di@dev.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/di/app.di@dev.php',
-    'config/app.commands.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/app.commands.php',
-    'config/app.guards.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/app.guards.php',
-    'config/app.listeners.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/app.listeners.php',
-    'config/app.middlewares.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/app.middlewares.php',
-    'config/app.routes.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/app.routes.php',
+    'public/index.php' => 'app/public/index.php',
+    'bin/console' => '/app/bin/console',
+    'config/di/app.di.php' => '/app/config/di/app.di.php',
+    'config/di/app.di@dev.php' => '/app/config/di/app.di@dev.php',
+    'config/app.commands.php' => '/app/config/app.commands.php',
+    'config/app.guards.php' => '/app/config/app.guards.php',
+    'config/app.listeners.php' => '/app/config/app.listeners.php',
+    'config/app.middlewares.php' => '/app/config/app.middlewares.php',
+    'config/app.routes.php' => '/app/config/app.routes.php',
 ];
 
 foreach (array_keys($fileMap) as $file) {
@@ -29,11 +29,11 @@ foreach (array_keys($fileMap) as $file) {
         exit;
     }
 }
-foreach ($fileMap as $file => $url) {
-    $dir = dirname($file);
+foreach ($fileMap as $target => $source) {
+    $dir = dirname($target);
     if (!is_dir($dir)) {
         mkdir($dir, 0777, true);
     }
-    file_put_contents($file, file_get_contents($url));
-    echo 'Installed: ' . $file . PHP_EOL;
+    copy($source, $target);
+    echo 'Installed: ' . $source . PHP_EOL;
 }
