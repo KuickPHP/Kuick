@@ -13,14 +13,14 @@ namespace Kuick\Framework\Installer;
 
 $fileMap = [
     'public/index.php' => 'app/public/index.php',
-    'bin/console' => '/app/bin/console',
-    'config/di/app.di.php' => '/app/config/di/app.di.php',
-    'config/di/app.di@dev.php' => '/app/config/di/app.di@dev.php',
-    'config/app.commands.php' => '/app/config/app.commands.php',
-    'config/app.guards.php' => '/app/config/app.guards.php',
-    'config/app.listeners.php' => '/app/config/app.listeners.php',
-    'config/app.middlewares.php' => '/app/config/app.middlewares.php',
-    'config/app.routes.php' => '/app/config/app.routes.php',
+    'bin/console' => 'app/bin/console',
+    'config/di/app.di.php' => 'app/config/di/app.di.php',
+    'config/di/app.di@dev.php' => 'app/config/di/app.di@dev.php',
+    'config/app.commands.php' => 'app/config/app.commands.php',
+    'config/app.guards.php' => 'app/config/app.guards.php',
+    'config/app.listeners.php' => 'app/config/app.listeners.php',
+    'config/app.middlewares.php' => 'app/config/app.middlewares.php',
+    'config/app.routes.php' => 'app/config/app.routes.php',
 ];
 
 foreach (array_keys($fileMap) as $file) {
