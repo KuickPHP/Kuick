@@ -44,7 +44,7 @@ class RouteValidator
 
     private function validateMethods(RouteConfig $routeConfig): void
     {
-        //limited to standard HTTP methods except HEAD and OPTIONS
+        //limited to standard HTTP methods except HEAD
         foreach ($routeConfig->methods as $method) {
             if (
                 !in_array($method, [
@@ -53,6 +53,10 @@ class RouteValidator
                 RequestInterface::METHOD_PUT,
                 RequestInterface::METHOD_PATCH,
                 RequestInterface::METHOD_DELETE,
+                RequestInterface::METHOD_PURGE,                
+                RequestInterface::METHOD_OPTIONS,
+                RequestInterface::METHOD_TRACE,
+                RequestInterface::METHOD_CONNECT,             
                 ])
             ) {
                 throw new ConfigException('Route method: ' . $method . ' is invalid, path: ' . $routeConfig->path);
