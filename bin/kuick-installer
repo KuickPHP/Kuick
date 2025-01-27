@@ -37,3 +37,4 @@ foreach ($fileMap as $target => $source) {
     copy($source, $target);
     echo 'Installed: ' . $source . PHP_EOL;
 }
+chmod('bin/console', 0755);
