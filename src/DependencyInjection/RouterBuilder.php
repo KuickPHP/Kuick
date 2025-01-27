@@ -42,7 +42,7 @@ class RouterBuilder
                     if (!$route instanceof RouteConfig) {
                         throw new ConfigException('Route config must be an instance of' . RouteConfig::class);
                     }
-                    $logger->debug('Adding route: ' . $route->path);
+                    $logger->debug('Adding route: ' . $route->path, ['methods' => $route->methods]);
                     // getting from container if controller is a string
                     $callable = $route->controller instanceof Closure ?
                         $route->controller :
