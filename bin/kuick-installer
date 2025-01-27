@@ -10,7 +10,7 @@
  */
 
 namespace Kuick\Framework\Installer;
-https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/app.routes.php
+
 $fileMap = [
     'public/index.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/public/index.php',
     'bin/console' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/bin/console',
