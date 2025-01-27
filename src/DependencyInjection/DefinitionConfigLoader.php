@@ -17,8 +17,10 @@ use DI\ContainerBuilder;
  */
 class DefinitionConfigLoader
 {
-    private const DEFINITION_LOCATION = '/config/di/*.di.php';
-    private const KUICK_VENDORS_DEFINITION_LOCATION = '/vendor/kuick/*/config/di/*.di.php';
+    private const CONFIG_LOCATION_TEMPLATES = [
+        '/vendor/kuick/*/config/di/*.di.php',
+        '/config/di/*.di.php',
+    ];
     private const ENV_SPECIFIC_DEFINITION_LOCATION_TEMPLATE = '/config/di/*.di@%s.php';
 
     public function __construct(private ContainerBuilder $builder)
@@ -28,15 +30,13 @@ class DefinitionConfigLoader
     public function __invoke(string $projectDir, string $env): array
     {
         $loadedDefinitions = [];
-        //adding vendor definition files
-        foreach (glob($projectDir . self::KUICK_VENDORS_DEFINITION_LOCATION) as $definitionFile) {
-            $this->builder->addDefinitions($definitionFile);
-            $loadedDefinitions[] = $definitionFile;
-        }
-        //adding project definition files
-        foreach (glob($projectDir . self::DEFINITION_LOCATION) as $definitionFile) {
-            $this->builder->addDefinitions($definitionFile);
-            $loadedDefinitions[] = $definitionFile;
+        // iterating over all possible locations
+        foreach (self::CONFIG_LOCATION_TEMPLATES as $configurationTemplate) {
+            // adding definition files in the current location
+            foreach (glob($projectDir . $configurationTemplate) as $definitionFile) {
+                $this->builder->addDefinitions($definitionFile);
+                $loadedDefinitions[] = $definitionFile;
+            }
         }
         //adding env specific definition files
         foreach (glob(sprintf($projectDir . self::ENV_SPECIFIC_DEFINITION_LOCATION_TEMPLATE, $env)) as $definitionFile) {

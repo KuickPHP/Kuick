@@ -46,13 +46,13 @@ class Kernel implements KernelInterface
             $this->container->get(self::DI_TIMEZONE_KEY),
             $this->container->get(self::DI_LOCALE_KEY)
         );
-        // register PHP Errors
-        $this->registerPhpErrorsAndExceptionHandlers();
         $listenerProvider = $this->container->get(ListenerProviderInterface::class);
         // registering listeners "on the fly", as they can depend on EventDispatcher
         foreach ($this->container->get(self::DI_LISTENERS_KEY) as $listener) {
             $listenerProvider->registerListener($listener->pattern, $this->container->get($listener->listenerClassName), $listener->priority);
         }
+        // register PHP Errors
+        $this->registerPhpErrorsAndExceptionHandlers();
         $this->eventDispatcher->dispatch(new KernelCreatedEvent($this));
     }
 
@@ -79,7 +79,7 @@ class Kernel implements KernelInterface
         set_exception_handler(function (Throwable $throwable): void {
             $this->eventDispatcher->dispatch(new ExceptionRaisedEvent($throwable));
         });
-        $this->logger->debug('PHP error and exception handlers registered');
+        $this->logger->info('PHP error and exception handlers registered');
     }
 
     private function localize(string $charset, string $timezone, string $locale): void

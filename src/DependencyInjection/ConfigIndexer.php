@@ -19,7 +19,10 @@ use Psr\Log\LoggerInterface;
 class ConfigIndexer
 {
     private const CACHE_KEY_TEMPLATE = 'kuick-app-%s';
-    private const ROUTES_CONFIG_LOCATION_TEMPLATE = '/config/*.%s.php';
+    private const CONFIG_LOCATION_TEMPLATES = [
+        '/vendor/kuick/*/config/*.%s.php',
+        '/config/*.%s.php',
+    ];
 
     public function __construct(
         private SystemCacheInterface $cache,
@@ -36,9 +39,13 @@ class ConfigIndexer
             return $cachedFiles;
         }
         $files = [];
-        foreach (glob($projectDir . sprintf(self::ROUTES_CONFIG_LOCATION_TEMPLATE, $type)) as $routeFile) {
-            $this->logger->debug('Indexing ' . $type . ' file: ' . $routeFile);
-            $files[] = $routeFile;
+        // iterating over all possible locations
+        foreach (self::CONFIG_LOCATION_TEMPLATES as $configurationTemplate) {
+            // iterating all files matching the template
+            foreach (glob($projectDir . sprintf($configurationTemplate, $type)) as $routeFile) {
+                $this->logger->debug('Indexing ' . $type . ' config: ' . $routeFile);
+                $files[] = $routeFile;
+            }
         }
         $this->cache->set($cacheKey, $files);
         return $files;
