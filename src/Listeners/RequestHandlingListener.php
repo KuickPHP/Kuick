@@ -29,7 +29,7 @@ final class RequestHandlingListener
     {
         $request = $requestReceivedEvent->getRequest();
         $this->logger->info('Request received', [
-            'uri' => $request->getUri(),
+            'uri' => $request->getUri()->getPath(),
             'method' => $request->getMethod(),
         ]);
         $response = $this->requestHandler->handle($request);

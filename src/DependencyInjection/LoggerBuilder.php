@@ -52,7 +52,7 @@ class LoggerBuilder
                 switch ($type) {
                     case 'fingersCrossed':
                         //@TODO: add more nested handler options
-                        $nestedHandler = new StreamHandler($handler['nestedPath'] ?? 'php://stdout', $handler['nestedLevel'] ?? 'debug');
+                        $nestedHandler = new StreamHandler($handler['nestedPath'] ?? 'php://stdout', $handler['nestedLevel'] ?? 'info');
                         $logger->pushHandler(new FingersCrossedHandler($nestedHandler, $level));
                         break;
                     case 'firePHP':
