@@ -53,10 +53,10 @@ class RouteValidator
                 RequestInterface::METHOD_PUT,
                 RequestInterface::METHOD_PATCH,
                 RequestInterface::METHOD_DELETE,
-                RequestInterface::METHOD_PURGE,                
+                RequestInterface::METHOD_PURGE,
                 RequestInterface::METHOD_OPTIONS,
                 RequestInterface::METHOD_TRACE,
-                RequestInterface::METHOD_CONNECT,             
+                RequestInterface::METHOD_CONNECT,
                 ])
             ) {
                 throw new ConfigException('Route method: ' . $method . ' is invalid, path: ' . $routeConfig->path);
