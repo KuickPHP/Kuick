@@ -31,7 +31,7 @@ class Kernelest extends TestCase
         $kernel = new Kernel(self::$projectDir);
         $this->assertInstanceOf(KernelInterface::class, $kernel);
         $this->assertInstanceOf(ContainerInterface::class, $container = $kernel->getContainer());
-        $this->assertInstanceOf(EventDispatcherInterface::class, $kernel->getEventDispatcher());
+        $this->assertInstanceOf(EventDispatcherInterface::class, $container->get(EventDispatcherInterface::class));
         $this->assertEquals('Testing App', $container->get('kuick.app.name'));
         $this->assertEquals($container->get('kuick.app.projectDir'), $kernel->getProjectDir());
         $this->assertEquals('dev', $container->get('kuick.app.env'));
@@ -48,7 +48,7 @@ class Kernelest extends TestCase
         $kernel = new Kernel(self::$projectDir);
         $this->assertInstanceOf(KernelInterface::class, $kernel);
         $this->assertInstanceOf(ContainerInterface::class, $container = $kernel->getContainer());
-        $this->assertInstanceOf(EventDispatcherInterface::class, $kernel->getEventDispatcher());
+        $this->assertInstanceOf(EventDispatcherInterface::class, $container->get(EventDispatcherInterface::class));
         $this->assertEquals('test', $container->get('kuick.app.env'));
         $this->assertEquals('Europe/London', $container->get('kuick.app.timezone'));
         (new Filesystem())->remove(self::$projectDir . '/var/cache');

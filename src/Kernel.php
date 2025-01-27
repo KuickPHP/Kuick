@@ -10,11 +10,14 @@
 
 namespace Kuick\Framework;
 
+use ErrorException;
 use Kuick\Framework\DependencyInjection\ContainerCreator;
+use Kuick\Framework\Events\ExceptionRaisedEvent;
 use Kuick\Framework\Events\KernelCreatedEvent;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
+use Throwable;
 
 /**
  * Application Kernel
@@ -29,6 +32,7 @@ class Kernel implements KernelInterface
         // building DI container
         $this->container = (new ContainerCreator())($projectDir);
         $this->eventDispatcher = $this->container->get(EventDispatcherInterface::class);
+        $this->registerPhpErrorsAndExceptionHandlers();
         $listenerProvider = $this->container->get(ListenerProviderInterface::class);
         // registering listeners "on the fly", as they can depend on EventDispatcher
         foreach ($this->container->get(self::DI_LISTENERS_KEY) as $listener) {
@@ -47,8 +51,18 @@ class Kernel implements KernelInterface
         return $this->container;
     }
 
-    public function getEventDispatcher(): EventDispatcherInterface
+    /**
+     * @codeCoverageIgnore
+     */
+    private function registerPhpErrorsAndExceptionHandlers(): void
     {
-        return $this->eventDispatcher;
+        // register error handler
+        set_error_handler(function ($errno, $errstr, $errfile, $errline): void {
+            throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+        });
+        // register exception handler
+        set_exception_handler(function (Throwable $throwable): void {
+            $this->eventDispatcher->dispatch(new ExceptionRaisedEvent($throwable));
+        });
     }
 }
