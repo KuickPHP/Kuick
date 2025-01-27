@@ -2,12 +2,9 @@
 
 namespace Tests\Unit\Kuick\Framework\Api\Security;
 
-use Kuick\Http\ForbiddenException;
 use Kuick\Framework\Api\Security\OpsGuard;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
-
-use function PHPUnit\Framework\assertTrue;
 
 /**
  * @covers Kuick\Framework\Api\Security\OpsGuard
@@ -20,7 +17,7 @@ class OpsGuardTest extends TestCase
         $request = (new ServerRequest('GET', '/'))
             ->withAddedHeader('Authorization', 'Bearer let-me-in');
         $guard($request);
-        assertTrue(true);
+        $this->assertTrue(true);
     }
 
     public function testIfMissingTokenThrowsUnauthorized(): void

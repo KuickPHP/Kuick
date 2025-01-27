@@ -31,9 +31,9 @@ class DefinitionConfigLoader
     {
         $loadedDefinitions = [];
         // iterating over all possible locations
-        foreach (self::CONFIG_LOCATION_TEMPLATES as $configurationTemplate) {
+        foreach (self::CONFIG_LOCATION_TEMPLATES as $configPathTemplate) {
             // adding definition files in the current location
-            foreach (glob($projectDir . $configurationTemplate) as $definitionFile) {
+            foreach (glob($projectDir . $configPathTemplate) as $definitionFile) {
                 $this->builder->addDefinitions($definitionFile);
                 $loadedDefinitions[] = $definitionFile;
             }

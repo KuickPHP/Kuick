@@ -40,9 +40,9 @@ class ConfigIndexer
         }
         $files = [];
         // iterating over all possible locations
-        foreach (self::CONFIG_LOCATION_TEMPLATES as $configurationTemplate) {
+        foreach (self::CONFIG_LOCATION_TEMPLATES as $configPathTemplate) {
             // iterating all files matching the template
-            foreach (glob($projectDir . sprintf($configurationTemplate, $type)) as $routeFile) {
+            foreach (glob($projectDir . sprintf($configPathTemplate, $type)) as $routeFile) {
                 $this->logger->debug('Indexing ' . $type . ' config: ' . $routeFile);
                 $files[] = $routeFile;
             }

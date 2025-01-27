@@ -16,13 +16,28 @@ use Kuick\Framework\Listeners\RequestHandlingListener;
 use Kuick\Framework\Listeners\ResponseEmittingListener;
 use Kuick\EventDispatcher\ListenerPriority;
 use Kuick\Framework\Events\ExceptionRaisedEvent;
+use Kuick\Framework\Events\KernelCreatedEvent;
 use Kuick\Framework\Listeners\ExceptionHandlingListener;
+use Kuick\Framework\Listeners\LocalizingListener;
+use Kuick\Framework\Listeners\RegisteringPhpErrorHandlerListener;
 
 return [
     // logging every event (*)
     new ListenerConfig(
         '*',
         EventLoggingListener::class,
+        ListenerPriority::HIGHEST
+    ),
+    // localize application
+    new ListenerConfig(
+        KernelCreatedEvent::class,
+        LocalizingListener::class,
+        ListenerPriority::HIGHEST
+    ),
+    // register PHP error and exception handlers
+    new ListenerConfig(
+        KernelCreatedEvent::class,
+        RegisteringPhpErrorHandlerListener::class,
         ListenerPriority::HIGHEST
     ),
     // handle exception when raised
