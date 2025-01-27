@@ -10,25 +10,15 @@
 
 use Kuick\Framework\Config\RouteConfig;
 use Kuick\Http\Message\JsonResponse;
-use Psr\Http\Message\ServerRequestInterface;
 
 // route configuration
 return [
-    // Homepage inline route
+    // Inline home route
     new RouteConfig(
         '/',
         function (): JsonResponse {
             return new JsonResponse(['message' => 'Kuick says: hello world!']);
         },
     ),
-    // Sample inline route
-    new RouteConfig(
-        '/ping',
-        function (ServerRequestInterface $request): JsonResponse {
-            return new JsonResponse([
-                'message' => 'pong',
-                'request-uri' => $request->getUri()->getPath(),
-            ]);
-        }
-    ),
+    //new RouteConfig('/path', SomeController::class)
 ];

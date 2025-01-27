@@ -12,15 +12,18 @@
 namespace Kuick\Framework\Installer;
 
 $fileMap = [
-    'public/index.php' => 'vendor/kuick/framework/app/public/index.php',
-    'bin/console' => 'vendor/kuick/framework/app/bin/console',
-    'config/di/app.di.php' => 'vendor/kuick/framework/app/config/di/app.di.php',
-    'config/di/app.di@dev.php' => 'vendor/kuick/framework/app/config/di/app.di@dev.php',
-    'config/app.commands.php' => 'vendor/kuick/framework/app/config/app.commands.php',
-    'config/app.guards.php' => 'vendor/kuick/framework/app/config/app.guards.php',
-    'config/app.listeners.php' => 'vendor/kuick/framework/app/config/app.listeners.php',
-    'config/app.middlewares.php' => 'vendor/kuick/framework/app/config/app.middlewares.php',
-    'config/app.routes.php' => 'vendor/kuick/framework/app/config/app.routes.php',
+    // executable files
+    'public/index.php' => 'vendor/kuick/framework/public/index.php',
+    'bin/console' => 'vendor/kuick/framework/bin/console',
+    // DI definition config files
+    'config/di/app.di.php' => 'vendor/kuick/framework/config/di/kuick.di.php',
+    'config/di/app.di@dev.php' => 'vendor/kuick/framework/config/di/kuick.di@dev.php',
+    // sample config files
+    'config/app.commands.php' => 'vendor/kuick/framework/config-example/app.commands.php',
+    'config/app.guards.php' => 'vendor/kuick/framework/config-example/app.guards.php',
+    'config/app.listeners.php' => 'vendor/kuick/framework/config-example/app.listeners.php',
+    'config/app.middlewares.php' => 'vendor/kuick/framework/config-example/app.middlewares.php',
+    'config/app.routes.php' => 'vendor/kuick/framework/config-example/app.routes.php',
 ];
 
 foreach (array_keys($fileMap) as $file) {

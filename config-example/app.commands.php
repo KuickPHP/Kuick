@@ -10,4 +10,5 @@
 
 // command configuration
 return [
+    // SomeCommand::class,
 ];

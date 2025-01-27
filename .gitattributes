@@ -5,5 +5,4 @@
 /Dockerfile export-ignore
 /Makefile export-ignore
 /phpunit.xml export-ignore
-/distribution export-ignore
 *.php text eol=lf
