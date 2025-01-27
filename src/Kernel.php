@@ -17,6 +17,7 @@ use Kuick\Framework\Events\KernelCreatedEvent;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
+use Psr\Log\LoggerInterface;
 use Throwable;
 
 /**
@@ -24,14 +25,28 @@ use Throwable;
  */
 class Kernel implements KernelInterface
 {
+    private const DEFAULT_LOCALE = 'en_US.utf-8';
+    private const DI_LOCALE_KEY = 'kuick.app.locale';
+    private const DI_TIMEZONE_KEY = 'kuick.app.timezone';
+    private const DI_CHARSET_KEY = 'kuick.app.charset';
+
     private ContainerInterface $container;
     private EventDispatcherInterface $eventDispatcher;
+    private LoggerInterface $logger;
 
     public function __construct(private string $projectDir)
     {
         // building DI container
         $this->container = (new ContainerCreator())($projectDir);
         $this->eventDispatcher = $this->container->get(EventDispatcherInterface::class);
+        $this->logger = $this->container->get(LoggerInterface::class);
+        // localizing application
+        $this->localize(
+            $this->container->get(self::DI_CHARSET_KEY),
+            $this->container->get(self::DI_TIMEZONE_KEY),
+            $this->container->get(self::DI_LOCALE_KEY)
+        );
+        // register PHP Errors
         $this->registerPhpErrorsAndExceptionHandlers();
         $listenerProvider = $this->container->get(ListenerProviderInterface::class);
         // registering listeners "on the fly", as they can depend on EventDispatcher
@@ -64,5 +79,22 @@ class Kernel implements KernelInterface
         set_exception_handler(function (Throwable $throwable): void {
             $this->eventDispatcher->dispatch(new ExceptionRaisedEvent($throwable));
         });
+        $this->logger->debug('PHP error and exception handlers registered');
+    }
+
+    private function localize(string $charset, string $timezone, string $locale): void
+    {
+        mb_internal_encoding($charset);
+        ini_set('default_charset', $charset);
+        date_default_timezone_set($timezone);
+        ini_set('date.timezone', $timezone);
+        setlocale(LC_ALL, $locale);
+        //numbers are always localized to en_US.utf-8'
+        setlocale(LC_NUMERIC, self::DEFAULT_LOCALE);
+        $this->logger->info('Locale setup', [
+            'locale' => $locale,
+            'timezone' => $timezone,
+            'charset' => $charset,
+        ]);
     }
 }
