@@ -14,11 +14,13 @@ namespace Kuick\Framework\Installer;
 $fileMap = [
     'public/index.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/public/index.php',
     'bin/console' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/bin/console',
-    'config/kuick.listeners.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/kuick.listeners.php',
+    'config/di/app.di.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/di/app.di.php',
+    'config/di/app.di@dev.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/di/app.di@dev.php',
+    'config/app.commands.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/app.commands.php',
+    'config/app.guards.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/app.guards.php',
+    'config/app.listeners.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/app.listeners.php',
     'config/app.middlewares.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/app.middlewares.php',
-    'config/kuick.routes.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/kuick.routes.php',
-    'config/di/kuick.di.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/di/kuick.di.php',
-    'config/di/app.di@dev.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/di/kuick.di@dev.php',
+    'config/app.routes.php' => 'https://raw.githubusercontent.com/milejko/kuick-project/refs/heads/main/config/kuick.routes.php',
 ];
 
 foreach (array_keys($fileMap) as $file) {

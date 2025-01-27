@@ -10,9 +10,8 @@ use Kuick\EventDispatcher\EventDispatcher;
 use Kuick\EventDispatcher\ListenerProvider;
 use Kuick\Framework\Api\Security\OpsGuard;
 use Kuick\Framework\Api\UI\OpsController;
-use Kuick\Http\Server\ExceptionHtmlRequestHandler;
-use Kuick\Http\Server\ExceptionJsonRequestHandler;
-use Kuick\Http\Server\ExceptionRequestHandlerInterface;
+use Kuick\Http\Server\FallbackRequestHandlerInterface;
+use Kuick\Http\Server\JsonNotFoundRequestHandler;
 use Kuick\Routing\RoutingMiddleware;
 use Kuick\Security\SecurityMiddleware;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -22,7 +21,8 @@ use function DI\autowire;
 
 return [
     // interface to implementation mapping
-    ExceptionRequestHandlerInterface::class => autowire(ExceptionJsonRequestHandler::class),
+    FallbackRequestHandlerInterface::class => autowire(JsonNotFoundRequestHandler::class),
+
     ListenerProviderInterface::class => autowire(ListenerProvider::class),
     EventDispatcherInterface::class => autowire(EventDispatcher::class),
     SystemCacheInterface::class => autowire(SystemCache::class),
@@ -33,7 +33,6 @@ return [
     RequestHandlingListener::class => autowire(),
     ResponseEmittingListener::class => autowire(),
 
-    ExceptionHtmlRequestHandler::class => autowire(),
     RoutingMiddleware::class => autowire(),
     SecurityMiddleware::class => autowire(),
     OpsGuard::class => autowire(),

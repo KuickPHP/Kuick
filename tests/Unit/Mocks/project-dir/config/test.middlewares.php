@@ -1,7 +1,7 @@
 <?php
 
-use Kuick\Framework\Middlewares\OptionsSendingMiddleware;
+use Tests\Unit\Kuick\Framework\Mocks\MockMiddleware;
 
 return [
-    OptionsSendingMiddleware::class,
+    MockMiddleware::class,
 ];

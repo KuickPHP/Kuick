@@ -7,8 +7,6 @@ use Kuick\Framework\Api\UI\OpsController;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
 
-use function PHPUnit\Framework\assertEquals;
-
 /**
  * @covers Kuick\Framework\Api\UI\OpsController
  */
@@ -19,7 +17,7 @@ class OpsControllerTest extends TestCase
         $container = new Container([]);
         $ops = new OpsController($container);
         $response = $ops->__invoke(new ServerRequest('GET', '/'));
-        assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(200, $response->getStatusCode());
         $responseJsonKeys = array_keys(json_decode($response->getBody()->getContents(), true));
         self::assertEquals([
             'request',

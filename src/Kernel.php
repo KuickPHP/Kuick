@@ -10,11 +10,15 @@
 
 namespace Kuick\Framework;
 
+use ErrorException;
 use Kuick\Framework\DependencyInjection\ContainerCreator;
+use Kuick\Framework\Events\ExceptionRaisedEvent;
 use Kuick\Framework\Events\KernelCreatedEvent;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
+use Psr\Log\LoggerInterface;
+use Throwable;
 
 /**
  * Application Kernel
@@ -45,10 +49,5 @@ class Kernel implements KernelInterface
     public function getContainer(): ContainerInterface
     {
         return $this->container;
-    }
-
-    public function getEventDispatcher(): EventDispatcherInterface
-    {
-        return $this->eventDispatcher;
     }
 }

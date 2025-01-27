@@ -10,6 +10,16 @@
 
 namespace Kuick\Framework\Events;
 
-final class CommandReceivedEvent
+use Throwable;
+
+final class ExceptionRaisedEvent
 {
+    public function __construct(private Throwable $exception)
+    {
+    }
+
+    public function getException(): Throwable
+    {
+        return $this->exception;
+    }
 }

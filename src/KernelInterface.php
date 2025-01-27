@@ -11,7 +11,6 @@
 namespace Kuick\Framework;
 
 use Psr\Container\ContainerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Kernel Interface
@@ -29,6 +28,5 @@ interface KernelInterface
     public const ENV_PROD = 'prod';
 
     public function getContainer(): ContainerInterface;
-    public function getEventDispatcher(): EventDispatcherInterface;
     public function getProjectDir(): string;
 }

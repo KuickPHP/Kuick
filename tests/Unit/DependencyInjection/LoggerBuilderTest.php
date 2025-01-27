@@ -4,13 +4,8 @@ namespace Tests\Unit\App\DependencyInjection;
 
 use DI\ContainerBuilder;
 use Kuick\Framework\DependencyInjection\LoggerBuilder;
-use Kuick\Framework\SystemCache;
-use Kuick\Framework\SystemCacheInterface;
-use Kuick\Http\Server\ExceptionHtmlRequestHandler;
-use Kuick\Http\Server\ExceptionRequestHandlerInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
 /**
  * @covers Kuick\Framework\DependencyInjection\LoggerBuilder

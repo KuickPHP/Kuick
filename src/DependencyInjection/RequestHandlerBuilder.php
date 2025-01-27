@@ -14,8 +14,8 @@ use DI\ContainerBuilder;
 use Kuick\Framework\Config\ConfigException;
 use Kuick\Framework\Kernel;
 use Kuick\Framework\SystemCacheInterface;
-use Kuick\Http\Server\ExceptionRequestHandlerInterface;
-use Kuick\Http\Server\RequestHandler;
+use Kuick\Http\Server\FallbackRequestHandlerInterface;
+use Kuick\Http\Server\StackRequestHandler;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -34,7 +34,7 @@ class RequestHandlerBuilder
     {
         // default request handler is a Stack Request Handler (by Kuick)
         $this->builder->addDefinitions([RequestHandlerInterface::class => function (ContainerInterface $container, LoggerInterface $logger, SystemCacheInterface $cache): RequestHandlerInterface {
-            $requestHandler = new RequestHandler($container->get(ExceptionRequestHandlerInterface::class));
+            $requestHandler = new StackRequestHandler($container->get(FallbackRequestHandlerInterface::class));
             foreach ((new ConfigIndexer($cache, $logger))->getConfigFiles($container->get(Kernel::DI_PROJECT_DIR_KEY), 'middlewares') as $middlewareFile) {
                 $middlewareClassNames = include $middlewareFile;
                 foreach ($middlewareClassNames as $middlewareClassName) {

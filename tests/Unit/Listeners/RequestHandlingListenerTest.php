@@ -10,6 +10,7 @@ use Kuick\EventDispatcher\ListenerProvider;
 use Tests\Unit\Kuick\Framework\Mocks\MockRequestHandler;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 /**
  * @covers Kuick\Framework\Listeners\RequestHandlingListener
@@ -26,7 +27,11 @@ class RequestHandlingListenerTest extends TestCase
         $listenerProvider->registerListener(ResponseCreatedEvent::class, function (ResponseCreatedEvent $event) use (&$responseCreated) {
             $responseCreated = $event->getResponse();
         });
-        $requestHandling = new RequestHandlingListener(new MockRequestHandler(), new EventDispatcher($listenerProvider));
+        $requestHandling = new RequestHandlingListener(
+            new MockRequestHandler(),
+            new EventDispatcher($listenerProvider),
+            new NullLogger()
+        );
 
         $requestReceivedEvent = new RequestReceivedEvent(new ServerRequest('GET', '/test'));
         $requestHandling($requestReceivedEvent);
