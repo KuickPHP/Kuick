@@ -52,7 +52,7 @@ return [
         RequestHandlingListener::class,
         ListenerPriority::LOWEST
     ),
-    // emitt response when created
+    // emit response when created
     new ListenerConfig(
         ResponseCreatedEvent::class,
         ResponseEmittingListener::class,
