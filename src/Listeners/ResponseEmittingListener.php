@@ -27,14 +27,13 @@ final class ResponseEmittingListener
     public function __invoke(ResponseCreatedEvent $responseCreatedEvent): void
     {
         $response = $responseCreatedEvent->getResponse();
-        $this->logger->debug('Emitting response', [
+        // emmit response
+        (new ResponseEmitter())->emitResponse($response);
+        $this->logger->info('Response emitted succesfully:', [
             'code' => $response->getStatusCode(),
             'content-type' => $response->getHeaderLine('Content-Type'),
             'body-size' => $response->getBody()->getSize(),
         ]);
-        // emmit response
-        (new ResponseEmitter())->emitResponse($response);
-        $this->logger->info('Response emitted succesfully');
         $this->eventDispatcher->dispatch(new ResponseEmittedEvent($response));
     }
 }
