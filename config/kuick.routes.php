@@ -33,7 +33,7 @@ return [
     ),
     // catching all paths OPTIONS route
     new RouteConfig(
-        '[.]+',
+        '.+',
         function (): Response {
             return new Response(Response::HTTP_NO_CONTENT);
         },
