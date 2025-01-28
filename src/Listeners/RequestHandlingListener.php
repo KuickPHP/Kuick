@@ -28,7 +28,7 @@ final class RequestHandlingListener
     public function __invoke(RequestReceivedEvent $requestReceivedEvent): void
     {
         $request = $requestReceivedEvent->getRequest();
-        $this->logger->info('Request received', [
+        $this->logger->info('Request received:', [
             'uri' => $request->getUri()->getPath(),
             'method' => $request->getMethod(),
         ]);
