@@ -27,16 +27,14 @@ $fileMap = [
     'vendor/kuick/framework/config-example/app.routes.php' => 'config/app.routes.php',
 ];
 
-foreach (array_values($fileMap) as $file) {
-    if (file_exists($file)) {
-        echo 'Skipping install: ' . $file . ' - file already exists' . PHP_EOL;
-        exit;
-    }
-}
 foreach ($fileMap as $source => $target) {
     $dir = dirname($target);
     if (!is_dir($dir)) {
         mkdir($dir, 0777, true);
+    }
+    if (file_exists($target)) {
+        echo 'Skipping install: ' . $target . ' - file already exists' . PHP_EOL;
+        continue;
     }
     copy($source, $target);
     echo 'Installed: ' . $source . PHP_EOL;
