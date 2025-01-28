@@ -22,7 +22,7 @@ class ContainerCreator
 
     private array $loadedDefinitions = [];
 
-    public function __invoke(string $projectDir): ContainerInterface
+    public function create(string $projectDir): ContainerInterface
     {
         // setting the default env if not set
         if (false === getenv(KernelInterface::APP_ENV)) {

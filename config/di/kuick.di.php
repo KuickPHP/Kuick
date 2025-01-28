@@ -18,6 +18,7 @@ return [
     'kuick.app.timezone'  => env('KUICK_APP_TIMEZONE', 'UTC'),
 
     'kuick.app.monolog.level' => env('KUICK_APP_MONOLOG_LEVEL', 'WARNING'),
+    'kuick.app.monolog.usemicroseconds' => env('KUICK_APP_MONOLOG_USEMICROSECONDS', false),
     // note that the first handler is "FingersCrossed", so after WARNING is raised
     // you will get all the logs from specified level and below
     'kuick.app.monolog.handlers' => [
@@ -26,6 +27,6 @@ return [
         // ['type' => 'stream', 'path' => 'php://stdout'],
     ],
 
-    // there is no valid token by default
+    // there is no valid token by default, you should provide one through environment variables
     'kuick.ops.guard.token' => env('KUICK_OPS_GUARD_TOKEN', ''),
 ];

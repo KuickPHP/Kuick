@@ -9,7 +9,11 @@ use Kuick\Framework\SystemCacheInterface;
 use Kuick\EventDispatcher\EventDispatcher;
 use Kuick\EventDispatcher\ListenerProvider;
 use Kuick\Framework\Api\Security\OpsGuard;
+use Kuick\Framework\Api\UI\DocHtmlController;
+use Kuick\Framework\Api\UI\DocJsonController;
 use Kuick\Framework\Api\UI\OpsController;
+use Kuick\Framework\Listeners\ExceptionHandlingListener;
+use Kuick\Framework\Listeners\RegisteringPhpErrorHandlerListener;
 use Kuick\Http\Server\FallbackRequestHandlerInterface;
 use Kuick\Http\Server\JsonNotFoundRequestHandler;
 use Kuick\Routing\RoutingMiddleware;
@@ -27,13 +31,21 @@ return [
     SystemCacheInterface::class => autowire(SystemCache::class),
 
     // performance optimization: autowiring
-    LocalizingListener::class => autowire(),
+    // listeners
     EventLoggingListener::class => autowire(),
+    ExceptionHandlingListener::class => autowire(),
+    LocalizingListener::class => autowire(),
+    RegisteringPhpErrorHandlerListener::class => autowire(),
     RequestHandlingListener::class => autowire(),
     ResponseEmittingListener::class => autowire(),
 
+    // middlewares
     RoutingMiddleware::class => autowire(),
     SecurityMiddleware::class => autowire(),
-    OpsGuard::class => autowire(),
+
+    // UI
+    DocHtmlController::class => autowire(),
+    DocJsonController::class => autowire(),
     OpsController::class => autowire(),
+    OpsGuard::class => autowire(),
 ];

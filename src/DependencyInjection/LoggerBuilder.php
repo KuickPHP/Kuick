@@ -37,9 +37,6 @@ class LoggerBuilder
         $this->builder->addDefinitions([LoggerInterface::class => function (ContainerInterface $container): LoggerInterface {
             $logger = new Logger($container->get(KernelInterface::DI_APP_NAME_KEY));
             $handler = new ErrorHandler($logger);
-            $handler->registerErrorHandler([], false);
-            $handler->registerExceptionHandler();
-            $handler->registerFatalHandler();
             $logger->useMicrosecondTimestamps((bool) $container->get('kuick.app.monolog.usemicroseconds'));
             $logger->setTimezone(new DateTimeZone($container->get('kuick.app.timezone')));
             $handlers = $container->get('kuick.app.monolog.handlers');

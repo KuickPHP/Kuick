@@ -10,15 +10,11 @@
 
 namespace Kuick\Framework;
 
-use ErrorException;
 use Kuick\Framework\DependencyInjection\ContainerCreator;
-use Kuick\Framework\Events\ExceptionRaisedEvent;
 use Kuick\Framework\Events\KernelCreatedEvent;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
-use Psr\Log\LoggerInterface;
-use Throwable;
 
 /**
  * Application Kernel
@@ -26,19 +22,20 @@ use Throwable;
 class Kernel implements KernelInterface
 {
     private ContainerInterface $container;
-    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(private string $projectDir)
     {
         // building DI container
-        $this->container = (new ContainerCreator())($projectDir);
-        $this->eventDispatcher = $this->container->get(EventDispatcherInterface::class);
-        $listenerProvider = $this->container->get(ListenerProviderInterface::class);
+        $this->container = (new ContainerCreator())->create($projectDir);
         // registering listeners "on the fly", as they can depend on EventDispatcher
         foreach ($this->container->get(self::DI_LISTENERS_KEY) as $listener) {
-            $listenerProvider->registerListener($listener->pattern, $this->container->get($listener->listenerClassName), $listener->priority);
+            $this->container->get(ListenerProviderInterface::class)->registerListener(
+                $listener->pattern,
+                $this->container->get($listener->listenerClassName),
+                $listener->priority
+            );
         }
-        $this->eventDispatcher->dispatch(new KernelCreatedEvent($this));
+        $this->container->get(EventDispatcherInterface::class)->dispatch(new KernelCreatedEvent($this));
     }
 
     public function getProjectDir(): string

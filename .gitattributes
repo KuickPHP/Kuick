@@ -2,6 +2,7 @@
 /.github export-ignore
 /.gitattributes export-ignore
 /.gitignore export-ignore
+/default.nix export-ignore
 /tests export-ignore
 /Dockerfile export-ignore
 /Makefile export-ignore

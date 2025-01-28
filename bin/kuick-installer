@@ -13,26 +13,27 @@ namespace Kuick\Framework\Installer;
 
 $fileMap = [
     // executable files
-    'public/index.php' => 'vendor/kuick/framework/public/index.php',
-    'bin/console' => 'vendor/kuick/framework/bin/console',
+    'vendor/kuick/framework/public/index.php' => 'public/index.php',
+    'vendor/kuick/framework/bin/console' => 'bin/console',    
     // DI definition config files
-    'config/di/app.di.php' => 'vendor/kuick/framework/config/di/kuick.di.php',
-    'config/di/app.di@dev.php' => 'vendor/kuick/framework/config/di/kuick.di@dev.php',
+
+    'vendor/kuick/framework/config/di/kuick.di.php' => 'config/di/app.di.php',
+    'vendor/kuick/framework/config/di/kuick.di@dev.php' => 'config/di/app.di@dev.php',
     // sample config files
-    'config/app.commands.php' => 'vendor/kuick/framework/config-example/app.commands.php',
-    'config/app.guards.php' => 'vendor/kuick/framework/config-example/app.guards.php',
-    'config/app.listeners.php' => 'vendor/kuick/framework/config-example/app.listeners.php',
-    'config/app.middlewares.php' => 'vendor/kuick/framework/config-example/app.middlewares.php',
-    'config/app.routes.php' => 'vendor/kuick/framework/config-example/app.routes.php',
+    'vendor/kuick/framework/config-example/app.commands.php' => 'config/app.commands.php',
+    'vendor/kuick/framework/config-example/app.guards.php' => 'config/app.guards.php',
+    'vendor/kuick/framework/config-example/app.listeners.php' => 'config/app.listeners.php',
+    'vendor/kuick/framework/config-example/app.middlewares.php' => 'config/app.middlewares.php',
+    'vendor/kuick/framework/config-example/app.routes.php' => 'config/app.routes.php',
 ];
 
-foreach (array_keys($fileMap) as $file) {
+foreach (array_values($fileMap) as $file) {
     if (file_exists($file)) {
         echo 'Skipping install: ' . $file . ' - file already exists' . PHP_EOL;
         exit;
     }
 }
-foreach ($fileMap as $target => $source) {
+foreach ($fileMap as $source => $target) {
     $dir = dirname($target);
     if (!is_dir($dir)) {
         mkdir($dir, 0777, true);

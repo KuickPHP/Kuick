@@ -8,7 +8,7 @@
  * @license    https://github.com/milejko/kuick-framework?tab=MIT-1-ov-file#readme New BSD License
  */
 
-// command configuration
+// console configuration
 return [
     // SomeCommand::class,
 ];

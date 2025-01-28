@@ -11,7 +11,7 @@
 use Kuick\Framework\Config\RouteConfig;
 use Kuick\Http\Message\JsonResponse;
 
-// route configuration
+// routing configuration
 return [
     // Inline home route
     new RouteConfig(

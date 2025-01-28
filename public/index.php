@@ -8,11 +8,11 @@
  * @license    https://github.com/milejko/kuick-framework?tab=MIT-1-ov-file#readme New BSD License
  */
 
-use Kuick\EventDispatcher\EventDispatcher;
 use Kuick\Framework\Events\RequestReceivedEvent;
 use Kuick\Framework\Kernel;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7Server\ServerRequestCreator;
+use Psr\EventDispatcher\EventDispatcherInterface;
 
 $projectDir = dirname(__DIR__);
 require $projectDir . '/vendor/autoload.php';
@@ -32,5 +32,5 @@ $request = (new ServerRequestCreator(
 
 (new Kernel($projectDir))
     ->getContainer()
-        ->get(EventDispatcher::class)
+        ->get(EventDispatcherInterface::class)
             ->dispatch(new RequestReceivedEvent($request));

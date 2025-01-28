@@ -10,7 +10,7 @@
 
 use Kuick\Framework\Config\GuardConfig;
 
-// guard configuration
+// security configuration
 return [
     // new GuardConfig('/path', SomeGuard::class),
 ];
