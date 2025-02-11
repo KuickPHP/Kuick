@@ -25,7 +25,11 @@ class ListenersBuilder
     public function __invoke(): void
     {
         $this->builder->addDefinitions([Kernel::DI_LISTENERS_KEY => function (ConfigIndexer $configIndexer): array {
-            return $configIndexer->getConfigFiles(ListenersBuilder::CONFIG_SUFFIX, new ListenerValidator());
+            $listeners = [];
+            foreach ($configIndexer->getConfigFiles(ListenersBuilder::CONFIG_SUFFIX, new ListenerValidator()) as $listenersFile) {
+                $listeners = array_merge($listeners, require $listenersFile);
+            }
+            return $listeners;
         }]);
     }
 }
