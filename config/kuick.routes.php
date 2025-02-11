@@ -36,5 +36,5 @@ return [
         '.+',
         OptionsController::class,
         [RequestInterface::METHOD_OPTIONS]
-),
+    ),
 ];

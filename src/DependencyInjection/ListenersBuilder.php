@@ -19,7 +19,9 @@ class ListenersBuilder
 {
     public const CONFIG_SUFFIX = 'listeners';
 
-    public function __construct(private ContainerBuilder $builder) {}
+    public function __construct(private ContainerBuilder $builder)
+    {
+    }
 
     public function __invoke(): void
     {
