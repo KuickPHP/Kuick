@@ -17,15 +17,18 @@ use Throwable;
 /**
  * Guard validator
  */
-class GuardValidator
+class GuardValidator implements ConfigValidatorInterface
 {
     private const MATCH_PATTERN = '#^%s$#';
 
-    public function __construct(GuardConfig $guardConfig)
+    public function validate(object $configObject): void
     {
-        $this->validatePath($guardConfig);
-        $this->validateMethods($guardConfig);
-        $this->validateController($guardConfig);
+        if (!$configObject instanceof GuardConfig) {
+            throw new ConfigException('GuardConfig object expected');
+        }
+        $this->validatePath($configObject);
+        $this->validateMethods($configObject);
+        $this->validateController($configObject);
     }
 
     private function validatePath(GuardConfig $guardConfig): void

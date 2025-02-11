@@ -13,9 +13,8 @@ namespace Kuick\Framework\DependencyInjection;
 use DI\ContainerBuilder;
 use Kuick\Framework\Config\ConfigException;
 use Kuick\Framework\Config\ListenerConfig;
+use Kuick\Framework\Config\ListenerValidator;
 use Kuick\Framework\Kernel;
-use Kuick\Framework\SystemCacheInterface;
-use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
 class ListenersBuilder
@@ -28,9 +27,13 @@ class ListenersBuilder
 
     public function __invoke(): void
     {
-        $this->builder->addDefinitions([Kernel::DI_LISTENERS_KEY => function (ContainerInterface $container, LoggerInterface $logger, SystemCacheInterface $cache) {
+        $this->builder->addDefinitions([Kernel::DI_LISTENERS_KEY =>
+        function (
+            ConfigIndexer $configIndexer,
+            LoggerInterface $logger,
+        ): array {
             $validatedListeners = [];
-            foreach ((new ConfigIndexer($cache, $logger))->getConfigFiles($container->get(Kernel::DI_PROJECT_DIR_KEY), ListenersBuilder::CONFIG_SUFFIX) as $listenersFile) {
+            foreach ($configIndexer->getConfigFiles(ListenersBuilder::CONFIG_SUFFIX, new ListenerValidator()) as $listenersFile) {
                 $listeners = include $listenersFile;
                 foreach ($listeners as $listener) {
                     if (!($listener instanceof ListenerConfig)) {

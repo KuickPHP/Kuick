@@ -14,6 +14,7 @@ use Closure;
 use DI\ContainerBuilder;
 use Kuick\Framework\Config\ConfigException;
 use Kuick\Framework\Config\RouteConfig;
+use Kuick\Framework\Config\RouteValidator;
 use Kuick\Framework\Kernel;
 use Kuick\Framework\SystemCacheInterface;
 use Kuick\Routing\Router;
@@ -33,10 +34,15 @@ class RouterBuilder
 
     public function __invoke(): void
     {
-        $this->builder->addDefinitions([Router::class => function (ContainerInterface $container, LoggerInterface $logger, SystemCacheInterface $cache): Router {
+        $this->builder->addDefinitions([Router::class =>
+        function (
+            ConfigIndexer $configIndexer,
+            ContainerInterface $container,
+            LoggerInterface $logger
+        ): Router {
             $router = new Router($logger);
             $logger = $container->get(LoggerInterface::class);
-            foreach ((new ConfigIndexer($cache, $logger))->getConfigFiles($container->get(Kernel::DI_PROJECT_DIR_KEY), RouterBuilder::CONFIG_SUFFIX) as $routeFile) {
+            foreach ($configIndexer->getConfigFiles(RouterBuilder::CONFIG_SUFFIX, new RouteValidator()) as $routeFile) {
                 $routes = include $routeFile;
                 foreach ($routes as $route) {
                     if (!$route instanceof RouteConfig) {
@@ -50,6 +56,7 @@ class RouterBuilder
                     $router->addRoute($route->path, $callable, $route->methods);
                 }
             }
+            $logger->debug('Router initialized');
             return $router;
         }]);
     }

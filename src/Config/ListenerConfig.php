@@ -19,6 +19,5 @@ class ListenerConfig
         public readonly string $listenerClassName,
         public readonly int $priority = ListenerPriority::NORMAL,
     ) {
-        new ListenerValidator($this);
     }
 }

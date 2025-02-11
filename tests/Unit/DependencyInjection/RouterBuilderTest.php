@@ -31,6 +31,7 @@ class RouterBuilderTest extends TestCase
     public function testIfRouterIsBuilt(): void
     {
         $builder = new ContainerBuilder();
+        $builder->useAttributes(true);
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$projectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
@@ -47,6 +48,7 @@ class RouterBuilderTest extends TestCase
     public function testIfRouterRaisesExceptionForBrokenRoutes(): void
     {
         $builder = new ContainerBuilder();
+        $builder->useAttributes(true);
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$invalidProjectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),

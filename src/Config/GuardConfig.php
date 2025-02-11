@@ -30,7 +30,5 @@ class GuardConfig
             RequestInterface::METHOD_DELETE,
         ],
     ) {
-        // validate guard
-        new GuardValidator($this);
     }
 }

@@ -33,6 +33,7 @@ class ConsoleApplicationBuilderTest extends TestCase
     public function testIfConsoleApplicationIsBuilt(): void
     {
         $builder = new ContainerBuilder();
+        $builder->useAttributes(true);
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$projectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
@@ -48,6 +49,7 @@ class ConsoleApplicationBuilderTest extends TestCase
     public function testIfConsoleApplicationRaisesExceptionForBrokenCommand(): void
     {
         $builder = new ContainerBuilder();
+        $builder->useAttributes(true);
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$invalidProjectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
@@ -63,6 +65,7 @@ class ConsoleApplicationBuilderTest extends TestCase
     public function testIfConsoleApplicationRaisesExceptionForAnotherBrokenCommand(): void
     {
         $builder = new ContainerBuilder();
+        $builder->useAttributes(true);
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$invalidProjectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
@@ -78,6 +81,7 @@ class ConsoleApplicationBuilderTest extends TestCase
     public function testIfConsoleApplicationRaisesExceptionForYetAnotherBrokenCommands(): void
     {
         $builder = new ContainerBuilder();
+        $builder->useAttributes(true);
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$invalidProjectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),

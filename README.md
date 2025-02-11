@@ -67,7 +67,7 @@ docker run -p 8080:80 \
     -e APP_TIMEZONE="Europe/Warsaw" \
     -e APP_LOG_USEMICROSECONDS=1 \
     -e APP_LOG_LEVEL=DEBUG \
-    -e KUICK_OPS_GUARD_TOKEN=secret-token \
+    -e API_OPS_GUARD_TOKEN=secret-token \
     kuickphp/kuick:alpine
 ```
 OPS endpoint:

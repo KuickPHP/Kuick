@@ -21,6 +21,7 @@ class DefinitionConfigLoaderTest extends TestCase
     public function testLoadConfig(): void
     {
         $builder = new ContainerBuilder();
+        $builder->useAttributes(true);
 
         $loader = new DefinitionConfigLoader($builder);
         $loader(self::$projectDir, 'dev');

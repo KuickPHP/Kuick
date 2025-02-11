@@ -13,12 +13,15 @@ namespace Kuick\Framework\Config;
 /**
  * Listener validator
  */
-class ListenerValidator
+class ListenerValidator implements ConfigValidatorInterface
 {
-    public function __construct(ListenerConfig $listenerConfig)
+    public function validate(object $configObject): void
     {
-        $this->validatePattern($listenerConfig);
-        $this->validateCallable($listenerConfig);
+        if (!$configObject instanceof ListenerConfig) {
+            throw new ConfigException('ListenerConfig object expected');
+        }
+        $this->validatePattern($configObject);
+        $this->validateCallable($configObject);
     }
 
     private function validateCallable(ListenerConfig $listenerConfig): void

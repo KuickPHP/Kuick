@@ -1,7 +1,8 @@
 <?php
 
+use Kuick\Framework\Config\CommandConfig;
 use Tests\Unit\Kuick\Framework\Mocks\MockCommand;
 
 return [
-    MockCommand::class,
+    new CommandConfig('test', MockCommand::class),
 ];

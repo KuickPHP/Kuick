@@ -16,7 +16,7 @@ class ListenerValidatorTest extends TestCase
     public function testIfCorrectListenerValidatorDoesNothing(): void
     {
         $listenerConfig = new ListenerConfig('*', MockListener::class);
-        new ListenerValidator($listenerConfig);
+        (new ListenerValidator())->validate($listenerConfig);
         $this->assertTrue(true);
     }
 
@@ -24,27 +24,27 @@ class ListenerValidatorTest extends TestCase
     {
         $this->expectException(ConfigException::class);
         $this->expectExceptionMessage('Listener pattern should not be empty');
-        new ListenerValidator(new ListenerConfig('', MockListener::class));
+        (new ListenerValidator())->validate(new ListenerConfig('', MockListener::class));
     }
 
     public function testIfEmptyListenerClassNameRaisesException(): void
     {
         $this->expectException(ConfigException::class);
         $this->expectExceptionMessage('Listener class name should not be empty');
-        new ListenerValidator(new ListenerConfig('*', ''));
+        (new ListenerValidator())->validate(new ListenerConfig('*', ''));
     }
 
     public function testIfInexistentListenerClassNameRaisesException(): void
     {
         $this->expectException(ConfigException::class);
         $this->expectExceptionMessage('Listener class: "InexistentListener" does not exist');
-        new ListenerValidator(new ListenerConfig('*', 'InexistentListener'));
+        (new ListenerValidator())->validate(new ListenerConfig('*', 'InexistentListener'));
     }
 
     public function testIfNotInvokableListenerClassNameRaisesException(): void
     {
         $this->expectException(ConfigException::class);
         $this->expectExceptionMessage('Listener class: "stdClass" is not invokable');
-        new ListenerValidator(new ListenerConfig('*', 'stdClass'));
+        (new ListenerValidator())->validate(new ListenerConfig('*', 'stdClass'));
     }
 }

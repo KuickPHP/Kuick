@@ -30,6 +30,7 @@ class ListenersBuilderTest extends TestCase
     public function testIfListenersIsBuilt(): void
     {
         $builder = new ContainerBuilder();
+        $builder->useAttributes(true);
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$projectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
@@ -43,6 +44,7 @@ class ListenersBuilderTest extends TestCase
     public function testIfFailedConfigRaisesException(): void
     {
         $builder = new ContainerBuilder();
+        $builder->useAttributes(true);
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$invalidProjectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),

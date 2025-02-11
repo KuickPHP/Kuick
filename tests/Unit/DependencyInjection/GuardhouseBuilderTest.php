@@ -29,6 +29,7 @@ class GuardhouseBuilderTest extends TestCase
     public function testIfGuardhouseIsBuilt(): void
     {
         $builder = new ContainerBuilder();
+        $builder->useAttributes(true);
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$projectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
@@ -42,6 +43,7 @@ class GuardhouseBuilderTest extends TestCase
     public function testIfGuardhouseRaisesExceptionForBrokenRoutes(): void
     {
         $builder = new ContainerBuilder();
+        $builder->useAttributes(true);
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$invalidProjectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),

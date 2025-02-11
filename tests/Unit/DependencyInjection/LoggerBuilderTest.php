@@ -15,6 +15,7 @@ class LoggerBuilderTest extends TestCase
     public function testLoggerIsBuilt(): void
     {
         $builder = new ContainerBuilder();
+        $builder->useAttributes(true);
         $builder->addDefinitions([
             'app.name' => 'Testing App',
             'app.log.usemicroseconds' => false,

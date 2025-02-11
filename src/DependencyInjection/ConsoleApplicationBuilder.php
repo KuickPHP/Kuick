@@ -11,6 +11,7 @@
 namespace Kuick\Framework\DependencyInjection;
 
 use DI\ContainerBuilder;
+use Kuick\Framework\Config\CommandValidator;
 use Kuick\Framework\Config\ConfigException;
 use Kuick\Framework\Kernel;
 use Kuick\Framework\KernelInterface;
@@ -33,22 +34,26 @@ class ConsoleApplicationBuilder
 
     public function __invoke(): void
     {
-        $this->builder->addDefinitions([Application::class => function (ContainerInterface $container, LoggerInterface $logger, SystemCacheInterface $cache): Application {
+        $this->builder->addDefinitions([Application::class =>
+        function (
+            ConfigIndexer $configIndexer,
+            ContainerInterface $container,
+            LoggerInterface $logger,
+        ): Application {
             $consoleApplication = new Application($container->get(KernelInterface::DI_APP_NAME_KEY));
-            foreach ((new ConfigIndexer($cache, $logger))->getConfigFiles($container->get(Kernel::DI_PROJECT_DIR_KEY), ConsoleApplicationBuilder::CONFIG_SUFFIX) as $commandsFile) {
+            foreach ($configIndexer->getConfigFiles(ConsoleApplicationBuilder::CONFIG_SUFFIX, new CommandValidator()) as $commandsFile) {
                 $commands = include $commandsFile;
-                foreach ($commands as $commandClassName) {
-                    if (!is_string($commandClassName)) {
-                        throw new ConfigException('Command class name must be a string');
-                    }
-                    if (!(class_exists($commandClassName))) {
-                        throw new ConfigException('Command class does not exist: ' . $commandClassName);
-                    }
-                    $command = $container->get($commandClassName);
-                    if (!($command instanceof Command)) {
-                        throw new ConfigException('Command must implement: ' . Command::class);
-                    }
-                    $logger->debug('Adding command: ' . $commandClassName);
+                /**
+                 * @var CommandConfig $commandConfig
+                 */
+                foreach ($commands as $commandConfig) {                    
+                    $logger->debug('Adding command: ' . $commandConfig->name);
+                    /**
+                     * @var Command $command
+                     */
+                    $command = $container->get($commandConfig->command);
+                    $command->setName($commandConfig->name);
+                    $command->setDescription($commandConfig->description);
                     $consoleApplication->add($command);
                 }
             }

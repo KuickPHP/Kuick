@@ -17,15 +17,18 @@ use Throwable;
 /**
  * Route validator
  */
-class RouteValidator
+class RouteValidator implements ConfigValidatorInterface
 {
     private const MATCH_PATTERN = '#^%s$#';
 
-    public function __construct(RouteConfig $routeConfig)
+    public function validate(object $configObject): void
     {
-        $this->validatePath($routeConfig);
-        $this->validateMethods($routeConfig);
-        $this->validateController($routeConfig);
+        if (!$configObject instanceof RouteConfig) {
+            throw new ConfigException('RouteConfig object expected');
+        }
+        $this->validatePath($configObject);
+        $this->validateMethods($configObject);
+        $this->validateController($configObject);
     }
 
     private function validatePath(RouteConfig $routeConfig): void

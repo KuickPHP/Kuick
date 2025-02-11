@@ -23,7 +23,5 @@ class RouteConfig
         public readonly string|Closure $controller,
         public readonly array $methods = [RequestInterface::METHOD_GET],
     ) {
-        // validate route
-        new RouteValidator($this);
     }
 }
