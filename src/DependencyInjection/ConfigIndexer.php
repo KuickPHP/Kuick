@@ -69,7 +69,6 @@ class ConfigIndexer
             if (!is_object($configObject)) {
                 throw new ConfigException('One or more config items is not an object: "' . $fileName . '"');
             }
-            $this->logger->debug('Validating: ' . get_class($configObject));
             $validator->validate($configObject);
         }
     }
