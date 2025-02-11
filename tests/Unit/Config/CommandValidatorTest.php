@@ -7,6 +7,7 @@ use Kuick\Framework\Config\CommandConfig;
 use Kuick\Framework\Config\CommandValidator;
 use Tests\Unit\Kuick\Framework\Mocks\MockCommand;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 /**
  * @covers Kuick\Framework\Config\CommandValidator
@@ -31,7 +32,7 @@ class CommandValidatorTest extends TestCase
     {
         $this->expectException(ConfigException::class);
         $this->expectExceptionMessage('Kuick\Framework\Config\CommandConfig expected, object given');
-        (new CommandValidator())->validate(new \stdClass());
+        (new CommandValidator())->validate(new stdClass());
     }
 
     public function testIfEmptyCommandClassNameRaisesException(): void
