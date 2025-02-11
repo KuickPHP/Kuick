@@ -3,5 +3,5 @@
 //overrides test.di.php
 
 return [
-    'app.timezone'  => 'Europe/London',
+    'kuick.app.timezone'  => 'Europe/London',
 ];

@@ -21,7 +21,7 @@ class OpsGuard
     private const AUTHORIZATION_HEADER = 'Authorization';
     private const BEARER_TOKEN_TEMPLATE = 'Bearer %s';
 
-    public function __construct(#[Inject('api.ops.guard.token')] private string $opsToken)
+    public function __construct(#[Inject('kuick.ops.guard.token')] private string $opsToken)
     {
     }
 

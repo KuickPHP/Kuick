@@ -32,7 +32,7 @@ class GuardhouseBuilderTest extends TestCase
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$projectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
-            'app.projectDir' => self::$projectDir,
+            'kuick.app.projectDir' => self::$projectDir,
         ]);
         (new GuardhouseBuilder($builder))();
         $container = $builder->build();
@@ -45,7 +45,7 @@ class GuardhouseBuilderTest extends TestCase
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$invalidProjectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
-            'app.projectDir' => self::$invalidProjectDir,
+            'kuick.app.projectDir' => self::$invalidProjectDir,
         ]);
         (new GuardhouseBuilder($builder))();
         $this->expectException(ConfigException::class);

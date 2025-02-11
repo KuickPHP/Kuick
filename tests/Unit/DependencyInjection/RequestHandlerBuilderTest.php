@@ -40,7 +40,7 @@ class RequestHandlerBuilderTest extends TestCase
             SystemCacheInterface::class => new SystemCache(self::$projectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
             FallbackRequestHandlerInterface::class => new JsonNotFoundRequestHandler(),
-            'app.projectDir' => self::$projectDir,
+            'kuick.app.projectDir' => self::$projectDir,
         ]);
         (new RequestHandlerBuilder($builder))();
         $container = $builder->build();
@@ -54,7 +54,7 @@ class RequestHandlerBuilderTest extends TestCase
             SystemCacheInterface::class => new SystemCache(self::$invalidProjectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
             FallbackRequestHandlerInterface::class => new JsonNotFoundRequestHandler(),
-            'app.projectDir' => self::$invalidProjectDir,
+            'kuick.app.projectDir' => self::$invalidProjectDir,
         ]);
         $this->expectException(ConfigException::class);
         (new RequestHandlerBuilder($builder))();
@@ -69,7 +69,7 @@ class RequestHandlerBuilderTest extends TestCase
             SystemCacheInterface::class => new SystemCache(self::$invalidProjectDir2, 'dev'),
             LoggerInterface::class => new NullLogger(),
             FallbackRequestHandlerInterface::class => new JsonNotFoundRequestHandler(),
-            'app.projectDir' => self::$invalidProjectDir2,
+            'kuick.app.projectDir' => self::$invalidProjectDir2,
         ]);
         $this->expectException(ConfigException::class);
         (new RequestHandlerBuilder($builder))();
@@ -84,7 +84,7 @@ class RequestHandlerBuilderTest extends TestCase
             SystemCacheInterface::class => new SystemCache(self::$invalidProjectDir3, 'dev'),
             LoggerInterface::class => new NullLogger(),
             FallbackRequestHandlerInterface::class => new JsonNotFoundRequestHandler(),
-            'app.projectDir' => self::$invalidProjectDir3,
+            'kuick.app.projectDir' => self::$invalidProjectDir3,
         ]);
         $this->expectException(ConfigException::class);
         (new RequestHandlerBuilder($builder))();

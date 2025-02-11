@@ -3,6 +3,6 @@
 //overrides test.di.php
 
 return [
-    'app.timezone'  => 'Europe/Warsaw',
-    'app.log.usemicroseconds' => true,
+    'kuick.app.timezone'  => 'Europe/Warsaw',
+    'kuick.app.monolog.usemicroseconds' => true,
 ];

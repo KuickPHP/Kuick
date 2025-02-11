@@ -37,10 +37,10 @@ class LoggerBuilder
         $this->builder->addDefinitions([LoggerInterface::class => function (ContainerInterface $container): LoggerInterface {
             $logger = new Logger($container->get(KernelInterface::DI_APP_NAME_KEY));
             $handler = new ErrorHandler($logger);
-            $logger->useMicrosecondTimestamps((bool) $container->get('app.log.usemicroseconds'));
-            $logger->setTimezone(new DateTimeZone($container->get('app.timezone')));
-            $handlers = $container->get('app.log.handlers');
-            $defaultLevel = $container->get('app.log.level') ?? LogLevel::WARNING;
+            $logger->useMicrosecondTimestamps((bool) $container->get('kuick.app.monolog.usemicroseconds'));
+            $logger->setTimezone(new DateTimeZone($container->get('kuick.app.timezone')));
+            $handlers = $container->get('kuick.app.monolog.handlers');
+            $defaultLevel = $container->get('kuick.app.monolog.level') ?? LogLevel::WARNING;
             !is_array($handlers) && throw new ConfigException('Logger handlers are invalid, should be an array');
             foreach ($handlers as $handler) {
                 $type = $handler['type'] ?? throw new ConfigException('Logger handler type not defined');

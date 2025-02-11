@@ -36,8 +36,8 @@ class ConsoleApplicationBuilderTest extends TestCase
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$projectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
-            'app.name' => 'Testing App',
-            'app.projectDir' => self::$projectDir,
+            'kuick.app.name' => 'Testing App',
+            'kuick.app.projectDir' => self::$projectDir,
         ]);
         (new ConsoleApplicationBuilder($builder))();
         $container = $builder->build();
@@ -51,8 +51,8 @@ class ConsoleApplicationBuilderTest extends TestCase
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$invalidProjectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
-            'app.name' => 'Testing App',
-            'app.projectDir' => self::$invalidProjectDir,
+            'kuick.app.name' => 'Testing App',
+            'kuick.app.projectDir' => self::$invalidProjectDir,
         ]);
         (new ConsoleApplicationBuilder($builder))();
         $this->expectException(ConfigException::class);
@@ -66,8 +66,8 @@ class ConsoleApplicationBuilderTest extends TestCase
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$invalidProjectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
-            'app.name' => 'Testing App',
-            'app.projectDir' => self::$invalidProjectDir2,
+            'kuick.app.name' => 'Testing App',
+            'kuick.app.projectDir' => self::$invalidProjectDir2,
         ]);
         (new ConsoleApplicationBuilder($builder))();
         $this->expectException(ConfigException::class);
@@ -81,8 +81,8 @@ class ConsoleApplicationBuilderTest extends TestCase
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$invalidProjectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
-            'app.name' => 'Testing App',
-            'app.projectDir' => self::$invalidProjectDir3,
+            'kuick.app.name' => 'Testing App',
+            'kuick.app.projectDir' => self::$invalidProjectDir3,
         ]);
         (new ConsoleApplicationBuilder($builder))();
         $this->expectException(ConfigException::class);
