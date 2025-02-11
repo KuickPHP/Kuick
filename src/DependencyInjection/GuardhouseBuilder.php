@@ -34,14 +34,8 @@ class GuardhouseBuilder
         function (
             ConfigIndexer $configIndexer,
             ContainerInterface $container,
-            LoggerInterface $logger,
-            SystemCache $systemCache,
+            LoggerInterface $logger
         ): Guardhouse {
-            $cachedGuardhouse = $systemCache->get('guardhouse');
-            if ($cachedGuardhouse) {
-                $logger->debug('Guardhouse loaded from cache');
-                return $cachedGuardhouse;
-            }
             $guardhouse = new Guardhouse($logger);
             foreach ($configIndexer->getConfigFiles(GuardhouseBuilder::CONFIG_SUFFIX, new GuardValidator()) as $guardsFile) {
                 foreach (require $guardsFile as $guard) {
@@ -50,7 +44,6 @@ class GuardhouseBuilder
                 }
             }
             $logger->debug('Security guardhouse initialized');
-            $systemCache->set('guardhouse', $guardhouse);
             return $guardhouse;
         }]);
     }

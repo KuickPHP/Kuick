@@ -34,14 +34,8 @@ class RouterBuilder
         function (
             ConfigIndexer $configIndexer,
             ContainerInterface $container,
-            LoggerInterface $logger,
-            SystemCache $systemCache,
+            LoggerInterface $logger
         ): Router {
-            $cachedRouter = $systemCache->get('router');
-            if ($cachedRouter) {
-                $logger->debug('Router loaded from cache');
-                return $cachedRouter;
-            }
             $router = new Router($logger);
             foreach ($configIndexer->getConfigFiles(RouterBuilder::CONFIG_SUFFIX, new RouteValidator()) as $routeFile) {
                 foreach (require $routeFile as $route) {
@@ -50,7 +44,6 @@ class RouterBuilder
                 }
             }
             $logger->debug('Router initialized');
-            $systemCache->set('router', $router);
             return $router;
         }]);
     }

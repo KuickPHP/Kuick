@@ -27,18 +27,12 @@ class ListenersBuilder
     {
         $this->builder->addDefinitions([Kernel::DI_LISTENERS_KEY =>
         function (
-            ConfigIndexer $configIndexer,
-            SystemCache $systemCache
+            ConfigIndexer $configIndexer
         ): array {
-            $cachedListeners = $systemCache->get('listeners');
-            if ($cachedListeners) {
-                return $cachedListeners;
-            }
             $listeners = [];
             foreach ($configIndexer->getConfigFiles(ListenersBuilder::CONFIG_SUFFIX, new ListenerValidator()) as $listenersFile) {
                 $listeners = array_merge($listeners, require $listenersFile);
             }
-            $systemCache->set('listeners', $listeners);
             return $listeners;
         }]);
     }

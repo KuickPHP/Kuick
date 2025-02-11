@@ -52,7 +52,7 @@ class ConfigIndexer
                 $fileNames[] = $fileName;
             }
         }
-        //$this->cache->set($cacheKey, $fileNames);
+        $this->cache->set($cacheKey, $fileNames);
         return $fileNames;
     }
 
