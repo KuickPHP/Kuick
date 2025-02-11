@@ -12,7 +12,7 @@ use function DI\env;
 
 return [
     //simple token for dev
-    'api.ops.guard.token' => env('API_OPS_GUARD_TOKEN', 'let-me-in'),
+    'api.security.ops.guard.token' => env('API_SECURITY_OPS_GUARD_TOKEN', 'let-me-in'),
 
     //debug for dev
     'app.log.level' => env('APP_LOG_LEVEL', 'DEBUG'),

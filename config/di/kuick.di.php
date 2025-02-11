@@ -28,5 +28,5 @@ return [
     ],
 
     // there is no valid token by default, you should provide one through environment variables
-    'api.ops.guard.token' => env('API_OPS_GUARD_TOKEN', ''),
+    'api.security.ops.guard.token' => env('API_SECURITY_OPS_GUARD_TOKEN', ''),
 ];
