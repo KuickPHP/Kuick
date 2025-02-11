@@ -10,10 +10,7 @@
 
 namespace Kuick\Framework\DependencyInjection;
 
-use Closure;
 use DI\ContainerBuilder;
-use Kuick\Framework\Config\ConfigException;
-use Kuick\Framework\Config\GuardConfig;
 use Kuick\Framework\Config\GuardValidator;
 use Kuick\Security\Guardhouse;
 use Psr\Container\ContainerInterface;
@@ -42,11 +39,7 @@ class GuardhouseBuilder
             foreach ($configIndexer->getConfigFiles(GuardhouseBuilder::CONFIG_SUFFIX, new GuardValidator()) as $guardsFile) {
                 foreach (require $guardsFile as $guard) {
                     $logger->debug('Adding guard: ' . $guard->path);
-                    // getting from container if guard is a string
-                    $callable = $guard->guard instanceof Closure ?
-                        $guard->guard :
-                        $container->get($guard->guard);
-                    $guardhouse->addGuard($guard->path, $callable, $guard->methods);
+                    $guardhouse->addGuard($guard->path, $container->get($guard->guardClassName), $guard->methods);
                 }
             }
             $logger->debug('Security guardhouse initialized');

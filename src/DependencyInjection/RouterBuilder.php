@@ -10,13 +10,8 @@
 
 namespace Kuick\Framework\DependencyInjection;
 
-use Closure;
 use DI\ContainerBuilder;
-use Kuick\Framework\Config\ConfigException;
-use Kuick\Framework\Config\RouteConfig;
 use Kuick\Framework\Config\RouteValidator;
-use Kuick\Framework\Kernel;
-use Kuick\Framework\SystemCacheInterface;
 use Kuick\Routing\Router;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -44,11 +39,7 @@ class RouterBuilder
             foreach ($configIndexer->getConfigFiles(RouterBuilder::CONFIG_SUFFIX, new RouteValidator()) as $routeFile) {
                 foreach (require $routeFile as $route) {
                     $logger->debug('Adding route: ' . $route->path, $route->methods);
-                    // getting from container if controller is a string
-                    $callable = $route->controller instanceof Closure ?
-                        $route->controller :
-                        $container->get($route->controller);
-                    $router->addRoute($route->path, $callable, $route->methods);
+                    $router->addRoute($route->path, $container->get($route->controllerClassName), $route->methods);
                 }
             }
             $logger->debug('Router initialized');

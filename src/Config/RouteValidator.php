@@ -10,7 +10,6 @@
 
 namespace Kuick\Framework\Config;
 
-use Closure;
 use Kuick\Http\Message\RequestInterface;
 use Throwable;
 
@@ -70,21 +69,16 @@ class RouteValidator implements ConfigValidatorInterface
     private function validateController(RouteConfig $routeConfig): void
     {
         // controller not defined
-        if (empty($routeConfig->controller)) {
+        if (empty($routeConfig->controllerClassName)) {
             throw new ConfigException('Route controller class name should not be empty, path: ' . $routeConfig->path);
         }
-        // inline closure
-        // @TODO: validate callable parameters and return type
-        if ($routeConfig->controller instanceof Closure) {
-            return;
-        }
         // inexistent class
-        if (!class_exists($routeConfig->controller)) {
-            throw new ConfigException('Route controller class: "' . $routeConfig->controller . '" does not exist, path: ' . $routeConfig->path);
+        if (!class_exists($routeConfig->controllerClassName)) {
+            throw new ConfigException('Route controller class: "' . $routeConfig->controllerClassName . '" does not exist, path: ' . $routeConfig->path);
         }
         // inexistent __invoke() method
-        if (!method_exists($routeConfig->controller, '__invoke')) {
-            throw new ConfigException('Route controller class: "' . $routeConfig->controller . '" is not invokable, path: ' . $routeConfig->path);
+        if (!method_exists($routeConfig->controllerClassName, '__invoke')) {
+            throw new ConfigException('Route controller class: "' . $routeConfig->controllerClassName . '" is not invokable, path: ' . $routeConfig->path);
         }
         //@TODO: validate __invoke() method parameters and return type
     }

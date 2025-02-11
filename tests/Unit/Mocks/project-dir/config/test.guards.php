@@ -6,7 +6,5 @@ use Tests\Unit\Kuick\Framework\Mocks\MockGuard;
 
 return [
     new GuardConfig('/api', MockGuard::class),
-    new GuardConfig('/another', function (): JsonResponse {
-        return new JsonResponse(['Hello, World!']);
-    }),
+    new GuardConfig('/another', MockGuard::class, ['GET']),
 ];

@@ -20,7 +20,7 @@ class CommandValidator implements ConfigValidatorInterface
     public function validate(object $configObject): void
     {
         if (!$configObject instanceof CommandConfig) {
-            throw new ConfigException(CommandConfig::class .' expected, ' . gettype($configObject) . ' given');
+            throw new ConfigException(CommandConfig::class . ' expected, ' . gettype($configObject) . ' given');
         }
         $this->validateName($configObject);
         $this->validateCommand($configObject);

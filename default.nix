@@ -20,7 +20,7 @@ in pkgs.mkShell {
     ];
 
     shellHook = ''
-        composer install
+        composer up
         composer test:all
     '';
 }

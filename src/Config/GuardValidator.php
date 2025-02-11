@@ -10,7 +10,6 @@
 
 namespace Kuick\Framework\Config;
 
-use Closure;
 use Kuick\Http\Message\RequestInterface;
 use Throwable;
 
@@ -67,21 +66,16 @@ class GuardValidator implements ConfigValidatorInterface
     private function validateController(GuardConfig $guardConfig): void
     {
         //action not defined
-        if (empty($guardConfig->guard)) {
+        if (empty($guardConfig->guardClassName)) {
             throw new ConfigException('Guard class name should not be empty, path: ' . $guardConfig->path);
         }
-        // inline closure
-        // @TODO: validate callable parameters and return type
-        if ($guardConfig->guard instanceof Closure) {
-            return;
-        }
         //inexistent class
-        if (!class_exists($guardConfig->guard)) {
-            throw new ConfigException('Guard class: "' . $guardConfig->guard . '" does not exist, path: ' . $guardConfig->path);
+        if (!class_exists($guardConfig->guardClassName)) {
+            throw new ConfigException('Guard class: "' . $guardConfig->guardClassName . '" does not exist, path: ' . $guardConfig->path);
         }
         //inexistent __invoke() method
-        if (!method_exists($guardConfig->guard, '__invoke')) {
-            throw new ConfigException('Guard class: "' . $guardConfig->guard . '" is not invokable, path: ' . $guardConfig->path);
+        if (!method_exists($guardConfig->guardClassName, '__invoke')) {
+            throw new ConfigException('Guard class: "' . $guardConfig->guardClassName . '" is not invokable, path: ' . $guardConfig->path);
         }
         //@TODO: validate __invoke() method parameters
     }

@@ -10,8 +10,6 @@
 
 namespace Kuick\Framework\Config;
 
-use Closure;
-
 /**
  * Command definition
  */
