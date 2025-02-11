@@ -31,12 +31,12 @@ class Kernel implements KernelInterface
         $logger = $this->container->get(LoggerInterface::class);
         // registering listeners "on the fly", as they can depend on EventDispatcher
         foreach ($this->container->get(self::DI_LISTENERS_KEY) as $listener) {
+            $logger->debug('Registering listener: ' . $listener->listenerClassName);
             $this->container->get(ListenerProviderInterface::class)->registerListener(
                 $listener->pattern,
                 $this->container->get($listener->listenerClassName),
                 $listener->priority
             );
-            $logger->debug('Listener registered: ' . $listener->listenerClassName);
         }
         $logger->debug('Listener provider initialized');
         $this->container->get(EventDispatcherInterface::class)->dispatch(new KernelCreatedEvent($this));

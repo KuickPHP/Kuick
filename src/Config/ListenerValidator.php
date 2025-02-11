@@ -18,7 +18,7 @@ class ListenerValidator implements ConfigValidatorInterface
     public function validate(object $configObject): void
     {
         if (!$configObject instanceof ListenerConfig) {
-            throw new ConfigException('ListenerConfig object expected');
+            throw new ConfigException(ListenerConfig::class . ' expected, ' . gettype($configObject) . ' given');
         }
         $this->validatePattern($configObject);
         $this->validateCallable($configObject);

@@ -24,7 +24,7 @@ class GuardValidator implements ConfigValidatorInterface
     public function validate(object $configObject): void
     {
         if (!$configObject instanceof GuardConfig) {
-            throw new ConfigException('GuardConfig object expected');
+            throw new ConfigException(GuardConfig::class . ' expected, ' . gettype($configObject) . ' given');
         }
         $this->validatePath($configObject);
         $this->validateMethods($configObject);

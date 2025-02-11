@@ -24,7 +24,7 @@ class RouteValidator implements ConfigValidatorInterface
     public function validate(object $configObject): void
     {
         if (!$configObject instanceof RouteConfig) {
-            throw new ConfigException('RouteConfig object expected');
+            throw new ConfigException(RouteConfig::class . ' expected, ' . gettype($configObject) . ' given');
         }
         $this->validatePath($configObject);
         $this->validateMethods($configObject);
