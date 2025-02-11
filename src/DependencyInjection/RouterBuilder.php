@@ -50,7 +50,7 @@ class RouterBuilder
                 }
             }
             $logger->debug('Router initialized');
-            //$systemCache->set('router', $router);
+            $systemCache->set('router', $router);
             return $router;
         }]);
     }
