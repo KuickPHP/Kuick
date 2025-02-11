@@ -26,9 +26,9 @@ class DefinitionConfigLoaderTest extends TestCase
         $loader(self::$projectDir, 'dev');
 
         $container = $builder->build();
-        $this->assertEquals('Testing App', $container->get('kuick.app.name'));
+        $this->assertEquals('Testing App', $container->get('app.name'));
         $this->assertEquals('vendor.value', $container->get('vendor.key'));
-        $this->assertEquals('WARNING', $container->get('kuick.app.monolog.level'));
-        $this->assertEquals('Europe/Warsaw', $container->get('kuick.app.timezone'));
+        $this->assertEquals('WARNING', $container->get('app.log.level'));
+        $this->assertEquals('Europe/Warsaw', $container->get('app.timezone'));
     }
 }

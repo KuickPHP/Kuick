@@ -19,10 +19,10 @@ interface KernelInterface
 {
     public const APP_ENV = 'APP_ENV';
 
-    public const DI_APP_ENV_KEY = 'kuick.app.env';
-    public const DI_APP_NAME_KEY = 'kuick.app.name';
-    public const DI_PROJECT_DIR_KEY = 'kuick.app.projectDir';
-    public const DI_LISTENERS_KEY = 'kuick.app.listeners';
+    public const DI_APP_ENV_KEY = 'app.env';
+    public const DI_APP_NAME_KEY = 'app.name';
+    public const DI_PROJECT_DIR_KEY = 'app.projectDir';
+    public const DI_LISTENERS_KEY = 'app.listeners';
 
     public const ENV_DEV = 'dev';
     public const ENV_PROD = 'prod';

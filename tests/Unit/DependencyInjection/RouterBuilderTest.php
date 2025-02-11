@@ -34,7 +34,7 @@ class RouterBuilderTest extends TestCase
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$projectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
-            'kuick.app.projectDir' => self::$projectDir,
+            'app.projectDir' => self::$projectDir,
         ]);
         (new RouterBuilder($builder))();
         $container = $builder->build();
@@ -50,7 +50,7 @@ class RouterBuilderTest extends TestCase
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$invalidProjectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
-            'kuick.app.projectDir' => self::$invalidProjectDir,
+            'app.projectDir' => self::$invalidProjectDir,
         ]);
         (new RouterBuilder($builder))();
         $this->expectException(ConfigException::class);

@@ -18,9 +18,9 @@ final class LocalizingListener
     private const DEFAULT_LOCALE = 'en_US.utf-8';
 
     public function __construct(
-        #[Inject('kuick.app.locale')] private string $locale,
-        #[Inject('kuick.app.timezone')] private string $timezone,
-        #[Inject('kuick.app.charset')] private string $charset,
+        #[Inject('app.locale')] private string $locale,
+        #[Inject('app.timezone')] private string $timezone,
+        #[Inject('app.charset')] private string $charset,
         private LoggerInterface $logger,
     ) {
     }

@@ -20,8 +20,8 @@ use Kuick\Cache\NullCache;
 class SystemCache extends LayeredCache implements SystemCacheInterface
 {
     public function __construct(
-        #[Inject('kuick.app.projectDir')] string $projetcDir,
-        #[Inject('kuick.app.env')] string $env,
+        #[Inject('app.projectDir')] string $projetcDir,
+        #[Inject('app.env')] string $env,
     ) {
         // in non-prod env we use NullCache only
         if (Kernel::ENV_DEV === $env) {
