@@ -12,6 +12,7 @@ namespace Kuick\Framework\DependencyInjection;
 
 use DI\ContainerBuilder;
 use Kuick\Framework\Config\RouteValidator;
+use Kuick\Framework\SystemCache;
 use Kuick\Routing\Router;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -33,8 +34,14 @@ class RouterBuilder
         function (
             ConfigIndexer $configIndexer,
             ContainerInterface $container,
-            LoggerInterface $logger
+            LoggerInterface $logger,
+            SystemCache $systemCache,
         ): Router {
+            $cachedRouter = $systemCache->get('router');
+            if ($cachedRouter) {
+                $logger->debug('Router loaded from cache');
+                return $cachedRouter;
+            }
             $router = new Router($logger);
             foreach ($configIndexer->getConfigFiles(RouterBuilder::CONFIG_SUFFIX, new RouteValidator()) as $routeFile) {
                 foreach (require $routeFile as $route) {
@@ -43,6 +50,7 @@ class RouterBuilder
                 }
             }
             $logger->debug('Router initialized');
+            $systemCache->set('router', $router);
             return $router;
         }]);
     }
