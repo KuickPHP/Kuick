@@ -8,17 +8,9 @@
  * @license    https://github.com/milejko/kuick-framework?tab=MIT-1-ov-file#readme New BSD License
  */
 
-use Kuick\Framework\Config\RouteConfig;
-use Kuick\Http\Message\JsonResponse;
+//use Kuick\Framework\Config\RouteConfig;
 
 // routing configuration
 return [
-    // Inline home route
-    new RouteConfig(
-        '/',
-        function (): JsonResponse {
-            return new JsonResponse(['message' => 'Kuick says: hello world!']);
-        },
-    ),
     //new RouteConfig('/path', SomeController::class)
 ];
