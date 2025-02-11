@@ -36,7 +36,6 @@ class LoggerBuilder
     {
         $this->builder->addDefinitions([LoggerInterface::class => function (ContainerInterface $container): LoggerInterface {
             $logger = new Logger($container->get(KernelInterface::DI_APP_NAME_KEY));
-            $handler = new ErrorHandler($logger);
             $logger->useMicrosecondTimestamps((bool) $container->get('app.log.usemicroseconds'));
             $logger->setTimezone(new DateTimeZone($container->get('app.timezone')));
             $handlers = $container->get('app.log.handlers');
@@ -62,6 +61,7 @@ class LoggerBuilder
                         throw new ConfigException('Unknown Monolog handler: ' . $type);
                 }
             }
+            $logger->debug('Logger initialized');
             return $logger;
         }]);
     }

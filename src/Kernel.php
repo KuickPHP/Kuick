@@ -15,6 +15,7 @@ use Kuick\Framework\Events\KernelCreatedEvent;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
+use Psr\Log\LoggerInterface;
 
 /**
  * Application Kernel
@@ -27,6 +28,7 @@ class Kernel implements KernelInterface
     {
         // building DI container
         $this->container = (new ContainerCreator())->create($projectDir);
+        $logger = $this->container->get(LoggerInterface::class);
         // registering listeners "on the fly", as they can depend on EventDispatcher
         foreach ($this->container->get(self::DI_LISTENERS_KEY) as $listener) {
             $this->container->get(ListenerProviderInterface::class)->registerListener(
@@ -34,7 +36,9 @@ class Kernel implements KernelInterface
                 $this->container->get($listener->listenerClassName),
                 $listener->priority
             );
+            $logger->debug('Listener registered: ' . $listener->listenerClassName . ', pattern: ' . $listener->pattern);
         }
+        $logger->debug('Listener provider initialized');
         $this->container->get(EventDispatcherInterface::class)->dispatch(new KernelCreatedEvent($this));
     }
 

@@ -13,7 +13,6 @@ namespace Kuick\Framework\DependencyInjection;
 use DI\ContainerBuilder;
 use Kuick\Framework\Config\ListenerValidator;
 use Kuick\Framework\Kernel;
-use Psr\Log\LoggerInterface;
 
 class ListenersBuilder
 {
@@ -25,19 +24,8 @@ class ListenersBuilder
 
     public function __invoke(): void
     {
-        $this->builder->addDefinitions([Kernel::DI_LISTENERS_KEY =>
-        function (
-            ConfigIndexer $configIndexer,
-            LoggerInterface $logger,
-        ): array {
-            $validatedListeners = [];
-            foreach ($configIndexer->getConfigFiles(ListenersBuilder::CONFIG_SUFFIX, new ListenerValidator()) as $listenersFile) {
-                foreach (require $listenersFile as $listener) {
-                    $logger->debug('Adding listener: ' . $listener->listenerClassName . ', pattern: ' . $listener->pattern);
-                    $validatedListeners[] = $listener;
-                }
-            }
-            return $validatedListeners;
+        $this->builder->addDefinitions([Kernel::DI_LISTENERS_KEY => function (ConfigIndexer $configIndexer): array {
+            return $configIndexer->getConfigFiles(ListenersBuilder::CONFIG_SUFFIX, new ListenerValidator());
         }]);
     }
 }

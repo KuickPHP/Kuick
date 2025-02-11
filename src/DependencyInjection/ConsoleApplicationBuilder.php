@@ -55,6 +55,7 @@ class ConsoleApplicationBuilder
                     $consoleApplication->add($command);
                 }
             }
+            $logger->debug('Console application initialized');
             return $consoleApplication;
         }]);
     }
