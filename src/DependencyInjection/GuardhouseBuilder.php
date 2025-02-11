@@ -40,11 +40,7 @@ class GuardhouseBuilder
         ): Guardhouse {
             $guardhouse = new Guardhouse($logger);
             foreach ($configIndexer->getConfigFiles(GuardhouseBuilder::CONFIG_SUFFIX, new GuardValidator()) as $guardsFile) {
-                $guards = include $guardsFile;
-                foreach ($guards as $guard) {
-                    if (!($guard instanceof GuardConfig)) {
-                        throw new ConfigException('Guard config must be an instance of ' . GuardConfig::class);
-                    }
+                foreach (require $guardsFile as $guard) {
                     $logger->debug('Adding guard: ' . $guard->path);
                     // getting from container if guard is a string
                     $callable = $guard->guard instanceof Closure ?
@@ -53,6 +49,7 @@ class GuardhouseBuilder
                     $guardhouse->addGuard($guard->path, $callable, $guard->methods);
                 }
             }
+            $logger->debug('Security guardhouse initialized');
             return $guardhouse;
         }]);
     }

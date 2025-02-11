@@ -41,13 +41,8 @@ class RouterBuilder
             LoggerInterface $logger
         ): Router {
             $router = new Router($logger);
-            $logger = $container->get(LoggerInterface::class);
             foreach ($configIndexer->getConfigFiles(RouterBuilder::CONFIG_SUFFIX, new RouteValidator()) as $routeFile) {
-                $routes = include $routeFile;
-                foreach ($routes as $route) {
-                    if (!$route instanceof RouteConfig) {
-                        throw new ConfigException('Route config must be an instance of' . RouteConfig::class);
-                    }
+                foreach (require $routeFile as $route) {
                     $logger->debug('Adding route: ' . $route->path, $route->methods);
                     // getting from container if controller is a string
                     $callable = $route->controller instanceof Closure ?
@@ -56,6 +51,7 @@ class RouterBuilder
                     $router->addRoute($route->path, $callable, $route->methods);
                 }
             }
+            $logger->debug('Router initialized');
             return $router;
         }]);
     }

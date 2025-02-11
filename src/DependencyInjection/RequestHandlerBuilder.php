@@ -33,9 +33,10 @@ class RequestHandlerBuilder
     {
         // default request handler is a Stack Request Handler (by Kuick)
         $this->builder->addDefinitions([RequestHandlerInterface::class => function (ContainerInterface $container, LoggerInterface $logger): RequestHandlerInterface {
-            $requestHandler = new StackRequestHandler($container->get(FallbackRequestHandlerInterface::class));
-            $requestHandler->addMiddleware($container->get(SecurityMiddleware::class));
-            $requestHandler->addMiddleware($container->get(RoutingMiddleware::class));
+            $requestHandler = (new StackRequestHandler($container->get(FallbackRequestHandlerInterface::class)))
+                ->addMiddleware($container->get(SecurityMiddleware::class))
+                ->addMiddleware($container->get(RoutingMiddleware::class));
+            $logger->debug('Request handler initialized');
             return $requestHandler;
         }]);
     }

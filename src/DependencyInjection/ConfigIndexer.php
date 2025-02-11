@@ -37,36 +37,40 @@ class ConfigIndexer
     public function getConfigFiles(string $type, ConfigValidatorInterface $validator): array
     {
         $cacheKey = sprintf(self::CACHE_KEY_TEMPLATE, $type);
-        $cachedFiles = $this->cache->get($cacheKey);
-        if (null !== $cachedFiles) {
-            $this->logger->debug('Config index of "' . $type . '" loaded from cache: (' . count($cachedFiles) . ')');
-            return $cachedFiles;
+        $cachedFileNames = $this->cache->get($cacheKey);
+        if (null !== $cachedFileNames) {
+            $this->logger->debug('Loading: "' . $type . '" config from cache');
+            return $cachedFileNames;
         }
-        $files = [];
+        $fileNames = [];
         // iterating over all possible locations
         foreach (self::CONFIG_LOCATION_TEMPLATES as $configPathTemplate) {
             // iterating all files matching the template
-            foreach (glob($this->projectDir . sprintf($configPathTemplate, $type)) as $configFile) {
-                $this->logger->debug('Indexing ' . $type . ' config: ' . $configFile);
-                $files[] = $configFile;
+            foreach (glob($this->projectDir . sprintf($configPathTemplate, $type)) as $fileName) {
+                $this->logger->debug('Indexing: ' . $type . ' [' . $fileName . ']');
+                $this->validateFileContents($fileName, $validator);
+                $fileNames[] = $fileName;
             }
         }
+        $this->cache->set($cacheKey, $fileNames);
+        return $fileNames;
+    }
+
+    private function validateFileContents(string $fileName, ConfigValidatorInterface $validator): void
+    {
         // iterating over all config files
-        foreach ($files as $file) {
-            $configObjects = require $file;
-            // validating if the config file returns an array
-            if (!is_array($configObjects)) {
-                throw new ConfigException('Config file:' . $file . ' must return an array');
-            }
-            // validating each config
-            foreach ($configObjects as $configObject) {
-                if (!is_object($configObject)) {
-                    throw new ConfigException('One or more config item from: ' . $file . ' is not an object');
-                }
-                $validator->validate($configObject);
-            }
+        $configObjects = require $fileName;
+        // validating if the config file returns an array
+        if (!is_array($configObjects)) {
+            throw new ConfigException('Config file "' . $fileName . '" must return an array');
         }
-        $this->cache->set($cacheKey, $files);
-        return $files;
+        // validating each config
+        foreach ($configObjects as $configObject) {
+            if (!is_object($configObject)) {
+                throw new ConfigException('One or more config items is not an object: "' . $fileName . '"');
+            }
+            $this->logger->debug('Validating: ' . get_class($configObject));
+            $validator->validate($configObject);
+        }
     }
 }

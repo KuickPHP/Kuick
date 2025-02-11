@@ -19,7 +19,7 @@ class CommandConfig
 {
     public function __construct(
         public readonly string $name,
-        public readonly string|Closure $command,
+        public readonly string $commandClassName,
         public readonly string $description = '',
     ) {
     }

@@ -35,16 +35,16 @@ class ContainerCreator
 
         // check if container is already cached
         if ($container->has(KernelInterface::DI_PROJECT_DIR_KEY)) {
-            $container->get(LoggerInterface::class)->info('Application is running in "' . $appEnv . '" mode, DI container loaded from cache');
+            $container->get(LoggerInterface::class)->info('Running in "' . $appEnv . '" mode, DI container loaded from cache');
             return $container;
         }
 
         $container = $this->rebuildContainer($projectDir, $appEnv);
         $logger = $container->get(LoggerInterface::class);
-        $logger->warning('Application is running in "' . $appEnv . '" mode, DI container rebuilt');
+        $logger->warning('Running in "' . $appEnv . '" mode, DI container rebuilt');
         // log loaded definitions
         foreach ($this->loadedDefinitions as $definition) {
-            $logger->debug('Loaded DI definition: ' . $definition);
+            $logger->debug('Adding DI definitions: ' . $definition);
         }
         return $container;
     }

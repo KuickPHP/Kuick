@@ -11,11 +11,9 @@
 namespace Kuick\Framework\DependencyInjection;
 
 use DI\ContainerBuilder;
+use Kuick\Framework\Config\CommandConfig;
 use Kuick\Framework\Config\CommandValidator;
-use Kuick\Framework\Config\ConfigException;
-use Kuick\Framework\Kernel;
 use Kuick\Framework\KernelInterface;
-use Kuick\Framework\SystemCacheInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Application;
@@ -46,12 +44,12 @@ class ConsoleApplicationBuilder
                 /**
                  * @var CommandConfig $commandConfig
                  */
-                foreach ($commands as $commandConfig) {                    
+                foreach ($commands as $commandConfig) {
                     $logger->debug('Adding command: ' . $commandConfig->name);
                     /**
                      * @var Command $command
                      */
-                    $command = $container->get($commandConfig->command);
+                    $command = $container->get($commandConfig->commandClassName);
                     $command->setName($commandConfig->name);
                     $command->setDescription($commandConfig->description);
                     $consoleApplication->add($command);

@@ -11,8 +11,6 @@
 namespace Kuick\Framework\DependencyInjection;
 
 use DI\ContainerBuilder;
-use Kuick\Framework\Config\ConfigException;
-use Kuick\Framework\Config\ListenerConfig;
 use Kuick\Framework\Config\ListenerValidator;
 use Kuick\Framework\Kernel;
 use Psr\Log\LoggerInterface;
@@ -34,12 +32,8 @@ class ListenersBuilder
         ): array {
             $validatedListeners = [];
             foreach ($configIndexer->getConfigFiles(ListenersBuilder::CONFIG_SUFFIX, new ListenerValidator()) as $listenersFile) {
-                $listeners = include $listenersFile;
-                foreach ($listeners as $listener) {
-                    if (!($listener instanceof ListenerConfig)) {
-                        throw new ConfigException('Listener config must be an instance of ' . ListenerConfig::class);
-                    }
-                    $logger->debug('Adding listener: ' . $listener->listenerClassName . ' for ' . $listener->pattern);
+                foreach (require $listenersFile as $listener) {
+                    $logger->debug('Adding listener: ' . $listener->listenerClassName . ', pattern: ' . $listener->pattern);
                     $validatedListeners[] = $listener;
                 }
             }
