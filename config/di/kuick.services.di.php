@@ -12,6 +12,7 @@ use Kuick\Framework\Api\Security\OpsGuard;
 use Kuick\Framework\Api\UI\DocHtmlController;
 use Kuick\Framework\Api\UI\DocJsonController;
 use Kuick\Framework\Api\UI\OpsController;
+use Kuick\Framework\Api\UI\OptionsController;
 use Kuick\Framework\DependencyInjection\ConfigIndexer;
 use Kuick\Framework\Listeners\ExceptionHandlingListener;
 use Kuick\Framework\Listeners\RegisteringPhpErrorHandlerListener;
@@ -50,4 +51,5 @@ return [
     DocJsonController::class => autowire(),
     OpsController::class => autowire(),
     OpsGuard::class => autowire(),
+    OptionsController::class => autowire(),
 ];
