@@ -36,7 +36,7 @@ class Kernel implements KernelInterface
                 $this->container->get($listener->listenerClassName),
                 $listener->priority
             );
-            $logger->debug('Listener registered: ' . $listener->listenerClassName . ', pattern: ' . $listener->pattern . ', priority: ' . $listener->priority);
+            $logger->debug('Listener registered: ' . $listener->listenerClassName);
         }
         $logger->debug('Listener provider initialized');
         $this->container->get(EventDispatcherInterface::class)->dispatch(new KernelCreatedEvent($this));
