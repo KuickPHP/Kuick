@@ -7,6 +7,7 @@ use Kuick\Framework\Config\GuardConfig;
 use Kuick\Framework\Config\GuardValidator;
 use Tests\Unit\Kuick\Framework\Mocks\MockGuard;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 /**
  * @covers Kuick\Framework\Config\GuardValidator
@@ -31,7 +32,7 @@ class GuardValidatorTest extends TestCase
     {
         $this->expectException(ConfigException::class);
         $this->expectExceptionMessage('Kuick\Framework\Config\GuardConfig expected, object given');
-        (new GuardValidator())->validate(new \stdClass());
+        (new GuardValidator())->validate(new stdClass());
     }
 
     public function testIfInvalidMethodRaisesException(): void

@@ -7,6 +7,7 @@ use Kuick\Framework\Config\RouteConfig;
 use Kuick\Framework\Config\RouteValidator;
 use Tests\Unit\Kuick\Framework\Mocks\MockRoute;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 /**
  * @covers Kuick\Framework\Config\RouteValidator
@@ -31,7 +32,7 @@ class RouteValidatorTest extends TestCase
     {
         $this->expectException(ConfigException::class);
         $this->expectExceptionMessage('Kuick\Framework\Config\RouteConfig expected, object given');
-        (new RouteValidator())->validate(new \stdClass());
+        (new RouteValidator())->validate(new stdClass());
     }
 
     public function testIfEmptyRouteClassNameRaisesException(): void

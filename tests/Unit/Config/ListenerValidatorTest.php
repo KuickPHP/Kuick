@@ -7,6 +7,7 @@ use Kuick\Framework\Config\ListenerConfig;
 use Kuick\Framework\Config\ListenerValidator;
 use Tests\Unit\Kuick\Framework\Mocks\MockListener;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 /**
  * @covers Kuick\Framework\Config\ListenerValidator
@@ -45,7 +46,7 @@ class ListenerValidatorTest extends TestCase
     {
         $this->expectException(ConfigException::class);
         $this->expectExceptionMessage('Kuick\Framework\Config\ListenerConfig expected, object given');
-        (new ListenerValidator())->validate(new \stdClass());
+        (new ListenerValidator())->validate(new stdClass());
     }
 
     public function testIfNotInvokableListenerClassNameRaisesException(): void
