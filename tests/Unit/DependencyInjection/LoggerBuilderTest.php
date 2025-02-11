@@ -15,12 +15,13 @@ class LoggerBuilderTest extends TestCase
     public function testLoggerIsBuilt(): void
     {
         $builder = new ContainerBuilder();
+        $builder->useAttributes(true);
         $builder->addDefinitions([
-            'kuick.app.name' => 'Testing App',
-            'kuick.app.monolog.usemicroseconds' => false,
-            'kuick.app.monolog.level' => 'WARNING',
-            'kuick.app.timezone' => 'Europe/Warsaw',
-            'kuick.app.monolog.handlers' => [
+            'app.name' => 'Testing App',
+            'app.log.usemicroseconds' => false,
+            'app.log.level' => 'WARNING',
+            'app.timezone' => 'Europe/Warsaw',
+            'app.log.handlers' => [
                 ['type' => 'stream', 'path' => 'php://stdout', 'level' => 'debug'],
             ],
         ]);

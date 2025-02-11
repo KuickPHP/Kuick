@@ -24,7 +24,7 @@ class DocJsonController
 {
     private const SOURCE_PATH = '/src';
 
-    public function __construct(#[Inject('kuick.app.projectDir')] private string $projectDir)
+    public function __construct(#[Inject('app.projectDir')] private string $projectDir)
     {
     }
 

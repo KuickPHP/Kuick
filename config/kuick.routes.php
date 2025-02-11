@@ -12,8 +12,8 @@ use Kuick\Framework\Api\UI\DocHtmlController;
 use Kuick\Framework\Api\UI\DocJsonController;
 use Kuick\Framework\Config\RouteConfig;
 use Kuick\Framework\Api\UI\OpsController;
+use Kuick\Framework\Api\UI\OptionsController;
 use Kuick\Http\Message\RequestInterface;
-use Kuick\Http\Message\Response;
 
 return [
     // OPS route gives some insight of server environment
@@ -34,9 +34,7 @@ return [
     // catching all paths OPTIONS route
     new RouteConfig(
         '.+',
-        function (): Response {
-            return new Response(Response::HTTP_NO_CONTENT);
-        },
+        OptionsController::class,
         [RequestInterface::METHOD_OPTIONS]
     ),
 ];

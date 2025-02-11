@@ -26,12 +26,12 @@ class ContainerCreatorTest extends TestCase
     {
         putenv('APP_ENV=dev');
         $container = (new ContainerCreator())->create(self::$projectDir);
-        $this->assertEquals('Testing App', $container->get('kuick.app.name'));
-        $this->assertEquals('dev', $container->get('kuick.app.env'));
-        $this->assertEquals(self::$projectDir, $container->get('kuick.app.projectDir'));
-        $this->assertIsArray($container->get('kuick.app.listeners'));
-        $this->assertEquals('Testing App', $container->get('kuick.app.name'));
-        $this->assertEquals('Europe/Warsaw', $container->get('kuick.app.timezone'));
+        $this->assertEquals('Testing App', $container->get('app.name'));
+        $this->assertEquals('dev', $container->get('app.env'));
+        $this->assertEquals(self::$projectDir, $container->get('app.projectDir'));
+        $this->assertIsArray($container->get('app.listeners'));
+        $this->assertEquals('Testing App', $container->get('app.name'));
+        $this->assertEquals('Europe/Warsaw', $container->get('app.timezone'));
     }
 
     /**
@@ -44,8 +44,8 @@ class ContainerCreatorTest extends TestCase
         (new Filesystem())->remove(self::$projectDir . '/var/cache');
 
         $uncachedContainer = (new ContainerCreator())->create(self::$projectDir);
-        $this->assertEquals('Testing App', $uncachedContainer->get('kuick.app.name'));
-        $this->assertEquals('Europe/Paris', $uncachedContainer->get('kuick.app.timezone'));
+        $this->assertEquals('Testing App', $uncachedContainer->get('app.name'));
+        $this->assertEquals('Europe/Paris', $uncachedContainer->get('app.timezone'));
     }
 
     /**
@@ -57,7 +57,7 @@ class ContainerCreatorTest extends TestCase
     {
         putenv('APP_ENV=prod');
         $uncachedContainer = (new ContainerCreator())->create(self::$projectDir);
-        $this->assertEquals('Testing App', $uncachedContainer->get('kuick.app.name'));
+        $this->assertEquals('Testing App', $uncachedContainer->get('app.name'));
         (new Filesystem())->remove(self::$projectDir . '/var/cache');
     }
 }

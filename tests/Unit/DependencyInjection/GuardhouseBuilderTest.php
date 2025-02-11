@@ -29,10 +29,11 @@ class GuardhouseBuilderTest extends TestCase
     public function testIfGuardhouseIsBuilt(): void
     {
         $builder = new ContainerBuilder();
+        $builder->useAttributes(true);
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$projectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
-            'kuick.app.projectDir' => self::$projectDir,
+            'app.projectDir' => self::$projectDir,
         ]);
         (new GuardhouseBuilder($builder))();
         $container = $builder->build();
@@ -42,10 +43,11 @@ class GuardhouseBuilderTest extends TestCase
     public function testIfGuardhouseRaisesExceptionForBrokenRoutes(): void
     {
         $builder = new ContainerBuilder();
+        $builder->useAttributes(true);
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$invalidProjectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
-            'kuick.app.projectDir' => self::$invalidProjectDir,
+            'app.projectDir' => self::$invalidProjectDir,
         ]);
         (new GuardhouseBuilder($builder))();
         $this->expectException(ConfigException::class);

@@ -7,6 +7,7 @@ use Kuick\Framework\Config\GuardConfig;
 use Kuick\Framework\Config\GuardValidator;
 use Tests\Unit\Kuick\Framework\Mocks\MockGuard;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 /**
  * @covers Kuick\Framework\Config\GuardValidator
@@ -16,15 +17,7 @@ class GuardValidatorTest extends TestCase
     public function testIfCorrectGuardValidatorDoesNothing(): void
     {
         $guardConfig = new GuardConfig('/test', MockGuard::class);
-        new GuardValidator($guardConfig);
-        $this->assertTrue(true);
-    }
-
-    public function testIfClosureAsGuardValidates(): void
-    {
-        $guardConfig = new GuardConfig('/test', function () {
-        });
-        new GuardValidator($guardConfig);
+        (new GuardValidator())->validate($guardConfig);
         $this->assertTrue(true);
     }
 
@@ -32,41 +25,48 @@ class GuardValidatorTest extends TestCase
     {
         $this->expectException(ConfigException::class);
         $this->expectExceptionMessage('Guard path should not be empty');
-        new GuardValidator(new GuardConfig('', MockGuard::class));
+        (new GuardValidator())->validate(new GuardConfig('', MockGuard::class));
+    }
+
+    public function testIfInvalidConfigClassRaisesException(): void
+    {
+        $this->expectException(ConfigException::class);
+        $this->expectExceptionMessage('Kuick\Framework\Config\GuardConfig expected, object given');
+        (new GuardValidator())->validate(new stdClass());
     }
 
     public function testIfInvalidMethodRaisesException(): void
     {
         $this->expectException(ConfigException::class);
         $this->expectExceptionMessage('Guard method invalid, path: /test, method: INVALID');
-        new GuardValidator(new GuardConfig('/test', MockGuard::class, ['INVALID']));
+        (new GuardValidator())->validate(new GuardConfig('/test', MockGuard::class, ['INVALID']));
     }
 
     public function testIfEmptyGuardClassNameRaisesException(): void
     {
         $this->expectException(ConfigException::class);
         $this->expectExceptionMessage('Guard class name should not be empty, path: /test');
-        new GuardValidator(new GuardConfig('/test', ''));
+        (new GuardValidator())->validate(new GuardConfig('/test', ''));
     }
 
     public function testIfInexistentGuardClassNameRaisesException(): void
     {
         $this->expectException(ConfigException::class);
         $this->expectExceptionMessage('Guard class: "InexistentGuard" does not exist, path: /test');
-        new GuardValidator(new GuardConfig('/test', 'InexistentGuard'));
+        (new GuardValidator())->validate(new GuardConfig('/test', 'InexistentGuard'));
     }
 
     public function testIfNotInvokableGuardClassNameRaisesException(): void
     {
         $this->expectException(ConfigException::class);
         $this->expectExceptionMessage('Guard class: "stdClass" is not invokable, path: /test');
-        new GuardValidator(new GuardConfig('/test', 'stdClass'));
+        (new GuardValidator())->validate(new GuardConfig('/test', 'stdClass'));
     }
 
     public function testIfInvalidPatternRaisesException(): void
     {
         $this->expectException(ConfigException::class);
         $this->expectExceptionMessage('Guard path should be a valid regex pattern');
-        new GuardValidator(new GuardConfig('([a-z][[a-z]', MockGuard::class));
+        (new GuardValidator())->validate(new GuardConfig('([a-z][[a-z]', MockGuard::class));
     }
 }

@@ -8,9 +8,14 @@
  * @license    https://github.com/milejko/kuick-framework?tab=MIT-1-ov-file#readme New BSD License
  */
 
-//use Kuick\Framework\Config\RouteConfig;
+namespace Kuick\Framework\Api\UI;
 
-// routing configuration
-return [
-    //new RouteConfig('/path', SomeController::class)
-];
+use Kuick\Http\Message\Response;
+
+class OptionsController
+{
+    public function __invoke(): Response
+    {
+        return new Response(Response::HTTP_NO_CONTENT);
+    }
+}

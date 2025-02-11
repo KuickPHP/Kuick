@@ -10,22 +10,24 @@
 
 namespace Kuick\Framework\Config;
 
-use Closure;
 use Kuick\Http\Message\RequestInterface;
 use Throwable;
 
 /**
  * Guard validator
  */
-class GuardValidator
+class GuardValidator implements ConfigValidatorInterface
 {
     private const MATCH_PATTERN = '#^%s$#';
 
-    public function __construct(GuardConfig $guardConfig)
+    public function validate(object $configObject): void
     {
-        $this->validatePath($guardConfig);
-        $this->validateMethods($guardConfig);
-        $this->validateController($guardConfig);
+        if (!$configObject instanceof GuardConfig) {
+            throw new ConfigException(GuardConfig::class . ' expected, ' . gettype($configObject) . ' given');
+        }
+        $this->validatePath($configObject);
+        $this->validateMethods($configObject);
+        $this->validateController($configObject);
     }
 
     private function validatePath(GuardConfig $guardConfig): void
@@ -64,21 +66,16 @@ class GuardValidator
     private function validateController(GuardConfig $guardConfig): void
     {
         //action not defined
-        if (empty($guardConfig->guard)) {
+        if (empty($guardConfig->guardClassName)) {
             throw new ConfigException('Guard class name should not be empty, path: ' . $guardConfig->path);
         }
-        // inline closure
-        // @TODO: validate callable parameters and return type
-        if ($guardConfig->guard instanceof Closure) {
-            return;
-        }
         //inexistent class
-        if (!class_exists($guardConfig->guard)) {
-            throw new ConfigException('Guard class: "' . $guardConfig->guard . '" does not exist, path: ' . $guardConfig->path);
+        if (!class_exists($guardConfig->guardClassName)) {
+            throw new ConfigException('Guard class: "' . $guardConfig->guardClassName . '" does not exist, path: ' . $guardConfig->path);
         }
         //inexistent __invoke() method
-        if (!method_exists($guardConfig->guard, '__invoke')) {
-            throw new ConfigException('Guard class: "' . $guardConfig->guard . '" is not invokable, path: ' . $guardConfig->path);
+        if (!method_exists($guardConfig->guardClassName, '__invoke')) {
+            throw new ConfigException('Guard class: "' . $guardConfig->guardClassName . '" is not invokable, path: ' . $guardConfig->path);
         }
         //@TODO: validate __invoke() method parameters
     }

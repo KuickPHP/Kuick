@@ -10,6 +10,9 @@
 
 namespace Kuick\Framework\DependencyInjection;
 
+use DI\Attribute\Inject;
+use Kuick\Framework\Config\ConfigException;
+use Kuick\Framework\Config\ConfigValidatorInterface;
 use Kuick\Framework\SystemCacheInterface;
 use Psr\Log\LoggerInterface;
 
@@ -18,36 +21,55 @@ use Psr\Log\LoggerInterface;
  */
 class ConfigIndexer
 {
-    private const CACHE_KEY_TEMPLATE = 'kuick-app-%s';
+    private const CACHE_KEY_TEMPLATE = 'app-config-%s';
     private const CONFIG_LOCATION_TEMPLATES = [
         '/vendor/kuick/*/config/*.%s.php',
         '/config/*.%s.php',
     ];
 
     public function __construct(
+        #[Inject('app.projectDir')] private string $projectDir,
         private SystemCacheInterface $cache,
         private LoggerInterface $logger
     ) {
     }
 
-    public function getConfigFiles(string $projectDir, string $type): array
+    public function getConfigFiles(string $type, ConfigValidatorInterface $validator): array
     {
         $cacheKey = sprintf(self::CACHE_KEY_TEMPLATE, $type);
-        $cachedFiles = $this->cache->get($cacheKey);
-        if (null !== $cachedFiles) {
-            $this->logger->debug('Config index of "' . $type . '" loaded from cache: (' . count($cachedFiles) . ')');
-            return $cachedFiles;
+        $cachedFileNames = $this->cache->get($cacheKey);
+        if (null !== $cachedFileNames) {
+            $this->logger->debug('Loading: "' . $type . '" config from cache');
+            return $cachedFileNames;
         }
-        $files = [];
+        $fileNames = [];
         // iterating over all possible locations
         foreach (self::CONFIG_LOCATION_TEMPLATES as $configPathTemplate) {
             // iterating all files matching the template
-            foreach (glob($projectDir . sprintf($configPathTemplate, $type)) as $routeFile) {
-                $this->logger->debug('Indexing ' . $type . ' config: ' . $routeFile);
-                $files[] = $routeFile;
+            foreach (glob($this->projectDir . sprintf($configPathTemplate, $type)) as $fileName) {
+                $this->logger->debug('Indexing: ' . $type . ' [' . $fileName . ']');
+                $this->validateFileContents($fileName, $validator);
+                $fileNames[] = $fileName;
             }
         }
-        $this->cache->set($cacheKey, $files);
-        return $files;
+        $this->cache->set($cacheKey, $fileNames);
+        return $fileNames;
+    }
+
+    private function validateFileContents(string $fileName, ConfigValidatorInterface $validator): void
+    {
+        // iterating over all config files
+        $configObjects = require $fileName;
+        // validating if the config file returns an array
+        if (!is_array($configObjects)) {
+            throw new ConfigException('Config file "' . $fileName . '" must return an array');
+        }
+        // validating each config
+        foreach ($configObjects as $configObject) {
+            if (!is_object($configObject)) {
+                throw new ConfigException('One or more config items is not an object: "' . $fileName . '"');
+            }
+            $validator->validate($configObject);
+        }
     }
 }

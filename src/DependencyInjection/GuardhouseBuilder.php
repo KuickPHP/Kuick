@@ -10,12 +10,9 @@
 
 namespace Kuick\Framework\DependencyInjection;
 
-use Closure;
 use DI\ContainerBuilder;
-use Kuick\Framework\Config\ConfigException;
-use Kuick\Framework\Config\GuardConfig;
-use Kuick\Framework\Kernel;
-use Kuick\Framework\SystemCacheInterface;
+use Kuick\Framework\Config\GuardValidator;
+use Kuick\Framework\SystemCache;
 use Kuick\Security\Guardhouse;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -33,22 +30,20 @@ class GuardhouseBuilder
 
     public function __invoke(): void
     {
-        $this->builder->addDefinitions([Guardhouse::class => function (ContainerInterface $container, LoggerInterface $logger, SystemCacheInterface $cache): Guardhouse {
+        $this->builder->addDefinitions([Guardhouse::class =>
+        function (
+            ConfigIndexer $configIndexer,
+            ContainerInterface $container,
+            LoggerInterface $logger
+        ): Guardhouse {
             $guardhouse = new Guardhouse($logger);
-            foreach ((new ConfigIndexer($cache, $logger))->getConfigFiles($container->get(Kernel::DI_PROJECT_DIR_KEY), GuardhouseBuilder::CONFIG_SUFFIX) as $guardsFile) {
-                $guards = include $guardsFile;
-                foreach ($guards as $guard) {
-                    if (!($guard instanceof GuardConfig)) {
-                        throw new ConfigException('Guard config must be an instance of ' . GuardConfig::class);
-                    }
-                    $logger->debug('Adding guard: ' . $guard->path);
-                    // getting from container if guard is a string
-                    $callable = $guard->guard instanceof Closure ?
-                    $guard->guard :
-                    $container->get($guard->guard);
-                    $guardhouse->addGuard($guard->path, $callable, $guard->methods);
+            foreach ($configIndexer->getConfigFiles(GuardhouseBuilder::CONFIG_SUFFIX, new GuardValidator()) as $guardsFile) {
+                foreach (require $guardsFile as $guard) {
+                    //$logger->debug('Adding guard: ' . $guard->path);
+                    $guardhouse->addGuard($guard->path, $container->get($guard->guardClassName), $guard->methods);
                 }
             }
+            $logger->debug('Security guardhouse initialized');
             return $guardhouse;
         }]);
     }

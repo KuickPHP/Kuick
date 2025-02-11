@@ -8,9 +8,17 @@
  * @license    https://github.com/milejko/kuick-framework?tab=MIT-1-ov-file#readme New BSD License
  */
 
-//use Kuick\Framework\Config\RouteConfig;
+namespace Kuick\Framework\Config;
 
-// routing configuration
-return [
-    //new RouteConfig('/path', SomeController::class)
-];
+/**
+ * Command definition
+ */
+class CommandConfig
+{
+    public function __construct(
+        public readonly string $name,
+        public readonly string $commandClassName,
+        public readonly string $description = '',
+    ) {
+    }
+}

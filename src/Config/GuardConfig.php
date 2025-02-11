@@ -10,7 +10,6 @@
 
 namespace Kuick\Framework\Config;
 
-use Closure;
 use Kuick\Http\Message\RequestInterface;
 
 /**
@@ -20,7 +19,7 @@ class GuardConfig
 {
     public function __construct(
         public readonly string $path,
-        public readonly string|Closure $guard,
+        public readonly string $guardClassName,
         public readonly array $methods = [
             RequestInterface::METHOD_GET,
             RequestInterface::METHOD_OPTIONS,
@@ -30,7 +29,5 @@ class GuardConfig
             RequestInterface::METHOD_DELETE,
         ],
     ) {
-        // validate guard
-        new GuardValidator($this);
     }
 }
