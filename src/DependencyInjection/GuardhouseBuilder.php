@@ -39,7 +39,7 @@ class GuardhouseBuilder
             $guardhouse = new Guardhouse($logger);
             foreach ($configIndexer->getConfigFiles(GuardhouseBuilder::CONFIG_SUFFIX, new GuardValidator()) as $guardsFile) {
                 foreach (require $guardsFile as $guard) {
-                    $logger->debug('Adding guard: ' . $guard->path);
+                    //$logger->debug('Adding guard: ' . $guard->path);
                     $guardhouse->addGuard($guard->path, $container->get($guard->guardClassName), $guard->methods);
                 }
             }

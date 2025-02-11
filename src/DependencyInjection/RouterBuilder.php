@@ -39,7 +39,7 @@ class RouterBuilder
             $router = new Router($logger);
             foreach ($configIndexer->getConfigFiles(RouterBuilder::CONFIG_SUFFIX, new RouteValidator()) as $routeFile) {
                 foreach (require $routeFile as $route) {
-                    $logger->debug('Adding route: ' . $route->path, $route->methods);
+                    //$logger->debug('Adding route: ' . $route->path, $route->methods);
                     $router->addRoute($route->path, $container->get($route->controllerClassName), $route->methods);
                 }
             }
