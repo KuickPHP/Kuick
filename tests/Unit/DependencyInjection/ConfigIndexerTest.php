@@ -24,16 +24,16 @@ class ConfigIndexerTest extends TestCase
         self::$invalidProjectDir = realpath(dirname(__DIR__) . '/Mocks/invalid-project-dir');
     }
 
-    public function testIndexingRouteConfig(): void
+    public function testIndexingRouteConfigForDevEnvironment(): void
     {
-        $indexer = new ConfigIndexer(self::$projectDir, new SystemCache(self::$projectDir, 'dev'), new NullLogger());
+        $indexer = new ConfigIndexer(self::$projectDir, 'dev', new SystemCache(self::$projectDir, 'dev'), new NullLogger());
         $routes = $indexer->getConfigFiles('routes', new RouteValidator());
-        $this->assertCount(1, $routes);
+        $this->assertCount(2, $routes);
     }
 
     public function testLoadingConfigFromCache(): void
     {
-        $indexer = new ConfigIndexer(self::$projectDir, new SystemCache(self::$projectDir, 'prod'), new NullLogger());
+        $indexer = new ConfigIndexer(self::$projectDir, 'prod', new SystemCache(self::$projectDir, 'prod'), new NullLogger());
         $routes = $indexer->getConfigFiles('routes', new RouteValidator());
         $this->assertCount(1, $routes);
         $cachedRoutes = $indexer->getConfigFiles('routes', new RouteValidator());
@@ -42,7 +42,7 @@ class ConfigIndexerTest extends TestCase
 
     public function testIfNotArrayConfigFileRaisesException(): void
     {
-        $indexer = new ConfigIndexer(self::$invalidProjectDir, new SystemCache(self::$projectDir, 'prod'), new NullLogger());
+        $indexer = new ConfigIndexer(self::$invalidProjectDir, 'prod', new SystemCache(self::$projectDir, 'prod'), new NullLogger());
         $this->expectException(ConfigException::class);
         $this->expectExceptionMessage('must return an array');
         $indexer->getConfigFiles('routes2', new RouteValidator());
@@ -50,7 +50,7 @@ class ConfigIndexerTest extends TestCase
 
     public function testIfInvalidObjectRaisesException(): void
     {
-        $indexer = new ConfigIndexer(self::$invalidProjectDir, new SystemCache(self::$projectDir, 'prod'), new NullLogger());
+        $indexer = new ConfigIndexer(self::$invalidProjectDir, 'prod', new SystemCache(self::$projectDir, 'prod'), new NullLogger());
         $this->expectException(ConfigException::class);
         $this->expectExceptionMessage('One or more config items is not an object');
         $indexer->getConfigFiles('routes3', new RouteValidator());

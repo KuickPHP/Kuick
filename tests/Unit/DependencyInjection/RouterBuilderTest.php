@@ -35,6 +35,7 @@ class RouterBuilderTest extends TestCase
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$projectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
+            'app.env' => 'dev',
             'app.projectDir' => self::$projectDir,
         ]);
         (new RouterBuilder($builder))();
@@ -52,6 +53,7 @@ class RouterBuilderTest extends TestCase
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$invalidProjectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
+            'app.env' => 'dev',
             'app.projectDir' => self::$invalidProjectDir,
         ]);
         (new RouterBuilder($builder))();

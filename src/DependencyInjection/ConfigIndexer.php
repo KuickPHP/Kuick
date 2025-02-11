@@ -26,9 +26,11 @@ class ConfigIndexer
         '/vendor/kuick/*/config/*.%s.php',
         '/config/*.%s.php',
     ];
+    private const ENV_SPECIFIC_CONFIG_LOCATION_TEMPLATES = '/config/*.%s@%s.php';
 
     public function __construct(
         #[Inject('app.projectDir')] private string $projectDir,
+        #[Inject('app.env')] private string $appEnv,
         private SystemCacheInterface $cache,
         private LoggerInterface $logger
     ) {
@@ -47,10 +49,15 @@ class ConfigIndexer
         foreach (self::CONFIG_LOCATION_TEMPLATES as $configPathTemplate) {
             // iterating all files matching the template
             foreach (glob($this->projectDir . sprintf($configPathTemplate, $type)) as $fileName) {
-                $this->logger->debug('Indexing: ' . $type . ' [' . $fileName . ']');
+                $this->logger->debug('Indexing: ' . $type . ' - ' . $fileName);
                 $this->validateFileContents($fileName, $validator);
                 $fileNames[] = $fileName;
             }
+        }
+        foreach (glob($this->projectDir . sprintf(self::ENV_SPECIFIC_CONFIG_LOCATION_TEMPLATES, $type, $this->appEnv)) as $fileName) {
+            $this->logger->debug('Indexing: ' . $type . ' - ' . $fileName);
+            $this->validateFileContents($fileName, $validator);
+            $fileNames[] = $fileName;
         }
         $this->cache->set($cacheKey, $fileNames);
         return $fileNames;
@@ -62,7 +69,7 @@ class ConfigIndexer
         $configObjects = require $fileName;
         // validating if the config file returns an array
         if (!is_array($configObjects)) {
-            throw new ConfigException('Config file "' . $fileName . '" must return an array');
+            throw new ConfigException('Config file: "' . $fileName . '" must return an array');
         }
         // validating each config
         foreach ($configObjects as $configObject) {

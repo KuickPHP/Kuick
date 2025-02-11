@@ -34,6 +34,7 @@ class ListenersBuilderTest extends TestCase
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$projectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
+            'app.env' => 'dev',
             'app.projectDir' => self::$projectDir,
         ]);
         (new ListenersBuilder($builder))();
@@ -48,6 +49,7 @@ class ListenersBuilderTest extends TestCase
         $builder->addDefinitions([
             SystemCacheInterface::class => new SystemCache(self::$invalidProjectDir, 'dev'),
             LoggerInterface::class => new NullLogger(),
+            'app.env' => 'dev',
             'app.projectDir' => self::$invalidProjectDir,
         ]);
         $this->expectException(ConfigException::class);
