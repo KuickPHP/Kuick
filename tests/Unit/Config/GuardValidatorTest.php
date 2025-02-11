@@ -27,6 +27,13 @@ class GuardValidatorTest extends TestCase
         (new GuardValidator())->validate(new GuardConfig('', MockGuard::class));
     }
 
+    public function testIfInvalidConfigClassRaisesException(): void
+    {
+        $this->expectException(ConfigException::class);
+        $this->expectExceptionMessage('Kuick\Framework\Config\GuardConfig expected, object given');
+        (new GuardValidator())->validate(new \stdClass());
+    }
+
     public function testIfInvalidMethodRaisesException(): void
     {
         $this->expectException(ConfigException::class);

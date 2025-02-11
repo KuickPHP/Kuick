@@ -41,6 +41,13 @@ class ListenerValidatorTest extends TestCase
         (new ListenerValidator())->validate(new ListenerConfig('*', 'InexistentListener'));
     }
 
+    public function testIfInvalidConfigClassRaisesException(): void
+    {
+        $this->expectException(ConfigException::class);
+        $this->expectExceptionMessage('Kuick\Framework\Config\ListenerConfig expected, object given');
+        (new ListenerValidator())->validate(new \stdClass());
+    }
+
     public function testIfNotInvokableListenerClassNameRaisesException(): void
     {
         $this->expectException(ConfigException::class);

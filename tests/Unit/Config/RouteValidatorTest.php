@@ -27,6 +27,13 @@ class RouteValidatorTest extends TestCase
         (new RouteValidator())->validate(new RouteConfig('', MockRoute::class));
     }
 
+    public function testIfInvalidConfigClassRaisesException(): void
+    {
+        $this->expectException(ConfigException::class);
+        $this->expectExceptionMessage('Kuick\Framework\Config\RouteConfig expected, object given');
+        (new RouteValidator())->validate(new \stdClass());
+    }
+
     public function testIfEmptyRouteClassNameRaisesException(): void
     {
         $this->expectException(ConfigException::class);
