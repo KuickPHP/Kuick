@@ -21,7 +21,7 @@ use Psr\Log\LoggerInterface;
  */
 class ConfigIndexer
 {
-    private const CACHE_KEY_TEMPLATE = 'kuick-app-%s';
+    private const CACHE_KEY_TEMPLATE = 'app-config-%s';
     private const CONFIG_LOCATION_TEMPLATES = [
         '/vendor/kuick/*/config/*.%s.php',
         '/config/*.%s.php',

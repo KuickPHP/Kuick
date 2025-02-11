@@ -36,7 +36,6 @@ class RequestHandlerBuilder
             $requestHandler = new StackRequestHandler($container->get(FallbackRequestHandlerInterface::class));
             $requestHandler->addMiddleware($container->get(SecurityMiddleware::class));
             $requestHandler->addMiddleware($container->get(RoutingMiddleware::class));
-            $logger->debug('Request handler initialized');
             return $requestHandler;
         }]);
     }

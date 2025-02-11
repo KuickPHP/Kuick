@@ -53,7 +53,6 @@ class GuardhouseBuilder
                     $guardhouse->addGuard($guard->path, $callable, $guard->methods);
                 }
             }
-            $logger->debug('Security guardhouse initialized');
             return $guardhouse;
         }]);
     }

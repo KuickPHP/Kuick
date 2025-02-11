@@ -62,7 +62,6 @@ class LoggerBuilder
                         throw new ConfigException('Unknown Monolog handler: ' . $type);
                 }
             }
-            $logger->debug('Logger initialized');
             return $logger;
         }]);
     }

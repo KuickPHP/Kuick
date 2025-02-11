@@ -56,7 +56,6 @@ class RouterBuilder
                     $router->addRoute($route->path, $callable, $route->methods);
                 }
             }
-            $logger->debug('Router initialized');
             return $router;
         }]);
     }
