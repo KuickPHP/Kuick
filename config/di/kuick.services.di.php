@@ -13,7 +13,7 @@ use Kuick\Framework\Api\UI\DocHtmlController;
 use Kuick\Framework\Api\UI\DocJsonController;
 use Kuick\Framework\Api\UI\OpsController;
 use Kuick\Framework\Api\UI\OptionsController;
-use Kuick\Framework\DependencyInjection\ConfigIndexer;
+use Kuick\Framework\Config\ConfigIndexer;
 use Kuick\Framework\Listeners\ExceptionHandlingListener;
 use Kuick\Framework\Listeners\RegisteringPhpErrorHandlerListener;
 use Kuick\Http\Server\FallbackRequestHandlerInterface;
