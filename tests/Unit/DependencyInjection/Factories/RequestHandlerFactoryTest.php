@@ -1,13 +1,9 @@
 <?php
 
-namespace Tests\Unit\App\DependencyInjection;
+namespace Tests\Unit\App\DependencyInjection\Factories;
 
 use DI\ContainerBuilder;
-use Kuick\Framework\Config\ConfigException;
-use Kuick\Framework\DependencyInjection\RequestHandlerBuilder;
-use Kuick\Framework\SystemCache;
-use Kuick\Framework\SystemCacheInterface;
-use Kuick\Http\Server\ExceptionHtmlRequestHandler;
+use Kuick\Framework\DependencyInjection\Factories\RequestHandlerFactory;
 use Kuick\Http\Server\FallbackRequestHandlerInterface;
 use Kuick\Http\Server\JsonNotFoundRequestHandler;
 use PHPUnit\Framework\TestCase;
@@ -16,9 +12,9 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 /**
- * @covers Kuick\Framework\DependencyInjection\RequestHandlerBuilder
+ * @covers Kuick\Framework\DependencyInjection\Factories\RequestHandlerFactory
  */
-class RequestHandlerBuilderTest extends TestCase
+class RequestHandlerFactoryTest extends TestCase
 {
     public function testIfRequestHandlerIsBuilt(): void
     {
@@ -28,7 +24,7 @@ class RequestHandlerBuilderTest extends TestCase
             LoggerInterface::class => new NullLogger(),
             FallbackRequestHandlerInterface::class => new JsonNotFoundRequestHandler(),
         ]);
-        (new RequestHandlerBuilder($builder))();
+        (new RequestHandlerFactory())->build($builder);
         $container = $builder->build();
         $this->assertInstanceOf(RequestHandlerInterface::class, $container->get(RequestHandlerInterface::class));
     }

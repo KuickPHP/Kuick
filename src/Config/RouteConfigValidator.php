@@ -14,17 +14,14 @@ use Kuick\Http\Message\RequestInterface;
 use Throwable;
 
 /**
- * Route validator
+ * Route config validator
  */
-class RouteValidator implements ConfigValidatorInterface
+class RouteConfigValidator
 {
     private const MATCH_PATTERN = '#^%s$#';
 
-    public function validate(object $configObject): void
+    public function validate(RouteConfig $configObject): void
     {
-        if (!$configObject instanceof RouteConfig) {
-            throw new ConfigException(RouteConfig::class . ' expected, ' . gettype($configObject) . ' given');
-        }
         $this->validatePath($configObject);
         $this->validateMethods($configObject);
         $this->validateController($configObject);

@@ -23,7 +23,6 @@ $fileMap = [
     'vendor/kuick/framework/config-example/app.commands.php' => 'config/app.commands.php',
     'vendor/kuick/framework/config-example/app.guards.php' => 'config/app.guards.php',
     'vendor/kuick/framework/config-example/app.listeners.php' => 'config/app.listeners.php',
-    'vendor/kuick/framework/config-example/app.middlewares.php' => 'config/app.middlewares.php',
     'vendor/kuick/framework/config-example/app.routes.php' => 'config/app.routes.php',
 ];
 

@@ -11,6 +11,12 @@
 namespace Kuick\Framework\DependencyInjection;
 
 use DI\ContainerBuilder;
+use Kuick\Framework\DependencyInjection\Factories\ConsoleApplicationFactory;
+use Kuick\Framework\DependencyInjection\Factories\GuardhouseFactory;
+use Kuick\Framework\DependencyInjection\Factories\ListenerListFactory;
+use Kuick\Framework\DependencyInjection\Factories\LoggerFactory;
+use Kuick\Framework\DependencyInjection\Factories\RequestHandlerFactory;
+use Kuick\Framework\DependencyInjection\Factories\RouterFactory;
 use Kuick\Framework\KernelInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -33,7 +39,7 @@ class ContainerCreator
         // build or load from cache
         $container = $this->configureBuilder($projectDir, $appEnv)->build();
 
-        // check if container is already cached
+        // check if cached container is ready
         if ($container->has(KernelInterface::DI_PROJECT_DIR_KEY)) {
             $container->get(LoggerInterface::class)->info('Running in "' . $appEnv . '" mode, DI container loaded from cache');
             return $container;
@@ -64,25 +70,25 @@ class ContainerCreator
         ]);
 
         // building request handler
-        (new RequestHandlerBuilder($builder))();
+        (new RequestHandlerFactory())->build($builder);
 
         // creating logger
-        (new LoggerBuilder($builder))();
+        (new LoggerFactory())->build($builder);
 
-        // creating listeners list (used by Kernel)
-        (new ListenersBuilder($builder))();
+        // creating listeners list (used later to configure listener provider in the Kernel)
+        (new ListenerListFactory())->build($builder);
 
         // creating router matcher
-        (new RouterBuilder($builder))();
+        (new RouterFactory())->build($builder);
 
         // creating guardhouse
-        (new GuardhouseBuilder($builder))();
+        (new GuardhouseFactory())->build($builder);
 
         // creating console application
-        (new ConsoleApplicationBuilder($builder))();
+        (new ConsoleApplicationFactory())->build($builder);
 
         // loading definitions (can override everything else)
-        $this->loadedDefinitions = (new DefinitionConfigLoader($builder))($projectDir, $appEnv);
+        $this->loadedDefinitions = (new DefinitionConfigLoader())->load($builder, $projectDir, $appEnv);
 
         return $builder->build();
     }

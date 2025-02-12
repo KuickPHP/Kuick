@@ -1,16 +1,16 @@
 <?php
 
-namespace Tests\Unit\App\DependencyInjection;
+namespace Tests\Unit\App\DependencyInjection\Factories;
 
 use DI\ContainerBuilder;
-use Kuick\Framework\DependencyInjection\LoggerBuilder;
+use Kuick\Framework\DependencyInjection\Factories\LoggerFactory;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 /**
- * @covers Kuick\Framework\DependencyInjection\LoggerBuilder
+ * @covers Kuick\Framework\DependencyInjection\Factories\LoggerFactory
  */
-class LoggerBuilderTest extends TestCase
+class LoggerFactoryTest extends TestCase
 {
     public function testLoggerIsBuilt(): void
     {
@@ -25,7 +25,7 @@ class LoggerBuilderTest extends TestCase
                 ['type' => 'stream', 'path' => 'php://stdout', 'level' => 'debug'],
             ],
         ]);
-        (new LoggerBuilder($builder))();
+        (new LoggerFactory())->build($builder);
         $container = $builder->build();
         $this->assertInstanceOf(LoggerInterface::class, $container->get(LoggerInterface::class));
     }

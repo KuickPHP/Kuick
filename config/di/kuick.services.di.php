@@ -31,9 +31,11 @@ return [
     ListenerProviderInterface::class => autowire(ListenerProvider::class),
     EventDispatcherInterface::class => autowire(EventDispatcher::class),
     SystemCacheInterface::class => autowire(SystemCache::class),
-    ConfigIndexer::class => autowire(),
 
     // performance optimization: autowiring
+    // config
+    ConfigIndexer::class => autowire(),
+
     // listeners
     EventLoggingListener::class => autowire(),
     ExceptionHandlingListener::class => autowire(),

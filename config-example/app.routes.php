@@ -8,7 +8,7 @@
  * @license    https://github.com/milejko/kuick-framework?tab=MIT-1-ov-file#readme New BSD License
  */
 
-//use Kuick\Framework\Config\RouteConfig;
+use Kuick\Framework\Config\RouteConfig;
 
 // routing configuration
 return [

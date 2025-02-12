@@ -13,15 +13,12 @@ namespace Kuick\Framework\Config;
 use Symfony\Component\Console\Command\Command;
 
 /**
- * Command validator
+ * Command config validator
  */
-class CommandValidator implements ConfigValidatorInterface
+class CommandConfigValidator
 {
-    public function validate(object $configObject): void
+    public function validate(CommandConfig $configObject): void
     {
-        if (!$configObject instanceof CommandConfig) {
-            throw new ConfigException(CommandConfig::class . ' expected, ' . gettype($configObject) . ' given');
-        }
         $this->validateName($configObject);
         $this->validateCommand($configObject);
     }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Unit\App\DependencyInjection;
+namespace Tests\Unit\App\DependencyInjection\Factories;
 
 use DI\ContainerBuilder;
 use Kuick\Framework\Config\ConfigException;
-use Kuick\Framework\DependencyInjection\RouterBuilder;
+use Kuick\Framework\DependencyInjection\Factories\RouterFactory;
 use Kuick\Framework\SystemCache;
 use Kuick\Framework\SystemCacheInterface;
 use Kuick\Routing\ExecutableRoute;
@@ -15,17 +15,17 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 /**
- * @covers Kuick\Framework\DependencyInjection\RouterBuilder
+ * @covers Kuick\Framework\DependencyInjection\Factories\RouterFactory
  */
-class RouterBuilderTest extends TestCase
+class RouterFactoryTest extends TestCase
 {
     private static string $projectDir;
     private static string $invalidProjectDir;
 
     public static function setUpBeforeClass(): void
     {
-        self::$projectDir = realpath(dirname(__DIR__) . '/Mocks/project-dir');
-        self::$invalidProjectDir = realpath(dirname(__DIR__) . '/Mocks/invalid-project-dir');
+        self::$projectDir = realpath(dirname(__DIR__) . '/../Mocks/project-dir');
+        self::$invalidProjectDir = realpath(dirname(__DIR__) . '/../Mocks/invalid-project-dir');
     }
 
     public function testIfRouterIsBuilt(): void
@@ -38,7 +38,7 @@ class RouterBuilderTest extends TestCase
             'app.env' => 'dev',
             'app.projectDir' => self::$projectDir,
         ]);
-        (new RouterBuilder($builder))();
+        (new RouterFactory())->build($builder);
         $container = $builder->build();
         $router = $container->get(Router::class);
         $this->assertInstanceOf(Router::class, $router);
@@ -56,7 +56,7 @@ class RouterBuilderTest extends TestCase
             'app.env' => 'dev',
             'app.projectDir' => self::$invalidProjectDir,
         ]);
-        (new RouterBuilder($builder))();
+        (new RouterFactory())->build($builder);
         $this->expectException(ConfigException::class);
         $container = $builder->build();
         $container->get(Router::class);

@@ -14,17 +14,14 @@ use Kuick\Http\Message\RequestInterface;
 use Throwable;
 
 /**
- * Guard validator
+ * Guard config validator
  */
-class GuardValidator implements ConfigValidatorInterface
+class GuardConfigValidator
 {
     private const MATCH_PATTERN = '#^%s$#';
 
-    public function validate(object $configObject): void
+    public function validate(GuardConfig $configObject): void
     {
-        if (!$configObject instanceof GuardConfig) {
-            throw new ConfigException(GuardConfig::class . ' expected, ' . gettype($configObject) . ' given');
-        }
         $this->validatePath($configObject);
         $this->validateMethods($configObject);
         $this->validateController($configObject);

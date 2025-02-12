@@ -1,10 +1,11 @@
 <?php
 
-namespace Tests\Unit\App\DependencyInjection;
+namespace Tests\Unit\App\DependencyInjection\Factories;
 
 use DI\ContainerBuilder;
 use Kuick\Framework\Config\ConfigException;
-use Kuick\Framework\DependencyInjection\ConsoleApplicationBuilder;
+use Kuick\Framework\Config\ConfigIndexer;
+use Kuick\Framework\DependencyInjection\Factories\ConsoleApplicationFactory;
 use Kuick\Framework\SystemCache;
 use Kuick\Framework\SystemCacheInterface;
 use PHPUnit\Framework\TestCase;
@@ -13,9 +14,9 @@ use Psr\Log\NullLogger;
 use Symfony\Component\Console\Application;
 
 /**
- * @covers Kuick\Framework\DependencyInjection\ConsoleApplicationBuilder
+ * @covers Kuick\Framework\DependencyInjection\Factories\ConsoleApplicationFactory
  */
-class ConsoleApplicationBuilderTest extends TestCase
+class ConsoleApplicationFactoryTest extends TestCase
 {
     private static string $projectDir;
     private static string $invalidProjectDir;
@@ -24,10 +25,10 @@ class ConsoleApplicationBuilderTest extends TestCase
 
     public static function setUpBeforeClass(): void
     {
-        self::$projectDir = realpath(dirname(__DIR__) . '/Mocks/project-dir');
-        self::$invalidProjectDir = realpath(dirname(__DIR__) . '/Mocks/invalid-project-dir');
-        self::$invalidProjectDir2 = realpath(dirname(__DIR__) . '/Mocks/invalid-project-dir-2');
-        self::$invalidProjectDir3 = realpath(dirname(__DIR__) . '/Mocks/invalid-project-dir-3');
+        self::$projectDir = realpath(dirname(__DIR__) . '/../Mocks/project-dir');
+        self::$invalidProjectDir = realpath(dirname(__DIR__) . '/../Mocks/invalid-project-dir');
+        self::$invalidProjectDir2 = realpath(dirname(__DIR__) . '/../Mocks/invalid-project-dir-2');
+        self::$invalidProjectDir3 = realpath(dirname(__DIR__) . '/../Mocks/invalid-project-dir-3');
     }
 
     public function testIfConsoleApplicationIsBuilt(): void
@@ -41,9 +42,11 @@ class ConsoleApplicationBuilderTest extends TestCase
             'app.env' => 'dev',
             'app.projectDir' => self::$projectDir,
         ]);
-        (new ConsoleApplicationBuilder($builder))();
+        (new ConsoleApplicationFactory())->build($builder);
         $container = $builder->build();
         $application = $container->get(Application::class);
+        // 1 command config file found
+        $this->assertCount(1, $container->get(ConfigIndexer::class)->getConfigFilePaths(ConfigIndexer::COMMANDS_FILE_SUFFIX));
         $this->assertInstanceOf(Application::class, $application);
     }
 
@@ -58,7 +61,7 @@ class ConsoleApplicationBuilderTest extends TestCase
             'app.env' => 'dev',
             'app.projectDir' => self::$invalidProjectDir,
         ]);
-        (new ConsoleApplicationBuilder($builder))();
+        (new ConsoleApplicationFactory())->build($builder);
         $this->expectException(ConfigException::class);
         $container = $builder->build();
         $container->get(Application::class);
@@ -75,7 +78,7 @@ class ConsoleApplicationBuilderTest extends TestCase
             'app.env' => 'dev',
             'app.projectDir' => self::$invalidProjectDir2,
         ]);
-        (new ConsoleApplicationBuilder($builder))();
+        (new ConsoleApplicationFactory())->build($builder);
         $this->expectException(ConfigException::class);
         $container = $builder->build();
         $container->get(Application::class);
@@ -92,7 +95,7 @@ class ConsoleApplicationBuilderTest extends TestCase
             'app.env' => 'dev',
             'app.projectDir' => self::$invalidProjectDir3,
         ]);
-        (new ConsoleApplicationBuilder($builder))();
+        (new ConsoleApplicationFactory())->build($builder);
         $this->expectException(ConfigException::class);
         $container = $builder->build();
         $container->get(Application::class);

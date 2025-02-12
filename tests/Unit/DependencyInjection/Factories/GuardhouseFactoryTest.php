@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Unit\App\DependencyInjection;
+namespace Tests\Unit\App\DependencyInjection\Factories;
 
 use DI\ContainerBuilder;
 use Kuick\Framework\Config\ConfigException;
-use Kuick\Framework\DependencyInjection\GuardhouseBuilder;
+use Kuick\Framework\DependencyInjection\Factories\GuardhouseFactory;
 use Kuick\Framework\SystemCache;
 use Kuick\Framework\SystemCacheInterface;
 use Kuick\Security\Guardhouse;
@@ -13,17 +13,17 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 /**
- * @covers Kuick\Framework\DependencyInjection\GuardhouseBuilder
+ * @covers Kuick\Framework\DependencyInjection\Factories\GuardhouseFactory
  */
-class GuardhouseBuilderTest extends TestCase
+class GuardhouseFactoryTest extends TestCase
 {
     private static string $projectDir;
     private static string $invalidProjectDir;
 
     public static function setUpBeforeClass(): void
     {
-        self::$projectDir = realpath(dirname(__DIR__) . '/Mocks/project-dir');
-        self::$invalidProjectDir = realpath(dirname(__DIR__) . '/Mocks/invalid-project-dir');
+        self::$projectDir = realpath(dirname(__DIR__) . '/../Mocks/project-dir');
+        self::$invalidProjectDir = realpath(dirname(__DIR__) . '/../Mocks/invalid-project-dir');
     }
 
     public function testIfGuardhouseIsBuilt(): void
@@ -36,7 +36,7 @@ class GuardhouseBuilderTest extends TestCase
             'app.env' => 'dev',
             'app.projectDir' => self::$projectDir,
         ]);
-        (new GuardhouseBuilder($builder))();
+        (new GuardhouseFactory())->build($builder);
         $container = $builder->build();
         $this->assertInstanceOf(Guardhouse::class, $container->get(Guardhouse::class));
     }
@@ -51,7 +51,7 @@ class GuardhouseBuilderTest extends TestCase
             'app.env' => 'dev',
             'app.projectDir' => self::$invalidProjectDir,
         ]);
-        (new GuardhouseBuilder($builder))();
+        (new GuardhouseFactory())->build($builder);
         $this->expectException(ConfigException::class);
         $container = $builder->build();
         $this->assertInstanceOf(Guardhouse::class, $container->get(Guardhouse::class));

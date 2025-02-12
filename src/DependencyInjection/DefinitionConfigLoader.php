@@ -23,24 +23,20 @@ class DefinitionConfigLoader
     ];
     private const ENV_SPECIFIC_DEFINITION_LOCATION_TEMPLATE = '/config/di/*.di@%s.php';
 
-    public function __construct(private ContainerBuilder $builder)
-    {
-    }
-
-    public function __invoke(string $projectDir, string $env): array
+    public function load(ContainerBuilder $builder, string $projectDir, string $env): array
     {
         $loadedDefinitions = [];
         // iterating over all possible locations
         foreach (self::CONFIG_LOCATION_TEMPLATES as $configPathTemplate) {
             // adding definition files in the current location
             foreach (glob($projectDir . $configPathTemplate) as $definitionFile) {
-                $this->builder->addDefinitions($definitionFile);
+                $builder->addDefinitions($definitionFile);
                 $loadedDefinitions[] = $definitionFile;
             }
         }
         //adding env specific definition files
         foreach (glob(sprintf($projectDir . self::ENV_SPECIFIC_DEFINITION_LOCATION_TEMPLATE, $env)) as $definitionFile) {
-            $this->builder->addDefinitions($definitionFile);
+            $builder->addDefinitions($definitionFile);
             $loadedDefinitions[] = $definitionFile;
         }
         return $loadedDefinitions;

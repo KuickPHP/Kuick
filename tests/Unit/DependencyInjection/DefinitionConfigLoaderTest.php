@@ -21,10 +21,10 @@ class DefinitionConfigLoaderTest extends TestCase
     public function testLoadConfig(): void
     {
         $builder = new ContainerBuilder();
-        $builder->useAttributes(true);
+        //$builder->useAttributes(true);
 
-        $loader = new DefinitionConfigLoader($builder);
-        $loader(self::$projectDir, 'dev');
+        $loader = new DefinitionConfigLoader();
+        $loader->load($builder, self::$projectDir, 'dev');
 
         $container = $builder->build();
         $this->assertEquals('Testing App', $container->get('app.name'));
