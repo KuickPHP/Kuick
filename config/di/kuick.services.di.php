@@ -1,25 +1,11 @@
 <?php
 
-use Kuick\Framework\Listeners\EventLoggingListener;
-use Kuick\Framework\Listeners\LocalizingListener;
-use Kuick\Framework\Listeners\RequestHandlingListener;
-use Kuick\Framework\Listeners\ResponseEmittingListener;
 use Kuick\Framework\SystemCache;
 use Kuick\Framework\SystemCacheInterface;
 use Kuick\EventDispatcher\EventDispatcher;
 use Kuick\EventDispatcher\ListenerProvider;
-use Kuick\Framework\Api\Security\OpsGuard;
-use Kuick\Framework\Api\UI\DocHtmlController;
-use Kuick\Framework\Api\UI\DocJsonController;
-use Kuick\Framework\Api\UI\OpsController;
-use Kuick\Framework\Api\UI\OptionsController;
-use Kuick\Framework\Config\ConfigIndexer;
-use Kuick\Framework\Listeners\ExceptionHandlingListener;
-use Kuick\Framework\Listeners\RegisteringPhpErrorHandlerListener;
 use Kuick\Http\Server\FallbackRequestHandlerInterface;
 use Kuick\Http\Server\JsonNotFoundRequestHandler;
-use Kuick\Routing\RoutingMiddleware;
-use Kuick\Security\SecurityMiddleware;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 
@@ -31,27 +17,4 @@ return [
     ListenerProviderInterface::class => autowire(ListenerProvider::class),
     EventDispatcherInterface::class => autowire(EventDispatcher::class),
     SystemCacheInterface::class => autowire(SystemCache::class),
-
-    // performance optimization: autowiring
-    // config
-    ConfigIndexer::class => autowire(),
-
-    // listeners
-    EventLoggingListener::class => autowire(),
-    ExceptionHandlingListener::class => autowire(),
-    LocalizingListener::class => autowire(),
-    RegisteringPhpErrorHandlerListener::class => autowire(),
-    RequestHandlingListener::class => autowire(),
-    ResponseEmittingListener::class => autowire(),
-
-    // middlewares
-    RoutingMiddleware::class => autowire(),
-    SecurityMiddleware::class => autowire(),
-
-    // UI
-    DocHtmlController::class => autowire(),
-    DocJsonController::class => autowire(),
-    OpsController::class => autowire(),
-    OpsGuard::class => autowire(),
-    OptionsController::class => autowire(),
 ];
