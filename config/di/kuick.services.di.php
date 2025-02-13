@@ -15,9 +15,12 @@ use Kuick\EventDispatcher\ListenerProvider;
 use Kuick\Http\Server\FallbackRequestHandlerInterface;
 use Kuick\Http\Server\JsonNotFoundRequestHandler;
 use Kuick\Http\Server\StackRequestHandler;
+use Kuick\Routing\RoutingMiddleware;
+use Kuick\Security\SecurityMiddleware;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Application;
 
 use function DI\autowire;
@@ -29,6 +32,19 @@ return [
     EventDispatcherInterface::class => autowire(EventDispatcher::class),
     FallbackRequestHandlerInterface::class => create(JsonNotFoundRequestHandler::class),
     ListenerProviderInterface::class => create(ListenerProvider::class),
-    RequestHandlerInterface::class => autowire(StackRequestHandler::class),
+
+    RequestHandlerInterface::class => function (
+        FallbackRequestHandlerInterface $fallbackRequestHandler,
+        SecurityMiddleware $securityMiddleware,
+        RoutingMiddleware $routingMiddleware,
+        LoggerInterface $logger,
+    ) {
+        $requestHandler = (new StackRequestHandler($fallbackRequestHandler))
+            ->addMiddleware($securityMiddleware)
+            ->addMiddleware($routingMiddleware);
+        $logger->info('RequestHandler initialized with Security and Routing middlewares');
+        return $requestHandler;
+    },
+
     SystemCacheInterface::class => autowire(SystemCache::class),
 ];
