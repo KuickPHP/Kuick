@@ -34,7 +34,7 @@
         "zircote/swagger-php": "^4.11"
     },
     "scripts": {
-        "fix:phpcbf": "phpcbf --standard=PSR12 src tests",
+        "fix:phpcbf": "phpcbf --standard=PSR12 config src tests",
         "test:phpstan": "XDEBUG_MODE=off phpstan --level=5 --no-progress --memory-limit=512M analyse src tests/Unit",
         "test:phpcs": "phpcs -n --standard=PSR12 src tests/Unit",
         "test:phpmd": "phpmd src tests/Unit text cleancode,codesize,controversial,design,naming,unusedcode",

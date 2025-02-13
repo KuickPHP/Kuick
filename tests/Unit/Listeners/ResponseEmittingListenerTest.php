@@ -13,7 +13,7 @@ use Psr\Log\NullLogger;
 /**
  * @covers Kuick\Framework\Listeners\ResponseEmittingListener
  */
-class ResponseEmittingTest extends TestCase
+class ResponseEmittingListenerTest extends TestCase
 {
     /**
      * Needs to be run in separate process, cause emmiter sends headers

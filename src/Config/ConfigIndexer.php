@@ -58,7 +58,7 @@ class ConfigIndexer
         // loading from cache
         $cachedFileNames = $this->cache->get($cacheKey = sprintf(self::CACHE_KEY_TEMPLATE, $fileSuffix));
         if ($cachedFileNames) {
-            $this->logger->debug('Loading ' . $fileSuffix . ' from cache');
+            $this->logger->info('Loading ' . $fileSuffix . ' from cache');
             return $cachedFileNames;
         }
         // unknown config file key
@@ -70,14 +70,14 @@ class ConfigIndexer
         foreach (self::CONFIG_LOCATION_TEMPLATES as $configPathTemplate) {
             // iterating all files matching the template
             foreach (glob($this->projectDir . sprintf($configPathTemplate, $fileSuffix)) as $fileName) {
-                $this->logger->debug('Indexing ' . $fileSuffix . ': ' . $fileName);
+                $this->logger->notice('Indexing ' . $fileSuffix . ': ' . $fileName);
                 $this->validateFileContents($fileName, $fileSuffix);
                 $fileNames[] = $fileName;
             }
         }
         // iterating over all env specific locations
         foreach (glob($this->projectDir . sprintf(self::ENV_SPECIFIC_CONFIG_LOCATION_TEMPLATES, $fileSuffix, $this->appEnv)) as $fileName) {
-            $this->logger->debug('Indexing ' . $fileSuffix . ': ' . $fileName);
+            $this->logger->notice('Indexing ' . $fileSuffix . ': ' . $fileName);
             $this->validateFileContents($fileName, $fileSuffix);
             $fileNames[] = $fileName;
         }

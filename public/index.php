@@ -9,7 +9,7 @@
  */
 
 use Kuick\Framework\Events\RequestReceivedEvent;
-use Kuick\Framework\Kernel;
+use Kuick\Framework\WebKernel;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Nyholm\Psr7Server\ServerRequestCreator;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -30,7 +30,7 @@ $request = (new ServerRequestCreator(
     $psr17Factory, // StreamFactory
 ))->fromGlobals();
 
-(new Kernel($projectDir))
+(new WebKernel($projectDir))
     ->getContainer()
         ->get(EventDispatcherInterface::class)
             ->dispatch(new RequestReceivedEvent($request));

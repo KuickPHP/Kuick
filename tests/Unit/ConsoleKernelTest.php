@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Kuick\Framework;
 
-use Kuick\Framework\Kernel;
+use Kuick\Framework\ConsoleKernel;
 use Kuick\Framework\KernelInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -10,11 +10,12 @@ use Psr\Container\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
- * @covers Kuick\Framework\Kernel
+ * @covers Kuick\Framework\ConsoleKernel
+ * @covers Kuick\Framework\KernelAbstract
  */
-class Kernelest extends TestCase
+class ConsoleKernelTest extends TestCase
 {
-    private static string $projectDir;
+    public static string $projectDir;
 
     public static function setUpBeforeClass(): void
     {
@@ -28,12 +29,11 @@ class Kernelest extends TestCase
     public function testIfDevKernelIsWellDefined(): void
     {
         putenv('APP_ENV=dev');
-        $kernel = new Kernel(self::$projectDir);
+        $kernel = new ConsoleKernel(self::$projectDir);
         $this->assertInstanceOf(KernelInterface::class, $kernel);
         $this->assertInstanceOf(ContainerInterface::class, $container = $kernel->getContainer());
         $this->assertInstanceOf(EventDispatcherInterface::class, $container->get(EventDispatcherInterface::class));
         $this->assertEquals('Testing App', $container->get('app.name'));
-        $this->assertEquals($container->get('app.projectDir'), $kernel->getProjectDir());
         $this->assertEquals('dev', $container->get('app.env'));
         $this->assertEquals('Europe/Warsaw', $container->get('app.timezone'));
     }
@@ -45,7 +45,7 @@ class Kernelest extends TestCase
     public function testIfTestKernelIsWellDefined(): void
     {
         putenv('APP_ENV=test');
-        $kernel = new Kernel(self::$projectDir);
+        $kernel = new ConsoleKernel(self::$projectDir);
         $this->assertInstanceOf(KernelInterface::class, $kernel);
         $this->assertInstanceOf(ContainerInterface::class, $container = $kernel->getContainer());
         $this->assertInstanceOf(EventDispatcherInterface::class, $container->get(EventDispatcherInterface::class));

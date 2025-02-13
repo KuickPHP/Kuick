@@ -18,8 +18,9 @@ $fileMap = [
     // DI definition config files
 
     'vendor/kuick/framework/config/di/kuick.di.php' => 'config/di/app.di.php',
-    'vendor/kuick/framework/config/di/kuick.di@dev.php' => 'config/di/app.di@dev.php',
+
     // sample config files
+    'vendor/kuick/framework/config-example/di/app.di@dev.php' => 'config/di/app.di@dev.php',
     'vendor/kuick/framework/config-example/app.commands.php' => 'config/app.commands.php',
     'vendor/kuick/framework/config-example/app.guards.php' => 'config/app.guards.php',
     'vendor/kuick/framework/config-example/app.listeners.php' => 'config/app.listeners.php',

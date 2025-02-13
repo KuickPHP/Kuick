@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\App\Config;
+namespace Tests\Unit\Kuick\Framework\Config;
 
 use PHPUnit\Framework\TestCase;
 use Kuick\Framework\SystemCache;

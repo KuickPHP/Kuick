@@ -18,15 +18,12 @@ use Psr\Container\ContainerInterface;
 interface KernelInterface
 {
     public const APP_ENV = 'APP_ENV';
+    public const ENV_DEV = 'dev';
+    public const ENV_PROD = 'prod';
 
     public const DI_APP_ENV_KEY = 'app.env';
     public const DI_APP_NAME_KEY = 'app.name';
     public const DI_PROJECT_DIR_KEY = 'app.projectDir';
-    public const DI_LISTENERS_KEY = 'app.listeners';
-
-    public const ENV_DEV = 'dev';
-    public const ENV_PROD = 'prod';
 
     public function getContainer(): ContainerInterface;
-    public function getProjectDir(): string;
 }

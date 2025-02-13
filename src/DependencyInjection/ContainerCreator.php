@@ -11,12 +11,6 @@
 namespace Kuick\Framework\DependencyInjection;
 
 use DI\ContainerBuilder;
-use Kuick\Framework\DependencyInjection\Factories\ConsoleApplicationFactory;
-use Kuick\Framework\DependencyInjection\Factories\GuardhouseFactory;
-use Kuick\Framework\DependencyInjection\Factories\ListenerListFactory;
-use Kuick\Framework\DependencyInjection\Factories\LoggerFactory;
-use Kuick\Framework\DependencyInjection\Factories\RequestHandlerFactory;
-use Kuick\Framework\DependencyInjection\Factories\RouterFactory;
 use Kuick\Framework\KernelInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
@@ -68,24 +62,6 @@ class ContainerCreator
             KernelInterface::DI_APP_ENV_KEY => $appEnv,
             KernelInterface::DI_PROJECT_DIR_KEY => $projectDir,
         ]);
-
-        // building request handler
-        (new RequestHandlerFactory())->build($builder);
-
-        // creating logger
-        (new LoggerFactory())->build($builder);
-
-        // creating listeners list (used later to configure listener provider in the Kernel)
-        (new ListenerListFactory())->build($builder);
-
-        // creating router matcher
-        (new RouterFactory())->build($builder);
-
-        // creating guardhouse
-        (new GuardhouseFactory())->build($builder);
-
-        // creating console application
-        (new ConsoleApplicationFactory())->build($builder);
 
         // loading definitions (can override everything else)
         $this->loadedDefinitions = (new DefinitionConfigLoader())->load($builder, $projectDir, $appEnv);

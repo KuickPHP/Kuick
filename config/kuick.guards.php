@@ -12,7 +12,7 @@ use Kuick\Framework\Api\Security\OpsGuard;
 use Kuick\Framework\Config\GuardConfig;
 
 return [
-    // OPS guard protects /api/ops* routes with OpsGuard 
+    // OPS guard protects /api/ops* routes with OpsGuard
     // the token can be defined via environment variable
     // @see config/di/app.di.php and config/di/app.di@dev.php
     new GuardConfig(

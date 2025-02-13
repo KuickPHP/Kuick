@@ -1,6 +1,6 @@
 <?php
 
-namespace Kuick\Tests\App\DependencyInjection;
+namespace Tests\Unit\Kuick\Framework\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
 use Kuick\Framework\DependencyInjection\ContainerCreator;
@@ -29,7 +29,6 @@ class ContainerCreatorTest extends TestCase
         $this->assertEquals('Testing App', $container->get('app.name'));
         $this->assertEquals('dev', $container->get('app.env'));
         $this->assertEquals(self::$projectDir, $container->get('app.projectDir'));
-        $this->assertIsArray($container->get('app.listeners'));
         $this->assertEquals('Testing App', $container->get('app.name'));
         $this->assertEquals('Europe/Warsaw', $container->get('app.timezone'));
     }

@@ -24,7 +24,7 @@ class SystemCache extends LayeredCache implements SystemCacheInterface
         #[Inject('app.env')] string $env,
     ) {
         // in non-prod env we use NullCache only
-        if (Kernel::ENV_DEV === $env) {
+        if (KernelInterface::ENV_DEV === $env) {
             parent::__construct([new NullCache()]);
             return;
         }

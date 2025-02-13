@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\App\DependencyInjection;
+namespace Tests\Unit\Kuick\Framework\DependencyInjection;
 
 use DI\ContainerBuilder;
 use PHPUnit\Framework\TestCase;
