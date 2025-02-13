@@ -20,9 +20,7 @@ use Kuick\Framework\Api\UI\OptionsController;
 use Kuick\Framework\Config\ConfigIndexer;
 use Kuick\Framework\Listeners\ExceptionHandlingListener;
 use Kuick\Framework\Listeners\RegisteringPhpErrorHandlerListener;
-use Kuick\Routing\Router;
 use Kuick\Routing\RoutingMiddleware;
-use Kuick\Security\Guardhouse;
 use Kuick\Security\SecurityMiddleware;
 
 use function DI\autowire;
@@ -31,8 +29,6 @@ return [
     // performance optimization: autowiring
     // config
     ConfigIndexer::class => autowire(),
-    Router::class => autowire(),
-    Guardhouse::class => autowire(),
 
     // listeners
     EventLoggingListener::class => autowire(),
