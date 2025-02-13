@@ -16,6 +16,7 @@ use Kuick\Framework\Config\ConfigIndexer;
 use Kuick\Http\Server\FallbackRequestHandlerInterface;
 use Kuick\Http\Server\JsonNotFoundRequestHandler;
 use Kuick\Http\Server\StackRequestHandler;
+use Kuick\Routing\Router;
 use Kuick\Security\Guardhouse;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -54,6 +55,23 @@ return [
             }
         }
         $logger->info('Guardhouse initialized');
+        return $guardhouse;
+    },
+
+    Router::class => function (LoggerInterface $logger, ConfigIndexer $configIndexer, ContainerInterface $container) {
+        $router = new Router($logger);
+        // adding routes to Router
+        foreach ($configIndexer->getConfigFilePaths(ConfigIndexer::ROUTES_FILE_SUFFIX) as $routeConfigFile) {
+            foreach (require $routeConfigFile as $routeConfig) {
+                $logger->debug('Adding route: ' . $routeConfig->path, $routeConfig->methods);
+                $router->addRoute(
+                    $routeConfig->path,
+                    $container->get($routeConfig->controllerClassName),
+                    $routeConfig->methods
+                );
+            }
+        }
+        $logger->info('Router initialized');
     },
 
     SystemCacheInterface::class => autowire(SystemCache::class),
