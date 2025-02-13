@@ -24,15 +24,17 @@ use function DI\autowire;
 use function DI\create;
 use function DI\get;
 
-// interface to implementation mapping
+// service definitions
 return [
     Application::class => autowire(Application::class),
     EventDispatcherInterface::class => autowire(EventDispatcher::class),
     FallbackRequestHandlerInterface::class => create(JsonNotFoundRequestHandler::class),
     ListenerProviderInterface::class => autowire(ListenerProvider::class),
+
     RequestHandlerInterface::class => create(StackRequestHandler::class)
         ->constructor(
             get(FallbackRequestHandlerInterface::class)
         ),
+
     SystemCacheInterface::class => autowire(SystemCache::class),
 ];
