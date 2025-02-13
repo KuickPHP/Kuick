@@ -12,12 +12,16 @@ use Kuick\Framework\SystemCache;
 use Kuick\Framework\SystemCacheInterface;
 use Kuick\EventDispatcher\EventDispatcher;
 use Kuick\EventDispatcher\ListenerProvider;
+use Kuick\Framework\Config\ConfigIndexer;
 use Kuick\Http\Server\FallbackRequestHandlerInterface;
 use Kuick\Http\Server\JsonNotFoundRequestHandler;
 use Kuick\Http\Server\StackRequestHandler;
+use Kuick\Security\Guardhouse;
+use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Application;
 
 use function DI\autowire;
@@ -35,6 +39,22 @@ return [
         ->constructor(
             get(FallbackRequestHandlerInterface::class)
         ),
+
+    Guardhouse::class => function (LoggerInterface $logger, ConfigIndexer $configIndexer, ContainerInterface $container) {
+        $guardhouse = new Guardhouse($logger);
+        // adding guards to Guardhouse
+        foreach ($configIndexer->getConfigFilePaths(ConfigIndexer::GUARDS_FILE_SUFFIX) as $guardConfigFile) {
+            foreach (require $guardConfigFile as $guardConfig) {
+                $logger->debug('Adding guard: ' . $guardConfig->path);
+                $guardhouse->addGuard(
+                    $guardConfig->path,
+                    $container->get($guardConfig->guardClassName),
+                    $guardConfig->methods
+                );
+            }
+        }
+        $logger->info('Guardhouse initialized');
+    },
 
     SystemCacheInterface::class => autowire(SystemCache::class),
 ];

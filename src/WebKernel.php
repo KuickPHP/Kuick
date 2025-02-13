@@ -31,19 +31,6 @@ class WebKernel extends KernelAbstract
         $logger = $this->getContainer()->get(LoggerInterface::class);
         $configIndexer = $this->getContainer()->get(ConfigIndexer::class);
 
-        // adding guards to Guardhouse
-        foreach ($configIndexer->getConfigFilePaths(ConfigIndexer::GUARDS_FILE_SUFFIX) as $guardConfigFile) {
-            foreach (require $guardConfigFile as $guardConfig) {
-                $logger->debug('Adding guard: ' . $guardConfig->path);
-                $this->getContainer()->get(Guardhouse::class)->addGuard(
-                    $guardConfig->path,
-                    $this->getContainer()->get($guardConfig->guardClassName),
-                    $guardConfig->methods
-                );
-            }
-        }
-        $logger->info('Guardhouse initialized');
-
         // adding routes to Router
         foreach ($configIndexer->getConfigFilePaths(ConfigIndexer::ROUTES_FILE_SUFFIX) as $routeConfigFile) {
             foreach (require $routeConfigFile as $routeConfig) {
@@ -56,12 +43,6 @@ class WebKernel extends KernelAbstract
             }
         }
         $logger->info('Router initialized');
-
-        // adding middlewares to StackRequestHandler
-        $this->getContainer()->get(RequestHandlerInterface::class)
-            ->addMiddleware($this->getContainer()->get(SecurityMiddleware::class))
-            ->addMiddleware($this->getContainer()->get(RoutingMiddleware::class));
-        $logger->info('Request handler initialized');
 
         // dispatching KernelCreatedEvent
         $this->getContainer()->get(EventDispatcherInterface::class)->dispatch(new KernelCreatedEvent($this));
