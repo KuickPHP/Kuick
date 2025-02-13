@@ -21,13 +21,18 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Symfony\Component\Console\Application;
 
 use function DI\autowire;
+use function DI\create;
+use function DI\get;
 
 // interface to implementation mapping
 return [
     Application::class => autowire(Application::class),
     EventDispatcherInterface::class => autowire(EventDispatcher::class),
-    FallbackRequestHandlerInterface::class => autowire(JsonNotFoundRequestHandler::class),
+    FallbackRequestHandlerInterface::class => create(JsonNotFoundRequestHandler::class),
     ListenerProviderInterface::class => autowire(ListenerProvider::class),
-    RequestHandlerInterface::class => autowire(StackRequestHandler::class),
+    RequestHandlerInterface::class => create(StackRequestHandler::class)
+        ->constructor(
+            get(FallbackRequestHandlerInterface::class)
+        ),
     SystemCacheInterface::class => autowire(SystemCache::class),
 ];
