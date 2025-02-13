@@ -31,6 +31,8 @@ return [
     // performance optimization: autowiring
     // services
     ConfigIndexer::class => autowire(),
+    Router::class => autowire(),
+    Guardhouse::class => autowire(),
 
     // listeners
     EventLoggingListener::class => autowire(),
