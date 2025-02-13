@@ -13,7 +13,7 @@ namespace Kuick\Framework\Config;
 /**
  * Command definition
  */
-class CommandConfig
+final class CommandConfig
 {
     public function __construct(
         public readonly string $name,

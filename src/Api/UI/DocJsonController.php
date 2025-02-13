@@ -20,7 +20,7 @@ use OpenApi\Generator;
         ),
     ]
 )]
-class DocJsonController
+final class DocJsonController
 {
     private const SOURCE_PATH = '/src';
 

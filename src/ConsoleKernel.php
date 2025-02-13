@@ -19,7 +19,7 @@ use Symfony\Component\Console\Application;
 /**
  * Console application Kernel
  */
-class ConsoleKernel extends KernelAbstract
+final class ConsoleKernel extends KernelAbstract
 {
     public function __construct(string $projectDir)
     {

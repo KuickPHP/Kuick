@@ -12,7 +12,7 @@ namespace Kuick\Framework\Api\UI;
 
 use Kuick\Http\Message\Response;
 
-class OptionsController
+final class OptionsController
 {
     public function __invoke(): Response
     {

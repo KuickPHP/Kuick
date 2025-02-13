@@ -13,7 +13,7 @@ namespace Kuick\Framework\Config;
 /**
  * Listener config validator
  */
-class ListenerConfigValidator
+final class ListenerConfigValidator
 {
     public function validate(ListenerConfig $configObject): void
     {

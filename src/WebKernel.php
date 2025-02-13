@@ -23,7 +23,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Web application Kernel
  */
-class WebKernel extends KernelAbstract
+final class WebKernel extends KernelAbstract
 {
     public function __construct(string $projectDir)
     {

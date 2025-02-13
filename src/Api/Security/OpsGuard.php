@@ -16,7 +16,7 @@ use OpenApi\Attributes\SecurityScheme;
 use Psr\Http\Message\ServerRequestInterface;
 
 #[SecurityScheme(securityScheme: 'Bearer Token', type: 'http', scheme: 'bearer')]
-class OpsGuard
+final class OpsGuard
 {
     private const AUTHORIZATION_HEADER = 'Authorization';
     private const BEARER_TOKEN_TEMPLATE = 'Bearer %s';

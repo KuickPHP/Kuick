@@ -15,7 +15,7 @@ use Kuick\Framework\KernelInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
-class ContainerCreator
+final class ContainerCreator
 {
     private const CACHE_PATH =  '/var/cache';
     private const COMPILED_FILENAME = 'CompiledContainer.php';

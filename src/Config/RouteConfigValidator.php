@@ -16,7 +16,7 @@ use Throwable;
 /**
  * Route config validator
  */
-class RouteConfigValidator
+final class RouteConfigValidator
 {
     private const MATCH_PATTERN = '#^%s$#';
 

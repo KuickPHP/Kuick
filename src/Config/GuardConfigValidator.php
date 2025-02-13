@@ -16,7 +16,7 @@ use Throwable;
 /**
  * Guard config validator
  */
-class GuardConfigValidator
+final class GuardConfigValidator
 {
     private const MATCH_PATTERN = '#^%s$#';
 

@@ -15,7 +15,7 @@ use Kuick\Http\Message\RequestInterface;
 /**
  * Guard definition
  */
-class GuardConfig
+final class GuardConfig
 {
     public function __construct(
         public readonly string $path,

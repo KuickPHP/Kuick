@@ -12,7 +12,7 @@ namespace Kuick\Framework\Config;
 
 use Kuick\EventDispatcher\ListenerPriority;
 
-class ListenerConfig
+final class ListenerConfig
 {
     public function __construct(
         public readonly string $pattern,

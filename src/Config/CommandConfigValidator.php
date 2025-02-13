@@ -15,7 +15,7 @@ use Symfony\Component\Console\Command\Command;
 /**
  * Command config validator
  */
-class CommandConfigValidator
+final class CommandConfigValidator
 {
     public function validate(CommandConfig $configObject): void
     {

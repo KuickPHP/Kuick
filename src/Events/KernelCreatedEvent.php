@@ -12,7 +12,7 @@ namespace Kuick\Framework\Events;
 
 use Kuick\Framework\KernelInterface;
 
-class KernelCreatedEvent
+final class KernelCreatedEvent
 {
     public function __construct(private KernelInterface $kernel)
     {

@@ -17,7 +17,7 @@ use Kuick\Cache\InMemoryCache;
 use Kuick\Cache\LayeredCache;
 use Kuick\Cache\NullCache;
 
-class SystemCache extends LayeredCache implements SystemCacheInterface
+final class SystemCache extends LayeredCache implements SystemCacheInterface
 {
     public function __construct(
         #[Inject('app.projectDir')] string $projetcDir,

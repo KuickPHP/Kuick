@@ -15,7 +15,7 @@ use Kuick\Http\Message\RequestInterface;
 /**
  * Route definition
  */
-class RouteConfig
+final class RouteConfig
 {
     public function __construct(
         public readonly string $path,

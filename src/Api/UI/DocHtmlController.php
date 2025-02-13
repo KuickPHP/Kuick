@@ -4,7 +4,7 @@ namespace Kuick\Framework\Api\UI;
 
 use Kuick\Http\Message\Response;
 
-class DocHtmlController
+final class DocHtmlController
 {
     private const TEMPLATE = '
         <!DOCTYPE html>

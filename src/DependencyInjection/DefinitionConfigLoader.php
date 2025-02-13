@@ -15,7 +15,7 @@ use DI\ContainerBuilder;
 /**
  * DI Definition Loader
  */
-class DefinitionConfigLoader
+final class DefinitionConfigLoader
 {
     private const CONFIG_LOCATION_TEMPLATES = [
         '/vendor/kuick/*/config/di/*.di.php',

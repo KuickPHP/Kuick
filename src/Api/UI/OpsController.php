@@ -51,7 +51,7 @@ use OpenApi\Attributes as OAA;
         ),
     ]
 )]
-class OpsController
+final class OpsController
 {
     public function __construct(private Container $container)
     {

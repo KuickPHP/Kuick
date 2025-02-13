@@ -12,6 +12,6 @@ namespace Kuick\Framework\Config;
 
 use Exception;
 
-class ConfigException extends Exception
+final class ConfigException extends Exception
 {
 }

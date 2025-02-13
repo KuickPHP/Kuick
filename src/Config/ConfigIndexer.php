@@ -17,7 +17,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Config indexer
  */
-class ConfigIndexer
+final class ConfigIndexer
 {
     public const COMMANDS_FILE_SUFFIX = 'commands';
     public const LISTENERS_FILE_SUFFIX = 'listeners';
